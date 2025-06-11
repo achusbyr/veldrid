@@ -36,9 +36,9 @@ namespace Veldrid.MTL
 
         public void SetDrawable(CAMetalDrawable drawable, CGSize size, PixelFormat format)
         {
-            deviceTexture = drawable.texture;
-            width = (uint)size.width;
-            height = (uint)size.height;
+            deviceTexture = drawable.Texture;
+            width = (uint)size.Width;
+            height = (uint)size.Height;
             mtlPixelFormat = MtlFormats.VdToMtlPixelFormat(Format, false);
         }
     }

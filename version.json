@@ -3,7 +3,8 @@
   "version": "4.9",
   "buildNumberOffset": 3,
   "publicReleaseRefSpec": [
-      "^refs/heads/master$" // we release out of master
+    "^refs/heads/master$"
+    // we release out of master
   ],
   "cloudBuild": {
     "buildNumber": {

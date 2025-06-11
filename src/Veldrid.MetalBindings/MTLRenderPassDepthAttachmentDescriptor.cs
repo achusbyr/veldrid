@@ -1,3 +1,6 @@
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
 using System;
 using static Veldrid.MetalBindings.ObjectiveCRuntime;
 
@@ -7,45 +10,48 @@ namespace Veldrid.MetalBindings
     {
         public readonly IntPtr NativePtr;
 
-        public MTLRenderPassDepthAttachmentDescriptor(IntPtr ptr) => NativePtr = ptr;
-
-        public MTLTexture texture
+        public MTLRenderPassDepthAttachmentDescriptor(IntPtr ptr)
         {
-            get => objc_msgSend<MTLTexture>(NativePtr, Selectors.texture);
-            set => objc_msgSend(NativePtr, Selectors.setTexture, value.NativePtr);
+            NativePtr = ptr;
         }
 
-        public MTLLoadAction loadAction
+        public MTLTexture Texture
         {
-            get => (MTLLoadAction)uint_objc_msgSend(NativePtr, Selectors.loadAction);
-            set => objc_msgSend(NativePtr, Selectors.setLoadAction, (uint)value);
+            get => objc_msgSend<MTLTexture>(NativePtr, Selectors.TEXTURE);
+            set => objc_msgSend(NativePtr, Selectors.SET_TEXTURE, value.NativePtr);
         }
 
-        public MTLStoreAction storeAction
+        public MTLLoadAction LoadAction
         {
-            get => (MTLStoreAction)uint_objc_msgSend(NativePtr, Selectors.storeAction);
-            set => objc_msgSend(NativePtr, Selectors.setStoreAction, (uint)value);
+            get => (MTLLoadAction)uint_objc_msgSend(NativePtr, Selectors.LOAD_ACTION);
+            set => objc_msgSend(NativePtr, Selectors.SET_LOAD_ACTION, (uint)value);
         }
 
-        public double clearDepth
+        public MTLStoreAction StoreAction
         {
-            get => double_objc_msgSend(NativePtr, sel_clearDepth);
-            set => objc_msgSend(NativePtr, sel_setClearDepth, value);
+            get => (MTLStoreAction)uint_objc_msgSend(NativePtr, Selectors.STORE_ACTION);
+            set => objc_msgSend(NativePtr, Selectors.SET_STORE_ACTION, (uint)value);
         }
 
-        public UIntPtr slice
+        public double ClearDepth
         {
-            get => UIntPtr_objc_msgSend(NativePtr, Selectors.slice);
-            set => objc_msgSend(NativePtr, Selectors.setSlice, value);
+            get => double_objc_msgSend(NativePtr, sel_clear_depth);
+            set => objc_msgSend(NativePtr, sel_set_clear_depth, value);
         }
 
-        public UIntPtr level
+        public UIntPtr Slice
         {
-            get => UIntPtr_objc_msgSend(NativePtr, Selectors.level);
-            set => objc_msgSend(NativePtr, Selectors.setLevel, value);
+            get => UIntPtr_objc_msgSend(NativePtr, Selectors.SLICE);
+            set => objc_msgSend(NativePtr, Selectors.SET_SLICE, value);
         }
 
-        private static readonly Selector sel_clearDepth = "clearDepth";
-        private static readonly Selector sel_setClearDepth = "setClearDepth:";
+        public UIntPtr Level
+        {
+            get => UIntPtr_objc_msgSend(NativePtr, Selectors.LEVEL);
+            set => objc_msgSend(NativePtr, Selectors.SET_LEVEL, value);
+        }
+
+        private static readonly Selector sel_clear_depth = "clearDepth";
+        private static readonly Selector sel_set_clear_depth = "setClearDepth:";
     }
 }

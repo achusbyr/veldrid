@@ -1,3 +1,6 @@
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
 using System;
 using System.Runtime.InteropServices;
 using static Veldrid.MetalBindings.ObjectiveCRuntime;
@@ -9,20 +12,23 @@ namespace Veldrid.MetalBindings
     {
         public readonly IntPtr NativePtr;
 
-        public static implicit operator IntPtr(MTLCompileOptions mco) => mco.NativePtr;
+        public static implicit operator IntPtr(MTLCompileOptions mco)
+        {
+            return mco.NativePtr;
+        }
 
         public static MTLCompileOptions New()
         {
             return s_class.AllocInit<MTLCompileOptions>();
         }
 
-        public Bool8 fastMathEnabled
+        public Bool8 FastMathEnabled
         {
             get => bool8_objc_msgSend(NativePtr, sel_fastMathEnabled);
             set => objc_msgSend(NativePtr, sel_setFastMathEnabled, value);
         }
 
-        public MTLLanguageVersion languageVersion
+        public MTLLanguageVersion LanguageVersion
         {
             get => (MTLLanguageVersion)uint_objc_msgSend(NativePtr, sel_languageVersion);
             set => objc_msgSend(NativePtr, sel_setLanguageVersion, (uint)value);

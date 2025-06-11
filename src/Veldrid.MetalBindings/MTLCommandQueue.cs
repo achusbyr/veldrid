@@ -1,3 +1,6 @@
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
 using System;
 using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
@@ -11,9 +14,15 @@ namespace Veldrid.MetalBindings
         public readonly IntPtr NativePtr;
 
         [Pure]
-        public MTLCommandBuffer commandBuffer() => objc_msgSend<MTLCommandBuffer>(NativePtr, sel_commandBuffer);
+        public MTLCommandBuffer CommandBuffer()
+        {
+            return objc_msgSend<MTLCommandBuffer>(NativePtr, sel_commandBuffer);
+        }
 
-        public void insertDebugCaptureBoundary() => objc_msgSend(NativePtr, sel_insertDebugCaptureBoundary);
+        public void InsertDebugCaptureBoundary()
+        {
+            objc_msgSend(NativePtr, sel_insertDebugCaptureBoundary);
+        }
 
         private static readonly Selector sel_commandBuffer = "commandBuffer";
         private static readonly Selector sel_insertDebugCaptureBoundary = "insertDebugCaptureBoundary";

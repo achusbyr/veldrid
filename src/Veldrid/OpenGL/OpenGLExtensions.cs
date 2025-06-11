@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Veldrid.OpenGL
@@ -46,21 +49,21 @@ namespace Veldrid.OpenGL
             this.minor = minor;
 
             TextureStorage = IsExtensionSupported("GL_ARB_texture_storage") // OpenGL 4.2 / 4.3 (multisampled)
-                             || GLESVersion(3, 0);
+                             || GlesVersion(3, 0);
             TextureStorageMultisample = IsExtensionSupported("GL_ARB_texture_storage_multisample")
-                                        || GLESVersion(3, 1);
+                                        || GlesVersion(3, 1);
             ArbDirectStateAccess = IsExtensionSupported("GL_ARB_direct_state_access");
             ArbMultiBind = IsExtensionSupported("GL_ARB_multi_bind");
             ArbTextureView = GLVersion(4, 3) || IsExtensionSupported("GL_ARB_texture_view") // OpenGL 4.3
                                              || IsExtensionSupported("GL_OES_texture_view");
             CopyImage = IsExtensionSupported("GL_ARB_copy_image")
-                        || GLESVersion(3, 2)
+                        || GlesVersion(3, 2)
                         || IsExtensionSupported("GL_OES_copy_image")
                         || IsExtensionSupported("GL_EXT_copy_image");
             ArbDebugOutput = IsExtensionSupported("GL_ARB_debug_output");
             KhrDebug = IsExtensionSupported("GL_KHR_debug");
 
-            ComputeShaders = IsExtensionSupported("GL_ARB_compute_shader") || GLESVersion(3, 1);
+            ComputeShaders = IsExtensionSupported("GL_ARB_compute_shader") || GlesVersion(3, 1);
 
             ArbViewportArray = IsExtensionSupported("GL_ARB_viewport_array") || GLVersion(4, 1);
             TessellationShader = IsExtensionSupported("GL_ARB_tessellation_shader") || GLVersion(4, 0)
@@ -69,17 +72,17 @@ namespace Veldrid.OpenGL
                                                                              || IsExtensionSupported("OES_geometry_shader");
             DrawElementsBaseVertex = GLVersion(3, 2)
                                      || IsExtensionSupported("GL_ARB_draw_elements_base_vertex")
-                                     || GLESVersion(3, 2)
+                                     || GlesVersion(3, 2)
                                      || IsExtensionSupported("GL_OES_draw_elements_base_vertex");
-            IndependentBlend = GLVersion(4, 0) || GLESVersion(3, 2);
+            IndependentBlend = GLVersion(4, 0) || GlesVersion(3, 2);
 
             DrawIndirect = GLVersion(4, 0) || IsExtensionSupported("GL_ARB_draw_indirect")
-                                           || GLESVersion(3, 1);
+                                           || GlesVersion(3, 1);
             MultiDrawIndirect = GLVersion(4, 3) || IsExtensionSupported("GL_ARB_multi_draw_indirect")
                                                 || IsExtensionSupported("GL_EXT_multi_draw_indirect");
 
             StorageBuffers = GLVersion(4, 3) || IsExtensionSupported("GL_ARB_shader_storage_buffer_object")
-                                             || GLESVersion(3, 1);
+                                             || GlesVersion(3, 1);
 
             ArbClipControl = GLVersion(4, 5) || IsExtensionSupported("GL_ARB_clip_control");
             ExtSRGBWriteControl = this.backend == GraphicsBackend.OpenGLES && IsExtensionSupported("GL_EXT_sRGB_write_control");
@@ -115,7 +118,7 @@ namespace Veldrid.OpenGL
             return false;
         }
 
-        public bool GLESVersion(int major, int minor)
+        public bool GlesVersion(int major, int minor)
         {
             if (backend == GraphicsBackend.OpenGLES)
             {

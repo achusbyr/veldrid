@@ -1,3 +1,6 @@
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
 using System;
 using Veldrid.MetalBindings;
 
@@ -21,20 +24,20 @@ namespace Veldrid.MTL
                 out var mip);
 
             var mtlDesc = MTLSamplerDescriptor.New();
-            mtlDesc.sAddressMode = MtlFormats.VdToMtlAddressMode(description.AddressModeU);
-            mtlDesc.tAddressMode = MtlFormats.VdToMtlAddressMode(description.AddressModeV);
-            mtlDesc.rAddressMode = MtlFormats.VdToMtlAddressMode(description.AddressModeW);
-            mtlDesc.minFilter = min;
-            mtlDesc.magFilter = mag;
-            mtlDesc.mipFilter = mip;
-            if (gd.MetalFeatures.IsMacOS) mtlDesc.borderColor = MtlFormats.VdToMtlBorderColor(description.BorderColor);
+            mtlDesc.SAddressMode = MtlFormats.VdToMtlAddressMode(description.AddressModeU);
+            mtlDesc.TAddressMode = MtlFormats.VdToMtlAddressMode(description.AddressModeV);
+            mtlDesc.RAddressMode = MtlFormats.VdToMtlAddressMode(description.AddressModeW);
+            mtlDesc.MinFilter = min;
+            mtlDesc.MagFilter = mag;
+            mtlDesc.MipFilter = mip;
+            if (gd.MetalFeatures.IsMacOS) mtlDesc.BorderColor = MtlFormats.VdToMtlBorderColor(description.BorderColor);
 
-            if (description.ComparisonKind != null) mtlDesc.compareFunction = MtlFormats.VdToMtlCompareFunction(description.ComparisonKind.Value);
-            mtlDesc.lodMinClamp = description.MinimumLod;
-            mtlDesc.lodMaxClamp = description.MaximumLod;
-            mtlDesc.maxAnisotropy = Math.Max(1, description.MaximumAnisotropy);
-            DeviceSampler = gd.Device.newSamplerStateWithDescriptor(mtlDesc);
-            ObjectiveCRuntime.release(mtlDesc.NativePtr);
+            if (description.ComparisonKind != null) mtlDesc.CompareFunction = MtlFormats.VdToMtlCompareFunction(description.ComparisonKind.Value);
+            mtlDesc.LodMinClamp = description.MinimumLod;
+            mtlDesc.LodMaxClamp = description.MaximumLod;
+            mtlDesc.MaxAnisotropy = Math.Max(1, description.MaximumAnisotropy);
+            DeviceSampler = gd.Device.NewSamplerStateWithDescriptor(mtlDesc);
+            ObjectiveCRuntime.Release(mtlDesc.NativePtr);
         }
 
         #region Disposal
@@ -44,7 +47,7 @@ namespace Veldrid.MTL
             if (!disposed)
             {
                 disposed = true;
-                ObjectiveCRuntime.release(DeviceSampler.NativePtr);
+                ObjectiveCRuntime.Release(DeviceSampler.NativePtr);
             }
         }
 

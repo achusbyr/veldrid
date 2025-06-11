@@ -1,4 +1,7 @@
-﻿using Veldrid.OpenGLBindings;
+﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
+using Veldrid.OpenGLBindings;
 using static Veldrid.OpenGLBindings.OpenGLNative;
 using static Veldrid.OpenGL.OpenGLUtil;
 
@@ -61,10 +64,10 @@ namespace Veldrid.OpenGL
 
         public void CreateGLResources()
         {
-            glGenFramebuffers(1, out framebuffer);
+            GLGenFramebuffers(1, out framebuffer);
             CheckLastError();
 
-            glBindFramebuffer(FramebufferTarget.Framebuffer, framebuffer);
+            GLBindFramebuffer(FramebufferTarget.Framebuffer, framebuffer);
             CheckLastError();
 
             uint colorCount = (uint)ColorTargets.Count;
@@ -84,7 +87,7 @@ namespace Veldrid.OpenGL
 
                     if (glTex.ArrayLayers == 1)
                     {
-                        glFramebufferTexture2D(
+                        GLFramebufferTexture2D(
                             FramebufferTarget.Framebuffer,
                             GLFramebufferAttachment.ColorAttachment0 + i,
                             textureTarget,
@@ -94,7 +97,7 @@ namespace Veldrid.OpenGL
                     }
                     else
                     {
-                        glFramebufferTextureLayer(
+                        GLFramebufferTextureLayer(
                             FramebufferTarget.Framebuffer,
                             GLFramebufferAttachment.ColorAttachment0 + i,
                             glTex.Texture,
@@ -106,7 +109,7 @@ namespace Veldrid.OpenGL
 
                 var bufs = stackalloc DrawBuffersEnum[(int)colorCount];
                 for (int i = 0; i < colorCount; i++) bufs[i] = DrawBuffersEnum.ColorAttachment0 + i;
-                glDrawBuffers(colorCount, bufs);
+                GLDrawBuffers(colorCount, bufs);
                 CheckLastError();
             }
 
@@ -128,7 +131,7 @@ namespace Veldrid.OpenGL
 
                 if (glDepthTex.ArrayLayers == 1)
                 {
-                    glFramebufferTexture2D(
+                    GLFramebufferTexture2D(
                         FramebufferTarget.Framebuffer,
                         framebufferAttachment,
                         depthTarget,
@@ -138,7 +141,7 @@ namespace Veldrid.OpenGL
                 }
                 else
                 {
-                    glFramebufferTextureLayer(
+                    GLFramebufferTextureLayer(
                         FramebufferTarget.Framebuffer,
                         framebufferAttachment,
                         glDepthTex.Texture,
@@ -148,7 +151,7 @@ namespace Veldrid.OpenGL
                 }
             }
 
-            var errorCode = glCheckFramebufferStatus(FramebufferTarget.Framebuffer);
+            var errorCode = GLCheckFramebufferStatus(FramebufferTarget.Framebuffer);
             CheckLastError();
             if (errorCode != FramebufferErrorCode.FramebufferComplete) throw new VeldridException("Framebuffer was not successfully created: " + errorCode);
 
@@ -162,7 +165,7 @@ namespace Veldrid.OpenGL
                 disposed = true;
 
                 uint f = framebuffer;
-                glDeleteFramebuffers(1, ref f);
+                GLDeleteFramebuffers(1, ref f);
                 CheckLastError();
             }
         }

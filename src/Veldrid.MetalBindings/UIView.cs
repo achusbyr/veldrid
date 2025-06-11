@@ -1,3 +1,6 @@
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
 using System;
 using System.Runtime.InteropServices;
 using static Veldrid.MetalBindings.ObjectiveCRuntime;
@@ -7,11 +10,15 @@ namespace Veldrid.MetalBindings
     public struct UIView
     {
         public readonly IntPtr NativePtr;
-        public UIView(IntPtr ptr) => NativePtr = ptr;
 
-        public CALayer layer => objc_msgSend<CALayer>(NativePtr, sel_layer);
+        public UIView(IntPtr ptr)
+        {
+            NativePtr = ptr;
+        }
 
-        public CGRect frame =>
+        public CALayer Layer => objc_msgSend<CALayer>(NativePtr, sel_layer);
+
+        public CGRect Frame =>
             RuntimeInformation.ProcessArchitecture == Architecture.Arm64
                 ? CGRect_objc_msgSend(NativePtr, sel_frame)
                 : objc_msgSend_stret<CGRect>(NativePtr, sel_frame);

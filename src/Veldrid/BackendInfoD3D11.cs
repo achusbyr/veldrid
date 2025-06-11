@@ -1,4 +1,7 @@
-﻿#if !EXCLUDE_D3D11_BACKEND
+﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
+#if !EXCLUDE_D3D11_BACKEND
 using System;
 using Veldrid.D3D11;
 using Vortice.Direct3D;

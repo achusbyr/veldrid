@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
+using System;
 using Veldrid.MetalBindings;
 
 namespace Veldrid.MTL
@@ -43,45 +46,45 @@ namespace Veldrid.MTL
             if (source is NSWindowSwapchainSource nsWindowSource)
             {
                 var nswindow = new NSWindow(nsWindowSource.NSWindow);
-                var contentView = nswindow.contentView;
-                var windowContentSize = contentView.frame.size;
-                width = (uint)windowContentSize.width;
-                height = (uint)windowContentSize.height;
+                var contentView = nswindow.ContentView;
+                var windowContentSize = contentView.Frame.Size;
+                width = (uint)windowContentSize.Width;
+                height = (uint)windowContentSize.Height;
 
-                if (!CAMetalLayer.TryCast(contentView.layer, out metalLayer))
+                if (!CAMetalLayer.TryCast(contentView.Layer, out metalLayer))
                 {
                     metalLayer = CAMetalLayer.New();
-                    contentView.wantsLayer = true;
-                    contentView.layer = metalLayer.NativePtr;
+                    contentView.WantsLayer = true;
+                    contentView.Layer = metalLayer.NativePtr;
                 }
             }
             else if (source is NSViewSwapchainSource nsViewSource)
             {
                 var contentView = new NSView(nsViewSource.NSView);
-                var windowContentSize = contentView.frame.size;
-                width = (uint)windowContentSize.width;
-                height = (uint)windowContentSize.height;
+                var windowContentSize = contentView.Frame.Size;
+                width = (uint)windowContentSize.Width;
+                height = (uint)windowContentSize.Height;
 
-                if (!CAMetalLayer.TryCast(contentView.layer, out metalLayer))
+                if (!CAMetalLayer.TryCast(contentView.Layer, out metalLayer))
                 {
                     metalLayer = CAMetalLayer.New();
-                    contentView.wantsLayer = true;
-                    contentView.layer = metalLayer.NativePtr;
+                    contentView.WantsLayer = true;
+                    contentView.Layer = metalLayer.NativePtr;
                 }
             }
             else if (source is UIViewSwapchainSource uiViewSource)
             {
                 uiView = new UIView(uiViewSource.UIView);
-                var viewSize = uiView.frame.size;
-                width = (uint)viewSize.width;
-                height = (uint)viewSize.height;
+                var viewSize = uiView.Frame.Size;
+                width = (uint)viewSize.Width;
+                height = (uint)viewSize.Height;
 
-                if (!CAMetalLayer.TryCast(uiView.layer, out metalLayer))
+                if (!CAMetalLayer.TryCast(uiView.Layer, out metalLayer))
                 {
                     metalLayer = CAMetalLayer.New();
-                    metalLayer.frame = uiView.frame;
-                    metalLayer.opaque = true;
-                    uiView.layer.addSublayer(metalLayer.NativePtr);
+                    metalLayer.Frame = uiView.Frame;
+                    metalLayer.Opaque = true;
+                    uiView.Layer.AddSublayer(metalLayer.NativePtr);
                 }
             }
             else
@@ -91,10 +94,10 @@ namespace Veldrid.MTL
                 ? PixelFormat.B8G8R8A8UNormSRgb
                 : PixelFormat.B8G8R8A8UNorm;
 
-            metalLayer.device = this.gd.Device;
-            metalLayer.pixelFormat = MtlFormats.VdToMtlPixelFormat(format, false);
-            metalLayer.framebufferOnly = true;
-            metalLayer.drawableSize = new CGSize(width, height);
+            metalLayer.Device = this.gd.Device;
+            metalLayer.PixelFormat = MtlFormats.VdToMtlPixelFormat(format, false);
+            metalLayer.FramebufferOnly = true;
+            metalLayer.DrawableSize = new CGSize(width, height);
 
             setSyncToVerticalBlank(syncToVerticalBlank);
 
@@ -111,9 +114,9 @@ namespace Veldrid.MTL
 
         public override void Dispose()
         {
-            if (drawable.NativePtr != IntPtr.Zero) ObjectiveCRuntime.release(drawable.NativePtr);
+            if (drawable.NativePtr != IntPtr.Zero) ObjectiveCRuntime.Release(drawable.NativePtr);
             framebuffer.Dispose();
-            ObjectiveCRuntime.release(metalLayer.NativePtr);
+            ObjectiveCRuntime.Release(metalLayer.NativePtr);
 
             disposed = true;
         }
@@ -123,9 +126,9 @@ namespace Veldrid.MTL
         public override void Resize(uint width, uint height)
         {
             if (uiView.NativePtr != IntPtr.Zero)
-                metalLayer.frame = uiView.frame;
+                metalLayer.Frame = uiView.Frame;
 
-            metalLayer.drawableSize = new CGSize(width, height);
+            metalLayer.DrawableSize = new CGSize(width, height);
 
             getNextDrawable();
         }
@@ -137,22 +140,22 @@ namespace Veldrid.MTL
 
         public void InvalidateDrawable()
         {
-            ObjectiveCRuntime.release(drawable.NativePtr);
+            ObjectiveCRuntime.Release(drawable.NativePtr);
             drawable = default;
         }
 
         private bool getNextDrawable()
         {
-            if (!drawable.IsNull) ObjectiveCRuntime.release(drawable.NativePtr);
+            if (!drawable.IsNull) ObjectiveCRuntime.Release(drawable.NativePtr);
 
             using (NSAutoreleasePool.Begin())
             {
-                drawable = metalLayer.nextDrawable();
+                drawable = metalLayer.NextDrawable();
 
                 if (!drawable.IsNull)
                 {
-                    ObjectiveCRuntime.retain(drawable.NativePtr);
-                    framebuffer.UpdateTextures(drawable, metalLayer.drawableSize);
+                    ObjectiveCRuntime.Retain(drawable.NativePtr);
+                    framebuffer.UpdateTextures(drawable, metalLayer.DrawableSize);
                     return true;
                 }
 
@@ -167,7 +170,7 @@ namespace Veldrid.MTL
             if (gd.MetalFeatures.MaxFeatureSet == MTLFeatureSet.macOS_GPUFamily1_v3
                 || gd.MetalFeatures.MaxFeatureSet == MTLFeatureSet.macOS_GPUFamily1_v4
                 || gd.MetalFeatures.MaxFeatureSet == MTLFeatureSet.macOS_GPUFamily2_v1)
-                metalLayer.displaySyncEnabled = value;
+                metalLayer.DisplaySyncEnabled = value;
         }
     }
 }

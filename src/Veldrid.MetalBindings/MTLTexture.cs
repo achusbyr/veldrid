@@ -1,3 +1,6 @@
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
 using System;
 using System.Runtime.InteropServices;
 using static Veldrid.MetalBindings.ObjectiveCRuntime;
@@ -9,10 +12,14 @@ namespace Veldrid.MetalBindings
     {
         public readonly IntPtr NativePtr;
 
-        public MTLTexture(IntPtr ptr) => NativePtr = ptr;
+        public MTLTexture(IntPtr ptr)
+        {
+            NativePtr = ptr;
+        }
+
         public bool IsNull => NativePtr == IntPtr.Zero;
 
-        public void replaceRegion(
+        public void ReplaceRegion(
             MTLRegion region,
             UIntPtr mipmapLevel,
             UIntPtr slice,
@@ -29,7 +36,7 @@ namespace Veldrid.MetalBindings
                 bytesPerImage);
         }
 
-        public MTLTexture newTextureView(
+        public MTLTexture NewTextureView(
             MTLPixelFormat pixelFormat,
             MTLTextureType textureType,
             NSRange levelRange,

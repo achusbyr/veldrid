@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
+using System;
 
 namespace Veldrid.OpenGL
 {
@@ -6,7 +9,13 @@ namespace Veldrid.OpenGL
     {
         public override Framebuffer Framebuffer => framebuffer;
         public override bool IsDisposed => disposed;
-        public override bool SyncToVerticalBlank { get => gd.SyncToVerticalBlank; set => gd.SyncToVerticalBlank = value; }
+
+        public override bool SyncToVerticalBlank
+        {
+            get => gd.SyncToVerticalBlank;
+            set => gd.SyncToVerticalBlank = value;
+        }
+
         public override string Name { get; set; } = "OpenGL Context Swapchain";
         private readonly OpenGLGraphicsDevice gd;
         private readonly OpenGLSwapchainFramebuffer framebuffer;

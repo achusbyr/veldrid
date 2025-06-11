@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
+using System;
 
 namespace Veldrid
 {
@@ -9,7 +12,9 @@ namespace Veldrid
     /// </summary>
     public abstract class SwapchainSource
     {
-        internal SwapchainSource() { }
+        internal SwapchainSource()
+        {
+        }
 
         /// <summary>
         ///     Creates a new SwapchainSource for a Win32 window.

@@ -1,3 +1,6 @@
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -62,9 +65,9 @@ namespace Veldrid.MTL
                 {
                     // Need to create specialized MTLFunction.
                     var constantValues = createConstantValues(description.ShaderSet.Specializations);
-                    specializedFunction = mtlShader.Library.newFunctionWithNameConstantValues(mtlShader.EntryPoint, constantValues);
+                    specializedFunction = mtlShader.Library.NewFunctionWithNameConstantValues(mtlShader.EntryPoint, constantValues);
                     addSpecializedFunction(specializedFunction);
-                    ObjectiveCRuntime.release(constantValues.NativePtr);
+                    ObjectiveCRuntime.Release(constantValues.NativePtr);
 
                     Debug.Assert(specializedFunction.NativePtr != IntPtr.Zero, "Failed to create specialized MTLFunction");
                 }
@@ -72,24 +75,24 @@ namespace Veldrid.MTL
                     specializedFunction = mtlShader.Function;
 
                 if (shader.Stage == ShaderStages.Vertex)
-                    mtlDesc.vertexFunction = specializedFunction;
-                else if (shader.Stage == ShaderStages.Fragment) mtlDesc.fragmentFunction = specializedFunction;
+                    mtlDesc.VertexFunction = specializedFunction;
+                else if (shader.Stage == ShaderStages.Fragment) mtlDesc.FragmentFunction = specializedFunction;
             }
 
             // Vertex layouts
             var vdVertexLayouts = description.ShaderSet.VertexLayouts;
-            var vertexDescriptor = mtlDesc.vertexDescriptor;
+            var vertexDescriptor = mtlDesc.VertexDescriptor;
 
             for (uint i = 0; i < vdVertexLayouts.Length; i++)
             {
                 uint layoutIndex = ResourceBindingModel == ResourceBindingModel.Improved
                     ? NonVertexBufferCount + i
                     : i;
-                var mtlLayout = vertexDescriptor.layouts[layoutIndex];
-                mtlLayout.stride = vdVertexLayouts[i].Stride;
+                var mtlLayout = vertexDescriptor.Layouts[layoutIndex];
+                mtlLayout.Stride = vdVertexLayouts[i].Stride;
                 uint stepRate = vdVertexLayouts[i].InstanceStepRate;
-                mtlLayout.stepFunction = stepRate == 0 ? MTLVertexStepFunction.PerVertex : MTLVertexStepFunction.PerInstance;
-                mtlLayout.stepRate = Math.Max(1, stepRate);
+                mtlLayout.StepFunction = stepRate == 0 ? MTLVertexStepFunction.PerVertex : MTLVertexStepFunction.PerInstance;
+                mtlLayout.StepRate = Math.Max(1, stepRate);
             }
 
             uint element = 0;
@@ -102,12 +105,12 @@ namespace Veldrid.MTL
                 for (uint j = 0; j < vdDesc.Elements.Length; j++)
                 {
                     var elementDesc = vdDesc.Elements[j];
-                    var mtlAttribute = vertexDescriptor.attributes[element];
-                    mtlAttribute.bufferIndex = ResourceBindingModel == ResourceBindingModel.Improved
+                    var mtlAttribute = vertexDescriptor.Attributes[element];
+                    mtlAttribute.BufferIndex = ResourceBindingModel == ResourceBindingModel.Improved
                         ? NonVertexBufferCount + i
                         : i;
-                    mtlAttribute.format = MtlFormats.VdToMtlVertexFormat(elementDesc.Format);
-                    mtlAttribute.offset = elementDesc.Offset != 0 ? elementDesc.Offset : (UIntPtr)offset;
+                    mtlAttribute.Format = MtlFormats.VdToMtlVertexFormat(elementDesc.Format);
+                    mtlAttribute.Offset = elementDesc.Offset != 0 ? elementDesc.Offset : (UIntPtr)offset;
                     offset += FormatSizeHelpers.GetSizeInBytes(elementDesc.Format);
                     element += 1;
                 }
@@ -120,49 +123,49 @@ namespace Veldrid.MTL
             var blendStateDesc = description.BlendState;
             BlendColor = blendStateDesc.BlendFactor;
 
-            if (outputs.SampleCount != TextureSampleCount.Count1) mtlDesc.sampleCount = FormatHelpers.GetSampleCountUInt32(outputs.SampleCount);
+            if (outputs.SampleCount != TextureSampleCount.Count1) mtlDesc.SampleCount = FormatHelpers.GetSampleCountUInt32(outputs.SampleCount);
 
             if (outputs.DepthAttachment != null)
             {
                 var depthFormat = outputs.DepthAttachment.Value.Format;
                 var mtlDepthFormat = MtlFormats.VdToMtlPixelFormat(depthFormat, true);
-                mtlDesc.depthAttachmentPixelFormat = mtlDepthFormat;
+                mtlDesc.DepthAttachmentPixelFormat = mtlDepthFormat;
 
                 if (FormatHelpers.IsStencilFormat(depthFormat))
                 {
                     HasStencil = true;
-                    mtlDesc.stencilAttachmentPixelFormat = mtlDepthFormat;
+                    mtlDesc.StencilAttachmentPixelFormat = mtlDepthFormat;
                 }
             }
 
             for (uint i = 0; i < outputs.ColorAttachments.Length; i++)
             {
                 var attachmentBlendDesc = blendStateDesc.AttachmentStates[i];
-                var colorDesc = mtlDesc.colorAttachments[i];
-                colorDesc.pixelFormat = MtlFormats.VdToMtlPixelFormat(outputs.ColorAttachments[i].Format, false);
-                colorDesc.blendingEnabled = attachmentBlendDesc.BlendEnabled;
-                colorDesc.writeMask = MtlFormats.VdToMtlColorWriteMask(attachmentBlendDesc.ColorWriteMask.GetOrDefault());
-                colorDesc.alphaBlendOperation = MtlFormats.VdToMtlBlendOp(attachmentBlendDesc.AlphaFunction);
-                colorDesc.sourceAlphaBlendFactor = MtlFormats.VdToMtlBlendFactor(attachmentBlendDesc.SourceAlphaFactor);
-                colorDesc.destinationAlphaBlendFactor = MtlFormats.VdToMtlBlendFactor(attachmentBlendDesc.DestinationAlphaFactor);
+                var colorDesc = mtlDesc.ColorAttachments[i];
+                colorDesc.PixelFormat = MtlFormats.VdToMtlPixelFormat(outputs.ColorAttachments[i].Format, false);
+                colorDesc.BlendingEnabled = attachmentBlendDesc.BlendEnabled;
+                colorDesc.WriteMask = MtlFormats.VdToMtlColorWriteMask(attachmentBlendDesc.ColorWriteMask.GetOrDefault());
+                colorDesc.AlphaBlendOperation = MtlFormats.VdToMtlBlendOp(attachmentBlendDesc.AlphaFunction);
+                colorDesc.SourceAlphaBlendFactor = MtlFormats.VdToMtlBlendFactor(attachmentBlendDesc.SourceAlphaFactor);
+                colorDesc.DestinationAlphaBlendFactor = MtlFormats.VdToMtlBlendFactor(attachmentBlendDesc.DestinationAlphaFactor);
 
-                colorDesc.rgbBlendOperation = MtlFormats.VdToMtlBlendOp(attachmentBlendDesc.ColorFunction);
-                colorDesc.sourceRGBBlendFactor = MtlFormats.VdToMtlBlendFactor(attachmentBlendDesc.SourceColorFactor);
-                colorDesc.destinationRGBBlendFactor = MtlFormats.VdToMtlBlendFactor(attachmentBlendDesc.DestinationColorFactor);
+                colorDesc.RGBBlendOperation = MtlFormats.VdToMtlBlendOp(attachmentBlendDesc.ColorFunction);
+                colorDesc.SourceRGBBlendFactor = MtlFormats.VdToMtlBlendFactor(attachmentBlendDesc.SourceColorFactor);
+                colorDesc.DestinationRGBBlendFactor = MtlFormats.VdToMtlBlendFactor(attachmentBlendDesc.DestinationColorFactor);
             }
 
-            mtlDesc.alphaToCoverageEnabled = blendStateDesc.AlphaToCoverageEnabled;
+            mtlDesc.AlphaToCoverageEnabled = blendStateDesc.AlphaToCoverageEnabled;
 
-            RenderPipelineState = gd.Device.newRenderPipelineStateWithDescriptor(mtlDesc);
-            ObjectiveCRuntime.release(mtlDesc.NativePtr);
+            RenderPipelineState = gd.Device.NewRenderPipelineStateWithDescriptor(mtlDesc);
+            ObjectiveCRuntime.Release(mtlDesc.NativePtr);
 
             if (description.Outputs.DepthAttachment != null)
             {
                 var depthDescriptor = MTLUtil.AllocInit<MTLDepthStencilDescriptor>(
                     nameof(MTLDepthStencilDescriptor));
-                depthDescriptor.depthCompareFunction = MtlFormats.VdToMtlCompareFunction(
+                depthDescriptor.DepthCompareFunction = MtlFormats.VdToMtlCompareFunction(
                     description.DepthStencilState.DepthComparison);
-                depthDescriptor.depthWriteEnabled = description.DepthStencilState.DepthWriteEnabled;
+                depthDescriptor.DepthWriteEnabled = description.DepthStencilState.DepthWriteEnabled;
 
                 bool stencilEnabled = description.DepthStencilState.StencilTestEnabled;
 
@@ -172,30 +175,30 @@ namespace Veldrid.MTL
 
                     var vdFrontDesc = description.DepthStencilState.StencilFront;
                     var front = MTLUtil.AllocInit<MTLStencilDescriptor>(nameof(MTLStencilDescriptor));
-                    front.readMask = description.DepthStencilState.StencilReadMask;
-                    front.writeMask = description.DepthStencilState.StencilWriteMask;
-                    front.depthFailureOperation = MtlFormats.VdToMtlStencilOperation(vdFrontDesc.DepthFail);
-                    front.stencilFailureOperation = MtlFormats.VdToMtlStencilOperation(vdFrontDesc.Fail);
-                    front.depthStencilPassOperation = MtlFormats.VdToMtlStencilOperation(vdFrontDesc.Pass);
-                    front.stencilCompareFunction = MtlFormats.VdToMtlCompareFunction(vdFrontDesc.Comparison);
-                    depthDescriptor.frontFaceStencil = front;
+                    front.ReadMask = description.DepthStencilState.StencilReadMask;
+                    front.WriteMask = description.DepthStencilState.StencilWriteMask;
+                    front.DepthFailureOperation = MtlFormats.VdToMtlStencilOperation(vdFrontDesc.DepthFail);
+                    front.StencilFailureOperation = MtlFormats.VdToMtlStencilOperation(vdFrontDesc.Fail);
+                    front.DepthStencilPassOperation = MtlFormats.VdToMtlStencilOperation(vdFrontDesc.Pass);
+                    front.StencilCompareFunction = MtlFormats.VdToMtlCompareFunction(vdFrontDesc.Comparison);
+                    depthDescriptor.FrontFaceStencil = front;
 
                     var vdBackDesc = description.DepthStencilState.StencilBack;
                     var back = MTLUtil.AllocInit<MTLStencilDescriptor>(nameof(MTLStencilDescriptor));
-                    back.readMask = description.DepthStencilState.StencilReadMask;
-                    back.writeMask = description.DepthStencilState.StencilWriteMask;
-                    back.depthFailureOperation = MtlFormats.VdToMtlStencilOperation(vdBackDesc.DepthFail);
-                    back.stencilFailureOperation = MtlFormats.VdToMtlStencilOperation(vdBackDesc.Fail);
-                    back.depthStencilPassOperation = MtlFormats.VdToMtlStencilOperation(vdBackDesc.Pass);
-                    back.stencilCompareFunction = MtlFormats.VdToMtlCompareFunction(vdBackDesc.Comparison);
-                    depthDescriptor.backFaceStencil = back;
+                    back.ReadMask = description.DepthStencilState.StencilReadMask;
+                    back.WriteMask = description.DepthStencilState.StencilWriteMask;
+                    back.DepthFailureOperation = MtlFormats.VdToMtlStencilOperation(vdBackDesc.DepthFail);
+                    back.StencilFailureOperation = MtlFormats.VdToMtlStencilOperation(vdBackDesc.Fail);
+                    back.DepthStencilPassOperation = MtlFormats.VdToMtlStencilOperation(vdBackDesc.Pass);
+                    back.StencilCompareFunction = MtlFormats.VdToMtlCompareFunction(vdBackDesc.Comparison);
+                    depthDescriptor.BackFaceStencil = back;
 
-                    ObjectiveCRuntime.release(front.NativePtr);
-                    ObjectiveCRuntime.release(back.NativePtr);
+                    ObjectiveCRuntime.Release(front.NativePtr);
+                    ObjectiveCRuntime.Release(back.NativePtr);
                 }
 
-                DepthStencilState = gd.Device.newDepthStencilStateWithDescriptor(depthDescriptor);
-                ObjectiveCRuntime.release(depthDescriptor.NativePtr);
+                DepthStencilState = gd.Device.NewDepthStencilStateWithDescriptor(depthDescriptor);
+                ObjectiveCRuntime.Release(depthDescriptor.NativePtr);
             }
 
             DepthClipMode = description.DepthStencilState.DepthTestEnabled ? MTLDepthClipMode.Clip : MTLDepthClipMode.Clamp;
@@ -223,17 +226,17 @@ namespace Veldrid.MTL
             {
                 // Need to create specialized MTLFunction.
                 var constantValues = createConstantValues(description.Specializations);
-                specializedFunction = mtlShader.Library.newFunctionWithNameConstantValues(mtlShader.EntryPoint, constantValues);
+                specializedFunction = mtlShader.Library.NewFunctionWithNameConstantValues(mtlShader.EntryPoint, constantValues);
                 addSpecializedFunction(specializedFunction);
-                ObjectiveCRuntime.release(constantValues.NativePtr);
+                ObjectiveCRuntime.Release(constantValues.NativePtr);
 
                 Debug.Assert(specializedFunction.NativePtr != IntPtr.Zero, "Failed to create specialized MTLFunction");
             }
             else
                 specializedFunction = mtlShader.Function;
 
-            mtlDesc.computeFunction = specializedFunction;
-            var buffers = mtlDesc.buffers;
+            mtlDesc.ComputeFunction = specializedFunction;
+            var buffers = mtlDesc.Buffers;
             uint bufferIndex = 0;
 
             foreach (var layout in ResourceLayouts)
@@ -246,20 +249,20 @@ namespace Veldrid.MTL
                         || kind == ResourceKind.StructuredBufferReadOnly)
                     {
                         var bufferDesc = buffers[bufferIndex];
-                        bufferDesc.mutability = MTLMutability.Immutable;
+                        bufferDesc.Mutability = MTLMutability.Immutable;
                         bufferIndex += 1;
                     }
                     else if (kind == ResourceKind.StructuredBufferReadWrite)
                     {
                         var bufferDesc = buffers[bufferIndex];
-                        bufferDesc.mutability = MTLMutability.Mutable;
+                        bufferDesc.Mutability = MTLMutability.Mutable;
                         bufferIndex += 1;
                     }
                 }
             }
 
-            ComputePipelineState = gd.Device.newComputePipelineStateWithDescriptor(mtlDesc);
-            ObjectiveCRuntime.release(mtlDesc.NativePtr);
+            ComputePipelineState = gd.Device.NewComputePipelineStateWithDescriptor(mtlDesc);
+            ObjectiveCRuntime.Release(mtlDesc.NativePtr);
         }
 
         #region Disposal
@@ -269,17 +272,17 @@ namespace Veldrid.MTL
             if (!disposed)
             {
                 if (RenderPipelineState.NativePtr != IntPtr.Zero)
-                    ObjectiveCRuntime.release(RenderPipelineState.NativePtr);
+                    ObjectiveCRuntime.Release(RenderPipelineState.NativePtr);
 
                 if (DepthStencilState.NativePtr != IntPtr.Zero)
-                    ObjectiveCRuntime.release(DepthStencilState.NativePtr);
+                    ObjectiveCRuntime.Release(DepthStencilState.NativePtr);
 
                 if (ComputePipelineState.NativePtr != IntPtr.Zero)
-                    ObjectiveCRuntime.release(ComputePipelineState.NativePtr);
+                    ObjectiveCRuntime.Release(ComputePipelineState.NativePtr);
 
                 if (specializedFunctions != null)
                 {
-                    foreach (var function in specializedFunctions) ObjectiveCRuntime.release(function.NativePtr);
+                    foreach (var function in specializedFunctions) ObjectiveCRuntime.Release(function.NativePtr);
 
                     specializedFunctions.Clear();
                 }
@@ -299,7 +302,7 @@ namespace Veldrid.MTL
                 foreach (var sc in specializations)
                 {
                     var mtlType = MtlFormats.VdVoMtlShaderConstantType(sc.Type);
-                    ret.setConstantValuetypeatIndex(&sc.Data, mtlType, sc.ID);
+                    ret.SetConstantValuetypeatIndex(&sc.Data, mtlType, sc.ID);
                 }
             }
 

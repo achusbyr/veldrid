@@ -1,4 +1,7 @@
-﻿using System.Diagnostics;
+﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
+using System.Diagnostics;
 using Veldrid.OpenGLBindings;
 using static Veldrid.OpenGL.OpenGLUtil;
 using static Veldrid.OpenGLBindings.OpenGLNative;
@@ -257,7 +260,7 @@ namespace Veldrid.OpenGL
 
                 if (textureView != 0)
                 {
-                    glDeleteTextures(1, ref textureView);
+                    GLDeleteTextures(1, ref textureView);
                     CheckLastError();
                 }
             }
@@ -271,7 +274,7 @@ namespace Veldrid.OpenGL
                 return;
             }
 
-            glGenTextures(1, out textureView);
+            GLGenTextures(1, out textureView);
             CheckLastError();
 
             var originalTarget = Target.TextureTarget;
@@ -311,7 +314,7 @@ namespace Veldrid.OpenGL
                 Format,
                 (Target.Usage & TextureUsage.DepthStencil) == TextureUsage.DepthStencil);
             Debug.Assert(Target.Created);
-            glTextureView(
+            GLTextureView(
                 textureView,
                 TextureTarget,
                 Target.Texture,

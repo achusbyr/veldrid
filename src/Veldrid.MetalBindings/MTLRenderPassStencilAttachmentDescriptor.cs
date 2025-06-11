@@ -1,3 +1,6 @@
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
 using System;
 using static Veldrid.MetalBindings.ObjectiveCRuntime;
 
@@ -7,37 +10,37 @@ namespace Veldrid.MetalBindings
     {
         public readonly IntPtr NativePtr;
 
-        public MTLTexture texture
+        public MTLTexture Texture
         {
-            get => objc_msgSend<MTLTexture>(NativePtr, Selectors.texture);
-            set => objc_msgSend(NativePtr, Selectors.setTexture, value.NativePtr);
+            get => objc_msgSend<MTLTexture>(NativePtr, Selectors.TEXTURE);
+            set => objc_msgSend(NativePtr, Selectors.SET_TEXTURE, value.NativePtr);
         }
 
-        public MTLLoadAction loadAction
+        public MTLLoadAction LoadAction
         {
-            get => (MTLLoadAction)uint_objc_msgSend(NativePtr, Selectors.loadAction);
-            set => objc_msgSend(NativePtr, Selectors.setLoadAction, (uint)value);
+            get => (MTLLoadAction)uint_objc_msgSend(NativePtr, Selectors.LOAD_ACTION);
+            set => objc_msgSend(NativePtr, Selectors.SET_LOAD_ACTION, (uint)value);
         }
 
-        public MTLStoreAction storeAction
+        public MTLStoreAction StoreAction
         {
-            get => (MTLStoreAction)uint_objc_msgSend(NativePtr, Selectors.storeAction);
-            set => objc_msgSend(NativePtr, Selectors.setStoreAction, (uint)value);
+            get => (MTLStoreAction)uint_objc_msgSend(NativePtr, Selectors.STORE_ACTION);
+            set => objc_msgSend(NativePtr, Selectors.SET_STORE_ACTION, (uint)value);
         }
 
-        public uint clearStencil
+        public uint ClearStencil
         {
-            get => uint_objc_msgSend(NativePtr, sel_clearStencil);
-            set => objc_msgSend(NativePtr, sel_setClearStencil, value);
+            get => uint_objc_msgSend(NativePtr, sel_clear_stencil);
+            set => objc_msgSend(NativePtr, sel_set_clear_stencil, value);
         }
 
-        public UIntPtr slice
+        public UIntPtr Slice
         {
-            get => UIntPtr_objc_msgSend(NativePtr, Selectors.slice);
-            set => objc_msgSend(NativePtr, Selectors.setSlice, value);
+            get => UIntPtr_objc_msgSend(NativePtr, Selectors.SLICE);
+            set => objc_msgSend(NativePtr, Selectors.SET_SLICE, value);
         }
 
-        private static readonly Selector sel_clearStencil = "clearStencil";
-        private static readonly Selector sel_setClearStencil = "setClearStencil:";
+        private static readonly Selector sel_clear_stencil = "clearStencil";
+        private static readonly Selector sel_set_clear_stencil = "setClearStencil:";
     }
 }

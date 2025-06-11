@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
+using System;
 using Vulkan;
 using Vulkan.Xlib;
 
@@ -9,7 +12,9 @@ namespace Veldrid.Vk
     /// </summary>
     public abstract class VkSurfaceSource
     {
-        internal VkSurfaceSource() { }
+        internal VkSurfaceSource()
+        {
+        }
 
         /// <summary>
         ///     Creates a new <see cref="VkSurfaceSource" /> from the given Win32 instance and window handle.

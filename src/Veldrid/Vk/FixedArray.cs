@@ -1,4 +1,7 @@
-﻿namespace Veldrid.Vk
+﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
+namespace Veldrid.Vk
 {
     // Fixed-size "array" types, useful for constructing inputs
     // to some Vulkan functions without allocating and pinning a real array.

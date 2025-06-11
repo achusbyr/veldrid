@@ -1,3 +1,6 @@
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
 using System;
 using System.Text;
 
@@ -16,6 +19,7 @@ namespace Veldrid.MetalBindings
         {
             int byteCount = Encoding.UTF8.GetMaxByteCount(name.Length);
             byte* utf8BytesPtr = stackalloc byte[byteCount];
+
             fixed (char* namePtr = name)
             {
                 Encoding.UTF8.GetBytes(namePtr, name.Length, utf8BytesPtr, byteCount);
@@ -33,6 +37,9 @@ namespace Veldrid.MetalBindings
             }
         }
 
-        public static implicit operator Selector(string s) => new Selector(s);
+        public static implicit operator Selector(string s)
+        {
+            return new Selector(s);
+        }
     }
 }

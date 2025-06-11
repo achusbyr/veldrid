@@ -1,16 +1,22 @@
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
 namespace Veldrid.MetalBindings
 {
     public struct CGSize
     {
-        public double width;
-        public double height;
+        public double Width;
+        public double Height;
 
         public CGSize(double width, double height)
         {
-            this.width = width;
-            this.height = height;
+            Width = width;
+            Height = height;
         }
 
-        public override string ToString() => string.Format("{0} x {1}", width, height);
+        public override string ToString()
+        {
+            return string.Format("{0} x {1}", Width, Height);
+        }
     }
 }

@@ -1,4 +1,7 @@
-﻿#if !EXCLUDE_VULKAN_BACKEND
+﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
+#if !EXCLUDE_VULKAN_BACKEND
 using System;
 using System.Collections.ObjectModel;
 using Veldrid.Vk;

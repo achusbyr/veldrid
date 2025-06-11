@@ -1,3 +1,6 @@
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
 using System;
 using static Veldrid.MetalBindings.ObjectiveCRuntime;
 
@@ -8,53 +11,77 @@ namespace Veldrid.MetalBindings
         public readonly IntPtr NativePtr;
         public bool IsNull => NativePtr == IntPtr.Zero;
 
-        private static readonly Selector sel_setComputePipelineState = "setComputePipelineState:";
-        private static readonly Selector sel_setBuffer = "setBuffer:offset:atIndex:";
-        private static readonly Selector sel_dispatchThreadgroups0 = "dispatchThreadgroups:threadsPerThreadgroup:";
-        private static readonly Selector sel_dispatchThreadgroups1 = "dispatchThreadgroupsWithIndirectBuffer:indirectBufferOffset:threadsPerThreadgroup:";
-        private static readonly Selector sel_endEncoding = "endEncoding";
-        private static readonly Selector sel_setTexture = "setTexture:atIndex:";
-        private static readonly Selector sel_setSamplerState = "setSamplerState:atIndex:";
-        private static readonly Selector sel_setBytes = "setBytes:length:atIndex:";
+        private static readonly Selector sel_set_compute_pipeline_state = "setComputePipelineState:";
+        private static readonly Selector sel_set_buffer = "setBuffer:offset:atIndex:";
+        private static readonly Selector sel_dispatch_threadgroups0 = "dispatchThreadgroups:threadsPerThreadgroup:";
+        private static readonly Selector sel_dispatch_threadgroups1 = "dispatchThreadgroupsWithIndirectBuffer:indirectBufferOffset:threadsPerThreadgroup:";
+        private static readonly Selector sel_end_encoding = "endEncoding";
+        private static readonly Selector sel_set_texture = "setTexture:atIndex:";
+        private static readonly Selector sel_set_sampler_state = "setSamplerState:atIndex:";
+        private static readonly Selector sel_set_bytes = "setBytes:length:atIndex:";
 
-        public void setComputePipelineState(MTLComputePipelineState state)
-            => objc_msgSend(NativePtr, sel_setComputePipelineState, state.NativePtr);
+        public void SetComputePipelineState(MTLComputePipelineState state)
+        {
+            objc_msgSend(NativePtr, sel_set_compute_pipeline_state, state.NativePtr);
+        }
 
-        public void setBuffer(MTLBuffer buffer, UIntPtr offset, UIntPtr index)
-            => objc_msgSend(NativePtr, sel_setBuffer,
+        public void SetBuffer(MTLBuffer buffer, UIntPtr offset, UIntPtr index)
+        {
+            objc_msgSend(NativePtr, sel_set_buffer,
                 buffer.NativePtr,
                 offset,
                 index);
+        }
 
-        public unsafe void setBytes(void* bytes, UIntPtr length, UIntPtr index)
-            => objc_msgSend(NativePtr, sel_setBytes, bytes, length, index);
+        public unsafe void SetBytes(void* bytes, UIntPtr length, UIntPtr index)
+        {
+            objc_msgSend(NativePtr, sel_set_bytes, bytes, length, index);
+        }
 
-        public void dispatchThreadGroups(MTLSize threadgroupsPerGrid, MTLSize threadsPerThreadgroup)
-            => objc_msgSend(NativePtr, sel_dispatchThreadgroups0, threadgroupsPerGrid, threadsPerThreadgroup);
+        public void DispatchThreadGroups(MTLSize threadgroupsPerGrid, MTLSize threadsPerThreadgroup)
+        {
+            objc_msgSend(NativePtr, sel_dispatch_threadgroups0, threadgroupsPerGrid, threadsPerThreadgroup);
+        }
 
-        public void dispatchThreadgroupsWithIndirectBuffer(
+        public void DispatchThreadgroupsWithIndirectBuffer(
             MTLBuffer indirectBuffer,
             UIntPtr indirectBufferOffset,
             MTLSize threadsPerThreadgroup)
-            => objc_msgSend(NativePtr, sel_dispatchThreadgroups1,
+        {
+            objc_msgSend(NativePtr, sel_dispatch_threadgroups1,
                 indirectBuffer.NativePtr,
                 indirectBufferOffset,
                 threadsPerThreadgroup);
+        }
 
-        public void endEncoding() => objc_msgSend(NativePtr, sel_endEncoding);
+        public void EndEncoding()
+        {
+            objc_msgSend(NativePtr, sel_end_encoding);
+        }
 
-        public void setTexture(MTLTexture texture, UIntPtr index)
-            => objc_msgSend(NativePtr, sel_setTexture, texture.NativePtr, index);
+        public void SetTexture(MTLTexture texture, UIntPtr index)
+        {
+            objc_msgSend(NativePtr, sel_set_texture, texture.NativePtr, index);
+        }
 
-        public void setSamplerState(MTLSamplerState sampler, UIntPtr index)
-            => objc_msgSend(NativePtr, sel_setSamplerState, sampler.NativePtr, index);
+        public void SetSamplerState(MTLSamplerState sampler, UIntPtr index)
+        {
+            objc_msgSend(NativePtr, sel_set_sampler_state, sampler.NativePtr, index);
+        }
 
-        public void pushDebugGroup(NSString @string)
-            => objc_msgSend(NativePtr, Selectors.pushDebugGroup, @string.NativePtr);
+        public void PushDebugGroup(NSString @string)
+        {
+            objc_msgSend(NativePtr, Selectors.PUSH_DEBUG_GROUP, @string.NativePtr);
+        }
 
-        public void popDebugGroup() => objc_msgSend(NativePtr, Selectors.popDebugGroup);
+        public void PopDebugGroup()
+        {
+            objc_msgSend(NativePtr, Selectors.POP_DEBUG_GROUP);
+        }
 
-        public void insertDebugSignpost(NSString @string)
-            => objc_msgSend(NativePtr, Selectors.insertDebugSignpost, @string.NativePtr);
+        public void InsertDebugSignpost(NSString @string)
+        {
+            objc_msgSend(NativePtr, Selectors.INSERT_DEBUG_SIGNPOST, @string.NativePtr);
+        }
     }
 }

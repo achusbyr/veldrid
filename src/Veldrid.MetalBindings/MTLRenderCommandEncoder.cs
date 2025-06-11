@@ -1,3 +1,6 @@
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
 using System;
 using System.Runtime.InteropServices;
 using static Veldrid.MetalBindings.ObjectiveCRuntime;
@@ -8,77 +11,109 @@ namespace Veldrid.MetalBindings
     public struct MTLRenderCommandEncoder
     {
         public readonly IntPtr NativePtr;
-        public MTLRenderCommandEncoder(IntPtr ptr) => NativePtr = ptr;
+
+        public MTLRenderCommandEncoder(IntPtr ptr)
+        {
+            NativePtr = ptr;
+        }
+
         public bool IsNull => NativePtr == IntPtr.Zero;
 
-        public void setRenderPipelineState(MTLRenderPipelineState pipelineState)
-            => objc_msgSend(NativePtr, sel_setRenderPipelineState, pipelineState.NativePtr);
+        public void SetRenderPipelineState(MTLRenderPipelineState pipelineState)
+        {
+            objc_msgSend(NativePtr, sel_setRenderPipelineState, pipelineState.NativePtr);
+        }
 
-        public void setVertexBuffer(MTLBuffer buffer, UIntPtr offset, UIntPtr index)
-            => objc_msgSend(NativePtr, sel_setVertexBuffer,
+        public void SetVertexBuffer(MTLBuffer buffer, UIntPtr offset, UIntPtr index)
+        {
+            objc_msgSend(NativePtr, sel_setVertexBuffer,
                 buffer.NativePtr,
                 offset,
                 index);
+        }
 
-        public void setVertexBufferOffset( UIntPtr offset, UIntPtr index)
-            => objc_msgSend(NativePtr, sel_setVertexBufferOffset,
+        public void SetVertexBufferOffset(UIntPtr offset, UIntPtr index)
+        {
+            objc_msgSend(NativePtr, sel_setVertexBufferOffset,
                 offset,
                 index);
+        }
 
-        public void setFragmentBuffer(MTLBuffer buffer, UIntPtr offset, UIntPtr index)
-            => objc_msgSend(NativePtr, sel_setFragmentBuffer,
+        public void SetFragmentBuffer(MTLBuffer buffer, UIntPtr offset, UIntPtr index)
+        {
+            objc_msgSend(NativePtr, sel_setFragmentBuffer,
                 buffer.NativePtr,
                 offset,
                 index);
+        }
 
-        public void setFragmentBufferOffset(UIntPtr offset, UIntPtr index)
-            => objc_msgSend(NativePtr, sel_setFragmentBufferOffset,
+        public void SetFragmentBufferOffset(UIntPtr offset, UIntPtr index)
+        {
+            objc_msgSend(NativePtr, sel_setFragmentBufferOffset,
                 offset,
                 index);
+        }
 
-        public void setVertexTexture(MTLTexture texture, UIntPtr index)
-            => objc_msgSend(NativePtr, sel_setVertexTexture, texture.NativePtr, index);
-        public void setFragmentTexture(MTLTexture texture, UIntPtr index)
-            => objc_msgSend(NativePtr, sel_setFragmentTexture, texture.NativePtr, index);
+        public void SetVertexTexture(MTLTexture texture, UIntPtr index)
+        {
+            objc_msgSend(NativePtr, sel_setVertexTexture, texture.NativePtr, index);
+        }
 
-        public void setVertexSamplerState(MTLSamplerState sampler, UIntPtr index)
-            => objc_msgSend(NativePtr, sel_setVertexSamplerState, sampler.NativePtr, index);
+        public void SetFragmentTexture(MTLTexture texture, UIntPtr index)
+        {
+            objc_msgSend(NativePtr, sel_setFragmentTexture, texture.NativePtr, index);
+        }
 
-        public void setFragmentSamplerState(MTLSamplerState sampler, UIntPtr index)
-            => objc_msgSend(NativePtr, sel_setFragmentSamplerState, sampler.NativePtr, index);
+        public void SetVertexSamplerState(MTLSamplerState sampler, UIntPtr index)
+        {
+            objc_msgSend(NativePtr, sel_setVertexSamplerState, sampler.NativePtr, index);
+        }
 
-        public void drawPrimitives(
+        public void SetFragmentSamplerState(MTLSamplerState sampler, UIntPtr index)
+        {
+            objc_msgSend(NativePtr, sel_setFragmentSamplerState, sampler.NativePtr, index);
+        }
+
+        public void DrawPrimitives(
             MTLPrimitiveType primitiveType,
             UIntPtr vertexStart,
             UIntPtr vertexCount,
             UIntPtr instanceCount,
             UIntPtr baseInstance)
-            => objc_msgSend(NativePtr, sel_drawPrimitives0,
+        {
+            objc_msgSend(NativePtr, sel_drawPrimitives0,
                 primitiveType, vertexStart, vertexCount, instanceCount, baseInstance);
+        }
 
-        public void drawPrimitives(
+        public void DrawPrimitives(
             MTLPrimitiveType primitiveType,
             UIntPtr vertexStart,
             UIntPtr vertexCount,
             UIntPtr instanceCount)
-            => objc_msgSend(NativePtr, sel_drawPrimitives2,
+        {
+            objc_msgSend(NativePtr, sel_drawPrimitives2,
                 primitiveType, vertexStart, vertexCount, instanceCount);
+        }
 
-        public void drawPrimitives(MTLPrimitiveType primitiveType, MTLBuffer indirectBuffer, UIntPtr indirectBufferOffset)
-            => objc_msgSend(NativePtr, sel_drawPrimitives1,
+        public void DrawPrimitives(MTLPrimitiveType primitiveType, MTLBuffer indirectBuffer, UIntPtr indirectBufferOffset)
+        {
+            objc_msgSend(NativePtr, sel_drawPrimitives1,
                 primitiveType, indirectBuffer, indirectBufferOffset);
+        }
 
-        public void drawIndexedPrimitives(
+        public void DrawIndexedPrimitives(
             MTLPrimitiveType primitiveType,
             UIntPtr indexCount,
             MTLIndexType indexType,
             MTLBuffer indexBuffer,
             UIntPtr indexBufferOffset,
             UIntPtr instanceCount)
-            => objc_msgSend(NativePtr, sel_drawIndexedPrimitives0,
+        {
+            objc_msgSend(NativePtr, sel_drawIndexedPrimitives0,
                 primitiveType, indexCount, indexType, indexBuffer.NativePtr, indexBufferOffset, instanceCount);
+        }
 
-        public void drawIndexedPrimitives(
+        public void DrawIndexedPrimitives(
             MTLPrimitiveType primitiveType,
             UIntPtr indexCount,
             MTLIndexType indexType,
@@ -87,68 +122,104 @@ namespace Veldrid.MetalBindings
             UIntPtr instanceCount,
             IntPtr baseVertex,
             UIntPtr baseInstance)
-            => objc_msgSend(
+        {
+            objc_msgSend(
                 NativePtr,
                 sel_drawIndexedPrimitives1,
                 primitiveType, indexCount, indexType, indexBuffer.NativePtr, indexBufferOffset, instanceCount, baseVertex, baseInstance);
+        }
 
-        public void drawIndexedPrimitives(
+        public void DrawIndexedPrimitives(
             MTLPrimitiveType primitiveType,
             MTLIndexType indexType,
             MTLBuffer indexBuffer,
             UIntPtr indexBufferOffset,
             MTLBuffer indirectBuffer,
             UIntPtr indirectBufferOffset)
-            => objc_msgSend(NativePtr, sel_drawIndexedPrimitives2,
+        {
+            objc_msgSend(NativePtr, sel_drawIndexedPrimitives2,
                 primitiveType,
                 indexType,
                 indexBuffer,
                 indexBufferOffset,
                 indirectBuffer,
                 indirectBufferOffset);
+        }
 
-        public void setViewport(MTLViewport viewport)
-            => objc_msgSend(NativePtr, sel_setViewport, viewport);
+        public void SetViewport(MTLViewport viewport)
+        {
+            objc_msgSend(NativePtr, sel_setViewport, viewport);
+        }
 
-        public unsafe void setViewports(MTLViewport* viewports, UIntPtr count)
-            => objc_msgSend(NativePtr, sel_setViewports, viewports, count);
+        public unsafe void SetViewports(MTLViewport* viewports, UIntPtr count)
+        {
+            objc_msgSend(NativePtr, sel_setViewports, viewports, count);
+        }
 
-        public void setScissorRect(MTLScissorRect scissorRect)
-            => objc_msgSend(NativePtr, sel_setScissorRect, scissorRect);
+        public void SetScissorRect(MTLScissorRect scissorRect)
+        {
+            objc_msgSend(NativePtr, sel_setScissorRect, scissorRect);
+        }
 
-        public unsafe void setScissorRects(MTLScissorRect* scissorRects, UIntPtr count)
-            => objc_msgSend(NativePtr, sel_setScissorRects, scissorRects, count);
+        public unsafe void SetScissorRects(MTLScissorRect* scissorRects, UIntPtr count)
+        {
+            objc_msgSend(NativePtr, sel_setScissorRects, scissorRects, count);
+        }
 
-        public void setCullMode(MTLCullMode cullMode)
-            => objc_msgSend(NativePtr, sel_setCullMode, (uint)cullMode);
+        public void SetCullMode(MTLCullMode cullMode)
+        {
+            objc_msgSend(NativePtr, sel_setCullMode, (uint)cullMode);
+        }
 
-        public void setFrontFacing(MTLWinding frontFaceWinding)
-            => objc_msgSend(NativePtr, sel_setFrontFacingWinding, (uint)frontFaceWinding);
+        public void SetFrontFacing(MTLWinding frontFaceWinding)
+        {
+            objc_msgSend(NativePtr, sel_setFrontFacingWinding, (uint)frontFaceWinding);
+        }
 
-        public void setDepthStencilState(MTLDepthStencilState depthStencilState)
-            => objc_msgSend(NativePtr, sel_setDepthStencilState, depthStencilState.NativePtr);
+        public void SetDepthStencilState(MTLDepthStencilState depthStencilState)
+        {
+            objc_msgSend(NativePtr, sel_setDepthStencilState, depthStencilState.NativePtr);
+        }
 
-        public void setDepthClipMode(MTLDepthClipMode depthClipMode)
-            => objc_msgSend(NativePtr, sel_setDepthClipMode, (uint)depthClipMode);
+        public void SetDepthClipMode(MTLDepthClipMode depthClipMode)
+        {
+            objc_msgSend(NativePtr, sel_setDepthClipMode, (uint)depthClipMode);
+        }
 
-        public void endEncoding() => objc_msgSend(NativePtr, sel_endEncoding);
+        public void EndEncoding()
+        {
+            objc_msgSend(NativePtr, sel_endEncoding);
+        }
 
-        public void setStencilReferenceValue(uint stencilReference)
-            => objc_msgSend(NativePtr, sel_setStencilReferenceValue, stencilReference);
+        public void SetStencilReferenceValue(uint stencilReference)
+        {
+            objc_msgSend(NativePtr, sel_setStencilReferenceValue, stencilReference);
+        }
 
-        public void setBlendColor(float red, float green, float blue, float alpha)
-            => objc_msgSend(NativePtr, sel_setBlendColor, red, green, blue, alpha);
+        public void SetBlendColor(float red, float green, float blue, float alpha)
+        {
+            objc_msgSend(NativePtr, sel_setBlendColor, red, green, blue, alpha);
+        }
 
-        public void setTriangleFillMode(MTLTriangleFillMode fillMode)
-            => objc_msgSend(NativePtr, sel_setTriangleFillMode, (uint)fillMode);
+        public void SetTriangleFillMode(MTLTriangleFillMode fillMode)
+        {
+            objc_msgSend(NativePtr, sel_setTriangleFillMode, (uint)fillMode);
+        }
 
-        public void pushDebugGroup(NSString @string)
-            => objc_msgSend(NativePtr, Selectors.pushDebugGroup, @string.NativePtr);
+        public void PushDebugGroup(NSString @string)
+        {
+            objc_msgSend(NativePtr, Selectors.PUSH_DEBUG_GROUP, @string.NativePtr);
+        }
 
-        public void popDebugGroup() => objc_msgSend(NativePtr, Selectors.popDebugGroup);
+        public void PopDebugGroup()
+        {
+            objc_msgSend(NativePtr, Selectors.POP_DEBUG_GROUP);
+        }
 
-        public void insertDebugSignpost(NSString @string)
-            => objc_msgSend(NativePtr, Selectors.insertDebugSignpost, @string.NativePtr);
+        public void InsertDebugSignpost(NSString @string)
+        {
+            objc_msgSend(NativePtr, Selectors.INSERT_DEBUG_SIGNPOST, @string.NativePtr);
+        }
 
         private static readonly Selector sel_setRenderPipelineState = "setRenderPipelineState:";
         private static readonly Selector sel_setVertexBuffer = "setVertexBuffer:offset:atIndex:";

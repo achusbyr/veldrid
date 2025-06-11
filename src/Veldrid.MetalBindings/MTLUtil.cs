@@ -1,3 +1,6 @@
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
 using System.Text;
 
 namespace Veldrid.MetalBindings
@@ -7,6 +10,7 @@ namespace Veldrid.MetalBindings
         public static unsafe string GetUtf8String(byte* stringStart)
         {
             int characters = 0;
+
             while (stringStart[characters] != 0)
             {
                 characters++;

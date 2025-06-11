@@ -1,3 +1,6 @@
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
 using System.Collections.Generic;
 using System.Diagnostics;
 using Veldrid.MetalBindings;
@@ -63,8 +66,8 @@ namespace Veldrid.MTL
         {
             colorTexture.SetDrawable(drawable, size, colorFormat);
 
-            if (depthFormat.HasValue && (size.width != depthTexture?.Width || size.height != depthTexture?.Height))
-                recreateDepthTexture((uint)size.width, (uint)size.height);
+            if (depthFormat.HasValue && (size.Width != depthTexture?.Width || size.Height != depthTexture?.Height))
+                recreateDepthTexture((uint)size.Width, (uint)size.Height);
         }
 
         public bool EnsureDrawableAvailable()

@@ -1,3 +1,6 @@
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
 using Veldrid.MetalBindings;
 
 namespace Veldrid.MTL
@@ -35,30 +38,30 @@ namespace Veldrid.MTL
             {
                 var colorTarget = ColorTargets[i];
                 var mtlTarget = Util.AssertSubtype<Texture, MtlTexture>(colorTarget.Target);
-                var colorDescriptor = ret.colorAttachments[(uint)i];
-                colorDescriptor.texture = mtlTarget.DeviceTexture;
-                colorDescriptor.loadAction = MTLLoadAction.Load;
-                colorDescriptor.slice = colorTarget.ArrayLayer;
-                colorDescriptor.level = colorTarget.MipLevel;
+                var colorDescriptor = ret.ColorAttachments[(uint)i];
+                colorDescriptor.Texture = mtlTarget.DeviceTexture;
+                colorDescriptor.LoadAction = MTLLoadAction.Load;
+                colorDescriptor.Slice = colorTarget.ArrayLayer;
+                colorDescriptor.Level = colorTarget.MipLevel;
             }
 
             if (DepthTarget != null)
             {
                 var mtlDepthTarget = Util.AssertSubtype<Texture, MtlTexture>(DepthTarget.Value.Target);
-                var depthDescriptor = ret.depthAttachment;
-                depthDescriptor.loadAction = mtlDepthTarget.MtlStorageMode == MTLStorageMode.Memoryless ? MTLLoadAction.DontCare : MTLLoadAction.Load;
-                depthDescriptor.storeAction = mtlDepthTarget.MtlStorageMode == MTLStorageMode.Memoryless ? MTLStoreAction.DontCare : MTLStoreAction.Store;
-                depthDescriptor.texture = mtlDepthTarget.DeviceTexture;
-                depthDescriptor.slice = DepthTarget.Value.ArrayLayer;
-                depthDescriptor.level = DepthTarget.Value.MipLevel;
+                var depthDescriptor = ret.DepthAttachment;
+                depthDescriptor.LoadAction = mtlDepthTarget.MtlStorageMode == MTLStorageMode.Memoryless ? MTLLoadAction.DontCare : MTLLoadAction.Load;
+                depthDescriptor.StoreAction = mtlDepthTarget.MtlStorageMode == MTLStorageMode.Memoryless ? MTLStoreAction.DontCare : MTLStoreAction.Store;
+                depthDescriptor.Texture = mtlDepthTarget.DeviceTexture;
+                depthDescriptor.Slice = DepthTarget.Value.ArrayLayer;
+                depthDescriptor.Level = DepthTarget.Value.MipLevel;
 
                 if (FormatHelpers.IsStencilFormat(mtlDepthTarget.Format))
                 {
-                    var stencilDescriptor = ret.stencilAttachment;
-                    stencilDescriptor.loadAction = mtlDepthTarget.MtlStorageMode == MTLStorageMode.Memoryless ? MTLLoadAction.DontCare : MTLLoadAction.Load;
-                    stencilDescriptor.storeAction = mtlDepthTarget.MtlStorageMode == MTLStorageMode.Memoryless ? MTLStoreAction.DontCare : MTLStoreAction.Store;
-                    stencilDescriptor.texture = mtlDepthTarget.DeviceTexture;
-                    stencilDescriptor.slice = DepthTarget.Value.ArrayLayer;
+                    var stencilDescriptor = ret.StencilAttachment;
+                    stencilDescriptor.LoadAction = mtlDepthTarget.MtlStorageMode == MTLStorageMode.Memoryless ? MTLLoadAction.DontCare : MTLLoadAction.Load;
+                    stencilDescriptor.StoreAction = mtlDepthTarget.MtlStorageMode == MTLStorageMode.Memoryless ? MTLStoreAction.DontCare : MTLStoreAction.Store;
+                    stencilDescriptor.Texture = mtlDepthTarget.DeviceTexture;
+                    stencilDescriptor.Slice = DepthTarget.Value.ArrayLayer;
                 }
             }
 

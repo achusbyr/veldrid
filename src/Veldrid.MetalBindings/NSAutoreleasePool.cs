@@ -1,3 +1,6 @@
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
 using System;
 
 namespace Veldrid.MetalBindings
@@ -6,7 +9,11 @@ namespace Veldrid.MetalBindings
     {
         private static readonly ObjCClass s_class = new ObjCClass(nameof(NSAutoreleasePool));
         public readonly IntPtr NativePtr;
-        public NSAutoreleasePool(IntPtr ptr) => NativePtr = ptr;
+
+        public NSAutoreleasePool(IntPtr ptr)
+        {
+            NativePtr = ptr;
+        }
 
         public static NSAutoreleasePool Begin()
         {
@@ -15,7 +22,7 @@ namespace Veldrid.MetalBindings
 
         public void Dispose()
         {
-            ObjectiveCRuntime.release(NativePtr);
+            ObjectiveCRuntime.Release(NativePtr);
         }
     }
 }

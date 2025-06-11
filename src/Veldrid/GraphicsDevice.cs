@@ -1,7 +1,9 @@
-﻿using System;
+﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Veldrid.D3D11;
 using Veldrid.MTL;
@@ -152,7 +154,9 @@ namespace Veldrid
         private readonly List<IDisposable> disposables = new List<IDisposable>();
         private Sampler aniso4XSampler;
 
-        internal GraphicsDevice() { }
+        internal GraphicsDevice()
+        {
+        }
 
         #region Disposal
 
@@ -1304,7 +1308,7 @@ namespace Veldrid
         ///     The SwapchainSource must have been created from an Android Surface or an iOS UIView.
         /// </param>
         /// <returns>A new <see cref="GraphicsDevice" /> using the OpenGL or OpenGL ES API.</returns>
-        public static GraphicsDevice CreateOpenGLES(
+        public static GraphicsDevice CreateOpenGles(
             GraphicsDeviceOptions options,
             SwapchainDescription swapchainDescription)
         {

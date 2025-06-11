@@ -1,3 +1,6 @@
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -90,7 +93,7 @@ namespace Veldrid.MTL
             MetalDeviceOptions metalOptions)
         {
             device = MTLDevice.MTLCreateSystemDefaultDevice();
-            DeviceName = device.name;
+            DeviceName = device.Name;
             MetalFeatures = new MtlFeatureSupport(device);
 
             int major = (int)MetalFeatures.MaxFeatureSet / 10000;
@@ -142,15 +145,15 @@ namespace Veldrid.MTL
             completionHandlerFuncPtr = Marshal.GetFunctionPointerForDelegate(completionHandler);
             completionBlockDescriptor = Marshal.AllocHGlobal(Unsafe.SizeOf<BlockDescriptor>());
             var descriptorPtr = (BlockDescriptor*)completionBlockDescriptor;
-            descriptorPtr->reserved = 0;
-            descriptorPtr->Block_size = (ulong)Unsafe.SizeOf<BlockDescriptor>();
+            descriptorPtr->Reserved = 0;
+            descriptorPtr->BlockSize = (ulong)Unsafe.SizeOf<BlockDescriptor>();
 
             completionBlockLiteral = Marshal.AllocHGlobal(Unsafe.SizeOf<BlockLiteral>());
             var blockPtr = (BlockLiteral*)completionBlockLiteral;
-            blockPtr->isa = concreteGlobalBlock;
-            blockPtr->flags = (1 << 28) | (1 << 29);
-            blockPtr->invoke = completionHandlerFuncPtr;
-            blockPtr->descriptor = descriptorPtr;
+            blockPtr->Isa = concreteGlobalBlock;
+            blockPtr->Flags = (1 << 28) | (1 << 29);
+            blockPtr->Invoke = completionHandlerFuncPtr;
+            blockPtr->Descriptor = descriptorPtr;
 
             if (!MetalFeatures.IsMacOS)
             {
@@ -159,7 +162,7 @@ namespace Veldrid.MTL
             }
 
             ResourceFactory = new MtlResourceFactory(this);
-            commandQueue = device.newCommandQueue();
+            commandQueue = device.NewCommandQueue();
 
             var allSampleCounts = (TextureSampleCount[])Enum.GetValues(typeof(TextureSampleCount));
             supportedSampleCounts = new bool[allSampleCounts.Length];
@@ -168,7 +171,7 @@ namespace Veldrid.MTL
             {
                 var count = allSampleCounts[i];
                 uint uintValue = FormatHelpers.GetSampleCountUInt32(count);
-                if (device.supportsTextureSampleCount(uintValue)) supportedSampleCounts[i] = true;
+                if (device.SupportsTextureSampleCount(uintValue)) supportedSampleCounts[i] = true;
             }
 
             if (swapchainDesc != null)
@@ -261,10 +264,10 @@ namespace Veldrid.MTL
                 {
                     var descriptor = MTLUtil.AllocInit<MTLComputePipelineDescriptor>(
                         nameof(MTLComputePipelineDescriptor));
-                    var buffer0 = descriptor.buffers[0];
-                    buffer0.mutability = MTLMutability.Mutable;
-                    var buffer1 = descriptor.buffers[1];
-                    buffer1.mutability = MTLMutability.Mutable;
+                    var buffer0 = descriptor.Buffers[0];
+                    buffer0.Mutability = MTLMutability.Mutable;
+                    var buffer1 = descriptor.Buffers[1];
+                    buffer1.Mutability = MTLMutability.Mutable;
 
                     Debug.Assert(unalignedBufferCopyShader == null);
                     string name = MetalFeatures.IsMacOS ? unaligned_buffer_copy_pipeline_mac_os_name : unaligned_buffer_copy_pipelinei_os_name;
@@ -281,9 +284,9 @@ namespace Veldrid.MTL
                         }
                     }
 
-                    descriptor.computeFunction = unalignedBufferCopyShader.Function;
-                    unalignedBufferCopyPipeline = device.newComputePipelineStateWithDescriptor(descriptor);
-                    ObjectiveCRuntime.release(descriptor.NativePtr);
+                    descriptor.ComputeFunction = unalignedBufferCopyShader.Function;
+                    unalignedBufferCopyPipeline = device.NewComputePipelineStateWithDescriptor(descriptor);
+                    ObjectiveCRuntime.Release(descriptor.NativePtr);
                 }
 
                 return unalignedBufferCopyPipeline;
@@ -316,12 +319,12 @@ namespace Veldrid.MTL
             if (!unalignedBufferCopyPipeline.IsNull)
             {
                 unalignedBufferCopyShader.Dispose();
-                ObjectiveCRuntime.release(unalignedBufferCopyPipeline.NativePtr);
+                ObjectiveCRuntime.Release(unalignedBufferCopyPipeline.NativePtr);
             }
 
             mainSwapchain?.Dispose();
-            ObjectiveCRuntime.release(commandQueue.NativePtr);
-            ObjectiveCRuntime.release(device.NativePtr);
+            ObjectiveCRuntime.Release(commandQueue.NativePtr);
+            ObjectiveCRuntime.Release(device.NativePtr);
 
             lock (s_aot_registered_blocks) s_aot_registered_blocks.Remove(completionBlockLiteral);
 
@@ -358,8 +361,8 @@ namespace Veldrid.MTL
                     if (RuntimeInformation.OSDescription.Contains("Darwin"))
                     {
                         var allDevices = MTLDevice.MTLCopyAllDevices();
-                        result |= (ulong)allDevices.count > 0;
-                        ObjectiveCRuntime.release(allDevices.NativePtr);
+                        result |= (ulong)allDevices.Count > 0;
+                        ObjectiveCRuntime.Release(allDevices.NativePtr);
                     }
                     else
                     {
@@ -368,7 +371,7 @@ namespace Veldrid.MTL
                         if (defaultDevice.NativePtr != IntPtr.Zero)
                         {
                             result = true;
-                            ObjectiveCRuntime.release(defaultDevice.NativePtr);
+                            ObjectiveCRuntime.Release(defaultDevice.NativePtr);
                         }
                     }
                 }
@@ -392,7 +395,7 @@ namespace Veldrid.MTL
                     latestSubmittedCb = default;
             }
 
-            ObjectiveCRuntime.release(cb.NativePtr);
+            ObjectiveCRuntime.Release(cb.NativePtr);
         }
 
         private void OnDisplayLinkCallback()
@@ -455,7 +458,7 @@ namespace Veldrid.MTL
         {
             var mtlCl = Util.AssertSubtype<CommandList, MtlCommandList>(commandList);
 
-            mtlCl.CommandBuffer.addCompletedHandler(completionBlockLiteral);
+            mtlCl.CommandBuffer.AddCompletedHandler(completionBlockLiteral);
 
             lock (submittedCommandsLock)
             {
@@ -552,9 +555,9 @@ namespace Veldrid.MTL
             {
                 using (NSAutoreleasePool.Begin())
                 {
-                    var submitCb = commandQueue.commandBuffer();
-                    submitCb.presentDrawable(currentDrawablePtr);
-                    submitCb.commit();
+                    var submitCb = commandQueue.CommandBuffer();
+                    submitCb.PresentDrawable(currentDrawablePtr);
+                    submitCb.Commit();
                 }
 
                 mtlSc.InvalidateDrawable();
@@ -632,18 +635,20 @@ namespace Veldrid.MTL
             lock (submittedCommandsLock)
             {
                 lastCb = latestSubmittedCb;
-                ObjectiveCRuntime.retain(lastCb.NativePtr);
+                ObjectiveCRuntime.Retain(lastCb.NativePtr);
             }
 
-            if (lastCb.NativePtr != IntPtr.Zero && lastCb.status != MTLCommandBufferStatus.Completed)
-                lastCb.waitUntilCompleted();
+            if (lastCb.NativePtr != IntPtr.Zero && lastCb.Status != MTLCommandBufferStatus.Completed)
+                lastCb.WaitUntilCompleted();
 
-            ObjectiveCRuntime.release(lastCb.NativePtr);
+            ObjectiveCRuntime.Release(lastCb.NativePtr);
         }
     }
 
     internal sealed class MonoPInvokeCallbackAttribute : Attribute
     {
-        public MonoPInvokeCallbackAttribute(Type t) { }
+        public MonoPInvokeCallbackAttribute(Type t)
+        {
+        }
     }
 }

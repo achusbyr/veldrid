@@ -1,3 +1,6 @@
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
 using System;
 using System.Runtime.InteropServices;
 
@@ -5,19 +8,19 @@ namespace Veldrid.MetalBindings
 {
     public static unsafe class Dispatch
     {
-        private const string LibdispatchLocation = @"/usr/lib/system/libdispatch.dylib";
+        private const string libdispatch_location = @"/usr/lib/system/libdispatch.dylib";
 
-        [DllImport(LibdispatchLocation)]
+        [DllImport(libdispatch_location)]
         public static extern DispatchQueue dispatch_get_global_queue(QualityOfServiceLevel identifier, ulong flags);
 
-        [DllImport(LibdispatchLocation)]
+        [DllImport(libdispatch_location)]
         public static extern DispatchData dispatch_data_create(
             void* buffer,
             UIntPtr size,
             DispatchQueue queue,
             IntPtr destructorBlock);
 
-        [DllImport(LibdispatchLocation)]
+        [DllImport(libdispatch_location)]
         public static extern void dispatch_release(IntPtr nativePtr);
     }
 

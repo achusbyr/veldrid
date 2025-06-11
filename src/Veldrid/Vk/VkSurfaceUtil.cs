@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
+using System;
 using Veldrid.Android;
 using Veldrid.MetalBindings;
 using Vulkan;
@@ -135,18 +138,18 @@ namespace Veldrid.Vk
         private static VkSurfaceKHR createNSWindowSurface(VkGraphicsDevice gd, VkInstance instance, NSWindowSwapchainSource nsWindowSource, bool hasExtMetalSurface)
         {
             var nswindow = new NSWindow(nsWindowSource.NSWindow);
-            return createNSViewSurface(gd, instance, new NSViewSwapchainSource(nswindow.contentView), hasExtMetalSurface);
+            return createNSViewSurface(gd, instance, new NSViewSwapchainSource(nswindow.ContentView), hasExtMetalSurface);
         }
 
         private static VkSurfaceKHR createNSViewSurface(VkGraphicsDevice gd, VkInstance instance, NSViewSwapchainSource nsViewSource, bool hasExtMetalSurface)
         {
             var contentView = new NSView(nsViewSource.NSView);
 
-            if (!CAMetalLayer.TryCast(contentView.layer, out var metalLayer))
+            if (!CAMetalLayer.TryCast(contentView.Layer, out var metalLayer))
             {
                 metalLayer = CAMetalLayer.New();
-                contentView.wantsLayer = true;
-                contentView.layer = metalLayer.NativePtr;
+                contentView.WantsLayer = true;
+                contentView.Layer = metalLayer.NativePtr;
             }
 
             if (hasExtMetalSurface)
@@ -175,12 +178,12 @@ namespace Veldrid.Vk
         {
             var uiView = new UIView(uiViewSource.UIView);
 
-            if (!CAMetalLayer.TryCast(uiView.layer, out var metalLayer))
+            if (!CAMetalLayer.TryCast(uiView.Layer, out var metalLayer))
             {
                 metalLayer = CAMetalLayer.New();
-                metalLayer.frame = uiView.frame;
-                metalLayer.opaque = true;
-                uiView.layer.addSublayer(metalLayer.NativePtr);
+                metalLayer.Frame = uiView.Frame;
+                metalLayer.Opaque = true;
+                uiView.Layer.AddSublayer(metalLayer.NativePtr);
             }
 
             if (hasExtMetalSurface)

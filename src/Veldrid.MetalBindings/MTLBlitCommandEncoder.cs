@@ -1,3 +1,6 @@
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
 using System;
 using System.Runtime.InteropServices;
 using static Veldrid.MetalBindings.ObjectiveCRuntime;
@@ -9,18 +12,20 @@ namespace Veldrid.MetalBindings
         public readonly IntPtr NativePtr;
         public bool IsNull => NativePtr == IntPtr.Zero;
 
-        public void copy(
+        public void Copy(
             MTLBuffer sourceBuffer,
             UIntPtr sourceOffset,
             MTLBuffer destinationBuffer,
             UIntPtr destinationOffset,
             UIntPtr size)
-            => objc_msgSend(
+        {
+            objc_msgSend(
                 NativePtr,
-                sel_copyFromBuffer0,
+                sel_copy_from_buffer0,
                 sourceBuffer, sourceOffset, destinationBuffer, destinationOffset, size);
+        }
 
-        public void copyFromBuffer(
+        public void CopyFromBuffer(
             MTLBuffer sourceBuffer,
             UIntPtr sourceOffset,
             UIntPtr sourceBytesPerRow,
@@ -44,14 +49,14 @@ namespace Veldrid.MetalBindings
                     destinationTexture.NativePtr,
                     destinationSlice,
                     destinationLevel,
-                    destinationOrigin.x,
-                    destinationOrigin.y,
-                    destinationOrigin.z);
+                    destinationOrigin.X,
+                    destinationOrigin.Y,
+                    destinationOrigin.Z);
             }
             else
             {
                 objc_msgSend(NativePtr,
-                    sel_copyFromBuffer1,
+                    sel_copy_from_buffer1,
                     sourceBuffer.NativePtr,
                     sourceOffset,
                     sourceBytesPerRow,
@@ -79,7 +84,7 @@ namespace Veldrid.MetalBindings
             UIntPtr destinationOriginY,
             UIntPtr destinationOriginZ);
 
-        public void copyTextureToBuffer(
+        public void CopyTextureToBuffer(
             MTLTexture sourceTexture,
             UIntPtr sourceSlice,
             UIntPtr sourceLevel,
@@ -89,7 +94,8 @@ namespace Veldrid.MetalBindings
             UIntPtr destinationOffset,
             UIntPtr destinationBytesPerRow,
             UIntPtr destinationBytesPerImage)
-            => objc_msgSend(NativePtr, sel_copyFromTexture0,
+        {
+            objc_msgSend(NativePtr, sel_copy_from_texture0,
                 sourceTexture,
                 sourceSlice,
                 sourceLevel,
@@ -99,22 +105,39 @@ namespace Veldrid.MetalBindings
                 destinationOffset,
                 destinationBytesPerRow,
                 destinationBytesPerImage);
+        }
 
-        public void generateMipmapsForTexture(MTLTexture texture)
-            => objc_msgSend(NativePtr, sel_generateMipmapsForTexture, texture.NativePtr);
+        public void GenerateMipmapsForTexture(MTLTexture texture)
+        {
+            objc_msgSend(NativePtr, sel_generate_mipmaps_for_texture, texture.NativePtr);
+        }
 
-        public void synchronizeResource(IntPtr resource) => objc_msgSend(NativePtr, sel_synchronizeResource, resource);
+        public void SynchronizeResource(IntPtr resource)
+        {
+            objc_msgSend(NativePtr, sel_synchronize_resource, resource);
+        }
 
-        public void endEncoding() => objc_msgSend(NativePtr, sel_endEncoding);
+        public void EndEncoding()
+        {
+            objc_msgSend(NativePtr, sel_end_encoding);
+        }
 
-        public void pushDebugGroup(NSString @string) => objc_msgSend(NativePtr, Selectors.pushDebugGroup, @string.NativePtr);
+        public void PushDebugGroup(NSString @string)
+        {
+            objc_msgSend(NativePtr, Selectors.PUSH_DEBUG_GROUP, @string.NativePtr);
+        }
 
-        public void popDebugGroup() => objc_msgSend(NativePtr, Selectors.popDebugGroup);
+        public void PopDebugGroup()
+        {
+            objc_msgSend(NativePtr, Selectors.POP_DEBUG_GROUP);
+        }
 
-        public void insertDebugSignpost(NSString @string)
-            => objc_msgSend(NativePtr, Selectors.insertDebugSignpost, @string.NativePtr);
+        public void InsertDebugSignpost(NSString @string)
+        {
+            objc_msgSend(NativePtr, Selectors.INSERT_DEBUG_SIGNPOST, @string.NativePtr);
+        }
 
-        public void copyFromTexture(
+        public void CopyFromTexture(
             MTLTexture sourceTexture,
             UIntPtr sourceSlice,
             UIntPtr sourceLevel,
@@ -138,13 +161,13 @@ namespace Veldrid.MetalBindings
                     destinationTexture.NativePtr,
                     destinationSlice,
                     destinationLevel,
-                    destinationOrigin.x,
-                    destinationOrigin.y,
-                    destinationOrigin.z);
+                    destinationOrigin.X,
+                    destinationOrigin.Y,
+                    destinationOrigin.Z);
             }
             else
             {
-                objc_msgSend(NativePtr, sel_copyFromTexture1,
+                objc_msgSend(NativePtr, sel_copy_from_texture1,
                     sourceTexture,
                     sourceSlice,
                     sourceLevel,
@@ -172,12 +195,17 @@ namespace Veldrid.MetalBindings
             UIntPtr destinationOriginY,
             UIntPtr destinationOriginZ);
 
-        private static readonly Selector sel_copyFromBuffer0 = "copyFromBuffer:sourceOffset:toBuffer:destinationOffset:size:";
-        private static readonly Selector sel_copyFromBuffer1 = "copyFromBuffer:sourceOffset:sourceBytesPerRow:sourceBytesPerImage:sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:";
-        private static readonly Selector sel_copyFromTexture0 = "copyFromTexture:sourceSlice:sourceLevel:sourceOrigin:sourceSize:toBuffer:destinationOffset:destinationBytesPerRow:destinationBytesPerImage:";
-        private static readonly Selector sel_copyFromTexture1 = "copyFromTexture:sourceSlice:sourceLevel:sourceOrigin:sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:";
-        private static readonly Selector sel_generateMipmapsForTexture = "generateMipmapsForTexture:";
-        private static readonly Selector sel_synchronizeResource = "synchronizeResource:";
-        private static readonly Selector sel_endEncoding = "endEncoding";
+        private static readonly Selector sel_copy_from_buffer0 = "copyFromBuffer:sourceOffset:toBuffer:destinationOffset:size:";
+
+        private static readonly Selector sel_copy_from_buffer1 =
+            "copyFromBuffer:sourceOffset:sourceBytesPerRow:sourceBytesPerImage:sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:";
+
+        private static readonly Selector sel_copy_from_texture0 =
+            "copyFromTexture:sourceSlice:sourceLevel:sourceOrigin:sourceSize:toBuffer:destinationOffset:destinationBytesPerRow:destinationBytesPerImage:";
+
+        private static readonly Selector sel_copy_from_texture1 = "copyFromTexture:sourceSlice:sourceLevel:sourceOrigin:sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:";
+        private static readonly Selector sel_generate_mipmaps_for_texture = "generateMipmapsForTexture:";
+        private static readonly Selector sel_synchronize_resource = "synchronizeResource:";
+        private static readonly Selector sel_end_encoding = "endEncoding";
     }
 }

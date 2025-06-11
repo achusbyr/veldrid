@@ -3,15 +3,15 @@
 
 namespace Veldrid.MetalBindings
 {
-    public struct CVSMPTETime
+    public struct CvsmpteTime
     {
-        public ulong flags;
-        public ulong hostTime;
-        public double rateScalar;
-        public ulong reserved;
-        public uint version;
-        public long videoRefreshPeriod;
-        public long videoTime;
-        public int videoTimeScale;
+        public ulong Flags;
+        public ulong HostTime;
+        public double RateScalar;
+        public ulong Reserved;
+        public uint Version;
+        public long VideoRefreshPeriod;
+        public long VideoTime;
+        public int VideoTimeScale;
     }
 }

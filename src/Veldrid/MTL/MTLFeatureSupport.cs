@@ -1,3 +1,6 @@
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,7 +21,7 @@ namespace Veldrid.MTL
         {
             foreach (MTLFeatureSet set in Enum.GetValues(typeof(MTLFeatureSet)))
             {
-                if (device.supportsFeatureSet(set))
+                if (device.SupportsFeatureSet(set))
                 {
                     supportedFeatureSets.Add(set);
                     MaxFeatureSet = set;

@@ -1,3 +1,6 @@
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
 using System;
 using Veldrid.MetalBindings;
 
@@ -66,19 +69,19 @@ namespace Veldrid.MTL
                 MtlStorageMode = isDepth && gd.PreferMemorylessDepthTargets ? MTLStorageMode.Memoryless : MTLStorageMode.Private;
 
                 var texDescriptor = MTLTextureDescriptor.New();
-                texDescriptor.width = Width;
-                texDescriptor.height = Height;
-                texDescriptor.depth = Depth;
-                texDescriptor.mipmapLevelCount = MipLevels;
-                texDescriptor.arrayLength = ArrayLayers;
-                texDescriptor.sampleCount = FormatHelpers.GetSampleCountUInt32(SampleCount);
-                texDescriptor.textureType = MtlTextureType;
-                texDescriptor.pixelFormat = MtlPixelFormat;
-                texDescriptor.textureUsage = MtlFormats.VdToMtlTextureUsage(Usage);
-                texDescriptor.storageMode = MtlStorageMode;
+                texDescriptor.Width = Width;
+                texDescriptor.Height = Height;
+                texDescriptor.Depth = Depth;
+                texDescriptor.MipmapLevelCount = MipLevels;
+                texDescriptor.ArrayLength = ArrayLayers;
+                texDescriptor.SampleCount = FormatHelpers.GetSampleCountUInt32(SampleCount);
+                texDescriptor.TextureType = MtlTextureType;
+                texDescriptor.PixelFormat = MtlPixelFormat;
+                texDescriptor.TextureUsage = MtlFormats.VdToMtlTextureUsage(Usage);
+                texDescriptor.StorageMode = MtlStorageMode;
 
-                DeviceTexture = gd.Device.newTextureWithDescriptor(texDescriptor);
-                ObjectiveCRuntime.release(texDescriptor.NativePtr);
+                DeviceTexture = gd.Device.NewTextureWithDescriptor(texDescriptor);
+                ObjectiveCRuntime.Release(texDescriptor.NativePtr);
             }
             else
             {
@@ -95,13 +98,13 @@ namespace Veldrid.MTL
 
                 totalStorageSize *= ArrayLayers;
 
-                StagingBuffer = gd.Device.newBufferWithLengthOptions(
+                StagingBuffer = gd.Device.NewBufferWithLengthOptions(
                     totalStorageSize,
                     MTLResourceOptions.StorageModeShared);
 
                 unsafe
                 {
-                    StagingBufferPointer = StagingBuffer.contents();
+                    StagingBufferPointer = StagingBuffer.Contents();
                 }
             }
         }
@@ -162,9 +165,9 @@ namespace Veldrid.MTL
 
                 // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
                 if (StagingBuffer.IsNull)
-                    ObjectiveCRuntime.release(DeviceTexture.NativePtr);
+                    ObjectiveCRuntime.Release(DeviceTexture.NativePtr);
                 else
-                    ObjectiveCRuntime.release(StagingBuffer.NativePtr);
+                    ObjectiveCRuntime.Release(StagingBuffer.NativePtr);
             }
         }
     }

@@ -1,3 +1,6 @@
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -36,7 +39,7 @@ namespace Veldrid.MetalBindings
             _numBytes = (uint)text.Length;
         }
 
-        private string GetString()
+        private string getString()
         {
             return Encoding.UTF8.GetString(StringPtr, (int)_numBytes);
         }
@@ -46,9 +49,24 @@ namespace Veldrid.MetalBindings
             _handle.Free();
         }
 
-        public static implicit operator byte* (FixedUtf8String utf8String) => utf8String.StringPtr;
-        public static implicit operator IntPtr(FixedUtf8String utf8String) => new IntPtr(utf8String.StringPtr);
-        public static implicit operator FixedUtf8String(string s) => new FixedUtf8String(s);
-        public static implicit operator string(FixedUtf8String utf8String) => utf8String.GetString();
+        public static implicit operator byte*(FixedUtf8String utf8String)
+        {
+            return utf8String.StringPtr;
+        }
+
+        public static implicit operator IntPtr(FixedUtf8String utf8String)
+        {
+            return new IntPtr(utf8String.StringPtr);
+        }
+
+        public static implicit operator FixedUtf8String(string s)
+        {
+            return new FixedUtf8String(s);
+        }
+
+        public static implicit operator string(FixedUtf8String utf8String)
+        {
+            return utf8String.getString();
+        }
     }
 }

@@ -5,14 +5,14 @@ namespace Veldrid.MetalBindings
 {
     public struct CVTimeStamp
     {
-        public ulong flags;
-        public ulong hostTime;
-        public double rateScalar;
-        public ulong reserved;
-        public CVSMPTETime smpteTime;
-        public uint version;
-        public long videoRefreshPeriod;
-        public long videoTime;
-        public int videoTimeScale;
+        public ulong Flags;
+        public ulong HostTime;
+        public double RateScalar;
+        public ulong Reserved;
+        public CvsmpteTime SmpteTime;
+        public uint Version;
+        public long VideoRefreshPeriod;
+        public long VideoTime;
+        public int VideoTimeScale;
     }
 }

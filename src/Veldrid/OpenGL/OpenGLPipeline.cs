@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
@@ -103,14 +106,14 @@ namespace Veldrid.OpenGL
 
         private void createGraphicsGLResources()
         {
-            Program = glCreateProgram();
+            Program = GLCreateProgram();
             CheckLastError();
 
             foreach (var stage in GraphicsShaders)
             {
                 var glShader = Util.AssertSubtype<Shader, OpenGLShader>(stage);
                 glShader.EnsureResourcesCreated();
-                glAttachShader(Program, glShader.Shader);
+                GLAttachShader(Program, glShader.Shader);
                 CheckLastError();
             }
 
@@ -125,7 +128,7 @@ namespace Veldrid.OpenGL
                 }
             }
 
-            glLinkProgram(Program);
+            GLLinkProgram(Program);
             CheckLastError();
 
 #if DEBUG && GL_VALIDATE_VERTEX_INPUT_ELEMENTS
@@ -146,14 +149,14 @@ namespace Veldrid.OpenGL
 #endif
 
             int linkStatus;
-            glGetProgramiv(Program, GetProgramParameterName.LinkStatus, &linkStatus);
+            GLGetProgramiv(Program, GetProgramParameterName.LinkStatus, &linkStatus);
             CheckLastError();
 
             if (linkStatus != 1)
             {
                 byte* infoLog = stackalloc byte[4096];
                 uint bytesWritten;
-                glGetProgramInfoLog(Program, 4096, &bytesWritten, infoLog);
+                GLGetProgramInfoLog(Program, 4096, &bytesWritten, infoLog);
                 CheckLastError();
                 string log = Encoding.UTF8.GetString(infoLog, (int)bytesWritten);
                 throw new VeldridException($"Error linking GL program: {log}");
@@ -175,7 +178,7 @@ namespace Veldrid.OpenGL
 
             elementNamePtr[byteCount - 1] = 0; // Add null terminator.
 
-            int location = glGetAttribLocation(Program, elementNamePtr);
+            int location = GLGetAttribLocation(Program, elementNamePtr);
             return location;
         }
 
@@ -192,7 +195,7 @@ namespace Veldrid.OpenGL
 
             elementNamePtr[byteCount - 1] = 0; // Add null terminator.
 
-            glBindAttribLocation(Program, slot, elementNamePtr);
+            GLBindAttribLocation(Program, slot, elementNamePtr);
             CheckLastError();
         }
 
@@ -228,7 +231,7 @@ namespace Veldrid.OpenGL
                         if (blockIndex != gl_invalid_index)
                         {
                             int blockSize;
-                            glGetActiveUniformBlockiv(Program, blockIndex, ActiveUniformBlockParameter.UniformBlockDataSize, &blockSize);
+                            GLGetActiveUniformBlockiv(Program, blockIndex, ActiveUniformBlockParameter.UniformBlockDataSize, &blockSize);
                             CheckLastError();
                             uniformBindings[i] = new OpenGLUniformBinding(Program, blockIndex, (uint)blockSize);
                         }
@@ -291,7 +294,7 @@ namespace Veldrid.OpenGL
 
             resourceNamePtr[byteCount - 1] = 0; // Add null terminator.
 
-            uint blockIndex = glGetUniformBlockIndex(Program, resourceNamePtr);
+            uint blockIndex = GLGetUniformBlockIndex(Program, resourceNamePtr);
             CheckLastError();
 #if DEBUG && GL_VALIDATE_SHADER_RESOURCE_NAMES
             if (blockIndex == GL_INVALID_INDEX)
@@ -334,7 +337,7 @@ namespace Veldrid.OpenGL
 
             resourceNamePtr[byteCount - 1] = 0; // Add null terminator.
 
-            int location = glGetUniformLocation(Program, resourceNamePtr);
+            int location = GLGetUniformLocation(Program, resourceNamePtr);
             CheckLastError();
 
 #if DEBUG && GL_VALIDATE_SHADER_RESOURCE_NAMES
@@ -360,7 +363,7 @@ namespace Veldrid.OpenGL
 
             resourceNamePtr[byteCount - 1] = 0; // Add null terminator.
 
-            uint binding = glGetProgramResourceIndex(Program, resourceType, resourceNamePtr);
+            uint binding = GLGetProgramResourceIndex(Program, resourceType, resourceNamePtr);
             CheckLastError();
 #if DEBUG && GL_VALIDATE_SHADER_RESOURCE_NAMES
             if (binding == GL_INVALID_INDEX)
@@ -435,25 +438,25 @@ namespace Veldrid.OpenGL
 
         private void createComputeGLResources()
         {
-            Program = glCreateProgram();
+            Program = GLCreateProgram();
             CheckLastError();
             var glShader = Util.AssertSubtype<Shader, OpenGLShader>(ComputeShader);
             glShader.EnsureResourcesCreated();
-            glAttachShader(Program, glShader.Shader);
+            GLAttachShader(Program, glShader.Shader);
             CheckLastError();
 
-            glLinkProgram(Program);
+            GLLinkProgram(Program);
             CheckLastError();
 
             int linkStatus;
-            glGetProgramiv(Program, GetProgramParameterName.LinkStatus, &linkStatus);
+            GLGetProgramiv(Program, GetProgramParameterName.LinkStatus, &linkStatus);
             CheckLastError();
 
             if (linkStatus != 1)
             {
                 byte* infoLog = stackalloc byte[4096];
                 uint bytesWritten;
-                glGetProgramInfoLog(Program, 4096, &bytesWritten, infoLog);
+                GLGetProgramInfoLog(Program, 4096, &bytesWritten, infoLog);
                 CheckLastError();
                 string log = Encoding.UTF8.GetString(infoLog, (int)bytesWritten);
                 throw new VeldridException($"Error linking GL program: {log}");
@@ -504,7 +507,7 @@ namespace Veldrid.OpenGL
             if (!disposed)
             {
                 disposed = true;
-                glDeleteProgram(Program);
+                GLDeleteProgram(Program);
                 CheckLastError();
             }
         }

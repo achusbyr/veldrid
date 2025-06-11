@@ -1,4 +1,7 @@
-﻿using System.Diagnostics;
+﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
+using System.Diagnostics;
 using Veldrid.OpenGLBindings;
 
 namespace Veldrid.OpenGL
@@ -814,7 +817,7 @@ namespace Veldrid.OpenGL
                 case PixelFormat.Etc2R8G8B8UNorm:
                 case PixelFormat.Etc2R8G8B8A1UNorm:
                 case PixelFormat.Etc2R8G8B8A8UNorm:
-                    return extensions.GLESVersion(3, 0) || extensions.GLVersion(4, 3);
+                    return extensions.GlesVersion(3, 0) || extensions.GLVersion(4, 3);
 
                 case PixelFormat.Bc1RgbUNorm:
                 case PixelFormat.Bc1RgbUNormSRgb:

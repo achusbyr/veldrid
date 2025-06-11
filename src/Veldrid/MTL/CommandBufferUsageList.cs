@@ -13,13 +13,19 @@ namespace Veldrid.MTL
         private readonly List<(MTLCommandBuffer buffer, T value)> items = new List<(MTLCommandBuffer buffer, T item)>();
 
         public void Add(MTLCommandBuffer cb, T value)
-            => items.Add((cb, value));
+        {
+            items.Add((cb, value));
+        }
 
         public ItemsEnumerator EnumerateItems()
-            => new ItemsEnumerator(items);
+        {
+            return new ItemsEnumerator(items);
+        }
 
         public RemovalEnumerator EnumerateAndRemove(MTLCommandBuffer cb)
-            => new RemovalEnumerator(items, cb);
+        {
+            return new RemovalEnumerator(items, cb);
+        }
 
         public bool Contains(MTLCommandBuffer cb)
         {
@@ -33,7 +39,9 @@ namespace Veldrid.MTL
         }
 
         public void Clear()
-            => items.Clear();
+        {
+            items.Clear();
+        }
 
         /// <summary>
         /// This is a basic enumerator for the list.
@@ -72,9 +80,15 @@ namespace Veldrid.MTL
             {
             }
 
-            public ItemsEnumerator GetEnumerator() => this;
+            public ItemsEnumerator GetEnumerator()
+            {
+                return this;
+            }
 
-            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
         }
 
         /// <summary>
@@ -143,9 +157,15 @@ namespace Veldrid.MTL
                 list.RemoveRange(toKeepItemCount, list.Count - toKeepItemCount);
             }
 
-            public RemovalEnumerator GetEnumerator() => this;
+            public RemovalEnumerator GetEnumerator()
+            {
+                return this;
+            }
 
-            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
         }
     }
 }

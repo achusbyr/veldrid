@@ -1,3 +1,6 @@
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
 using System;
 
 namespace Veldrid.MetalBindings
@@ -6,7 +9,7 @@ namespace Veldrid.MetalBindings
     {
         public readonly IntPtr NativePtr;
 
-        public UIntPtr count => ObjectiveCRuntime.UIntPtr_objc_msgSend(NativePtr, sel_count);
+        public UIntPtr Count => ObjectiveCRuntime.UIntPtr_objc_msgSend(NativePtr, sel_count);
 
         private static readonly Selector sel_count = "count";
     }

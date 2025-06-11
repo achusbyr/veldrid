@@ -1,3 +1,6 @@
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
 using System;
 using System.Text;
 using Veldrid.MetalBindings;
@@ -35,7 +38,7 @@ namespace Veldrid.MTL
 
                     try
                     {
-                        Library = gd.Device.newLibraryWithData(dispatchData);
+                        Library = gd.Device.NewLibraryWithData(dispatchData);
                     }
                     finally
                     {
@@ -47,11 +50,11 @@ namespace Veldrid.MTL
             {
                 string source = Encoding.UTF8.GetString(description.ShaderBytes);
                 var compileOptions = MTLCompileOptions.New();
-                Library = gd.Device.newLibraryWithSource(source, compileOptions);
-                ObjectiveCRuntime.release(compileOptions);
+                Library = gd.Device.NewLibraryWithSource(source, compileOptions);
+                ObjectiveCRuntime.Release(compileOptions);
             }
 
-            Function = Library.newFunctionWithName(description.EntryPoint);
+            Function = Library.NewFunctionWithName(description.EntryPoint);
 
             if (Function.NativePtr == IntPtr.Zero)
             {
@@ -59,7 +62,7 @@ namespace Veldrid.MTL
                     $"Failed to create Metal {description.Stage} Shader. The given entry point \"{description.EntryPoint}\" was not found.");
             }
 
-            HasFunctionConstants = Function.functionConstantsDictionary.count != UIntPtr.Zero;
+            HasFunctionConstants = Function.FunctionConstantsDictionary.Count != UIntPtr.Zero;
         }
 
         #region Disposal
@@ -69,8 +72,8 @@ namespace Veldrid.MTL
             if (!disposed)
             {
                 disposed = true;
-                ObjectiveCRuntime.release(Function.NativePtr);
-                ObjectiveCRuntime.release(Library.NativePtr);
+                ObjectiveCRuntime.Release(Function.NativePtr);
+                ObjectiveCRuntime.Release(Library.NativePtr);
             }
         }
 

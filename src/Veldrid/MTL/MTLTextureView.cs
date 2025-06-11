@@ -1,3 +1,6 @@
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
 using Veldrid.MetalBindings;
 
 namespace Veldrid.MTL
@@ -23,7 +26,7 @@ namespace Veldrid.MTL
             {
                 hasTextureView = true;
                 uint effectiveArrayLayers = Target.Usage.HasFlag(TextureUsage.Cubemap) ? ArrayLayers * 6 : ArrayLayers;
-                TargetDeviceTexture = targetMtlTexture.DeviceTexture.newTextureView(
+                TargetDeviceTexture = targetMtlTexture.DeviceTexture.NewTextureView(
                     MtlFormats.VdToMtlPixelFormat(Format, (description.Target.Usage & TextureUsage.DepthStencil) != 0),
                     targetMtlTexture.MtlTextureType,
                     new NSRange(BaseMipLevel, MipLevels),
@@ -40,7 +43,7 @@ namespace Veldrid.MTL
             if (hasTextureView && !disposed)
             {
                 disposed = true;
-                ObjectiveCRuntime.release(TargetDeviceTexture.NativePtr);
+                ObjectiveCRuntime.Release(TargetDeviceTexture.NativePtr);
             }
         }
 

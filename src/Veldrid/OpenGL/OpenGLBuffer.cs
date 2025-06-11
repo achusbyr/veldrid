@@ -1,4 +1,7 @@
-﻿using System.Diagnostics;
+﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
+using System.Diagnostics;
 using Veldrid.OpenGLBindings;
 using static Veldrid.OpenGLBindings.OpenGLNative;
 using static Veldrid.OpenGL.OpenGLUtil;
@@ -72,12 +75,12 @@ namespace Veldrid.OpenGL
             if (gd.Extensions.ArbDirectStateAccess)
             {
                 uint b;
-                glCreateBuffers(1, &b);
+                GLCreateBuffers(1, &b);
                 CheckLastError();
 
                 buffer = b;
 
-                glNamedBufferData(
+                GLNamedBufferData(
                     buffer,
                     SizeInBytes,
                     null,
@@ -86,13 +89,13 @@ namespace Veldrid.OpenGL
             }
             else
             {
-                glGenBuffers(1, out buffer);
+                GLGenBuffers(1, out buffer);
                 CheckLastError();
 
-                glBindBuffer(BufferTarget.CopyReadBuffer, buffer);
+                GLBindBuffer(BufferTarget.CopyReadBuffer, buffer);
                 CheckLastError();
 
-                glBufferData(
+                GLBufferData(
                     BufferTarget.CopyReadBuffer,
                     SizeInBytes,
                     null,
@@ -106,7 +109,7 @@ namespace Veldrid.OpenGL
         public void DestroyGLResources()
         {
             uint b = buffer;
-            glDeleteBuffers(1, ref b);
+            GLDeleteBuffers(1, ref b);
             CheckLastError();
         }
     }

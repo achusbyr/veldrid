@@ -1,3 +1,6 @@
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
 using System;
 
 namespace Veldrid.MetalBindings
@@ -11,12 +14,12 @@ namespace Veldrid.MetalBindings
             return s_class.AllocInit<MTLFunctionConstantValues>();
         }
 
-        public unsafe void setConstantValuetypeatIndex(void* value, MTLDataType type, UIntPtr index)
+        public unsafe void SetConstantValuetypeatIndex(void* value, MTLDataType type, UIntPtr index)
         {
-            ObjectiveCRuntime.objc_msgSend(NativePtr, sel_setConstantValuetypeatIndex, value, (uint)type, index);
+            ObjectiveCRuntime.objc_msgSend(NativePtr, sel_set_constant_valuetypeat_index, value, (uint)type, index);
         }
 
         private static readonly ObjCClass s_class = new ObjCClass(nameof(MTLFunctionConstantValues));
-        private static readonly Selector sel_setConstantValuetypeatIndex = "setConstantValue:type:atIndex:";
+        private static readonly Selector sel_set_constant_valuetypeat_index = "setConstantValue:type:atIndex:";
     }
 }

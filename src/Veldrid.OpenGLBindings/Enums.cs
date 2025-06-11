@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
+using System;
 
 namespace Veldrid.OpenGLBindings
 {
@@ -1870,7 +1873,6 @@ namespace Veldrid.OpenGLBindings
         QueryBufferBarrierBit = 0x00008000,
         AllBarrierBits = unchecked((int)0xFFFFFFFF),
     }
-
 
     public enum BufferAccess
     {

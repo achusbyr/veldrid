@@ -1,3 +1,6 @@
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
 using System;
 using static Veldrid.MetalBindings.ObjectiveCRuntime;
 
@@ -7,103 +10,107 @@ namespace Veldrid.MetalBindings
     {
         private static readonly ObjCClass s_class = new ObjCClass(nameof(MTLSamplerDescriptor));
         public readonly IntPtr NativePtr;
-        public static MTLSamplerDescriptor New() => s_class.AllocInit<MTLSamplerDescriptor>();
 
-        public MTLSamplerAddressMode rAddressMode
+        public static MTLSamplerDescriptor New()
         {
-            get => (MTLSamplerAddressMode)uint_objc_msgSend(NativePtr, sel_rAddressMode);
-            set => objc_msgSend(NativePtr, sel_setRAddressMode, (uint)value);
+            return s_class.AllocInit<MTLSamplerDescriptor>();
         }
 
-        public MTLSamplerAddressMode sAddressMode
+        public MTLSamplerAddressMode RAddressMode
         {
-            get => (MTLSamplerAddressMode)uint_objc_msgSend(NativePtr, sel_sAddressMode);
-            set => objc_msgSend(NativePtr, sel_setSAddressMode, (uint)value);
+            get => (MTLSamplerAddressMode)uint_objc_msgSend(NativePtr, sel_r_address_mode);
+            set => objc_msgSend(NativePtr, sel_set_r_address_mode, (uint)value);
         }
 
-        public MTLSamplerAddressMode tAddressMode
+        public MTLSamplerAddressMode SAddressMode
         {
-            get => (MTLSamplerAddressMode)uint_objc_msgSend(NativePtr, sel_tAddressMode);
-            set => objc_msgSend(NativePtr, sel_setTAddressMode, (uint)value);
+            get => (MTLSamplerAddressMode)uint_objc_msgSend(NativePtr, sel_s_address_mode);
+            set => objc_msgSend(NativePtr, sel_set_s_address_mode, (uint)value);
         }
 
-        public MTLSamplerMinMagFilter minFilter
+        public MTLSamplerAddressMode TAddressMode
         {
-            get => (MTLSamplerMinMagFilter)uint_objc_msgSend(NativePtr, sel_minFilter);
-            set => objc_msgSend(NativePtr, sel_setMinFilter, (uint)value);
+            get => (MTLSamplerAddressMode)uint_objc_msgSend(NativePtr, sel_t_address_mode);
+            set => objc_msgSend(NativePtr, sel_set_t_address_mode, (uint)value);
         }
 
-        public MTLSamplerMinMagFilter magFilter
+        public MTLSamplerMinMagFilter MinFilter
         {
-            get => (MTLSamplerMinMagFilter)uint_objc_msgSend(NativePtr, sel_magFilter);
-            set => objc_msgSend(NativePtr, sel_setMagFilter, (uint)value);
+            get => (MTLSamplerMinMagFilter)uint_objc_msgSend(NativePtr, sel_min_filter);
+            set => objc_msgSend(NativePtr, sel_set_min_filter, (uint)value);
         }
 
-        public MTLSamplerMipFilter mipFilter
+        public MTLSamplerMinMagFilter MagFilter
         {
-            get => (MTLSamplerMipFilter)uint_objc_msgSend(NativePtr, sel_mipFilter);
-            set => objc_msgSend(NativePtr, sel_setMipFilter, (uint)value);
+            get => (MTLSamplerMinMagFilter)uint_objc_msgSend(NativePtr, sel_mag_filter);
+            set => objc_msgSend(NativePtr, sel_set_mag_filter, (uint)value);
         }
 
-        public float lodMinClamp
+        public MTLSamplerMipFilter MipFilter
         {
-            get => float_objc_msgSend(NativePtr, sel_lodMinClamp);
-            set => objc_msgSend(NativePtr, sel_setLodMinClamp, value);
+            get => (MTLSamplerMipFilter)uint_objc_msgSend(NativePtr, sel_mip_filter);
+            set => objc_msgSend(NativePtr, sel_set_mip_filter, (uint)value);
         }
 
-        public float lodMaxClamp
+        public float LodMinClamp
         {
-            get => float_objc_msgSend(NativePtr, sel_lodMaxClamp);
-            set => objc_msgSend(NativePtr, sel_setLodMaxClamp, value);
+            get => float_objc_msgSend(NativePtr, sel_lod_min_clamp);
+            set => objc_msgSend(NativePtr, sel_set_lod_min_clamp, value);
         }
 
-        public Bool8 lodAverage
+        public float LodMaxClamp
         {
-            get => bool8_objc_msgSend(NativePtr, sel_lodAverage);
-            set => objc_msgSend(NativePtr, sel_setLodAverage, value);
+            get => float_objc_msgSend(NativePtr, sel_lod_max_clamp);
+            set => objc_msgSend(NativePtr, sel_set_lod_max_clamp, value);
         }
 
-        public UIntPtr maxAnisotropy
+        public Bool8 LodAverage
         {
-            get => UIntPtr_objc_msgSend(NativePtr, sel_maxAnisotropy);
-            set => objc_msgSend(NativePtr, sel_setMaAnisotropy, value);
+            get => bool8_objc_msgSend(NativePtr, sel_lod_average);
+            set => objc_msgSend(NativePtr, sel_set_lod_average, value);
         }
 
-        public MTLCompareFunction compareFunction
+        public UIntPtr MaxAnisotropy
         {
-            get => (MTLCompareFunction)uint_objc_msgSend(NativePtr, sel_compareFunction);
-            set => objc_msgSend(NativePtr, sel_setCompareFunction, (uint)value);
+            get => UIntPtr_objc_msgSend(NativePtr, sel_max_anisotropy);
+            set => objc_msgSend(NativePtr, sel_set_ma_anisotropy, value);
         }
 
-        public MTLSamplerBorderColor borderColor
+        public MTLCompareFunction CompareFunction
         {
-            get => (MTLSamplerBorderColor)uint_objc_msgSend(NativePtr, sel_borderColor);
-            set => objc_msgSend(NativePtr, sel_setBorderColor, (uint)value);
+            get => (MTLCompareFunction)uint_objc_msgSend(NativePtr, sel_compare_function);
+            set => objc_msgSend(NativePtr, sel_set_compare_function, (uint)value);
         }
 
-        private static readonly Selector sel_rAddressMode = "rAddressMode";
-        private static readonly Selector sel_setRAddressMode = "setRAddressMode:";
-        private static readonly Selector sel_sAddressMode = "sAddressMode";
-        private static readonly Selector sel_setSAddressMode = "setSAddressMode:";
-        private static readonly Selector sel_tAddressMode = "tAddressMode";
-        private static readonly Selector sel_setTAddressMode = "setTAddressMode:";
-        private static readonly Selector sel_minFilter = "minFilter";
-        private static readonly Selector sel_setMinFilter = "setMinFilter:";
-        private static readonly Selector sel_magFilter = "magFilter";
-        private static readonly Selector sel_setMagFilter = "setMagFilter:";
-        private static readonly Selector sel_mipFilter = "mipFilter";
-        private static readonly Selector sel_setMipFilter = "setMipFilter:";
-        private static readonly Selector sel_lodMinClamp = "lodMinClamp";
-        private static readonly Selector sel_setLodMinClamp = "setLodMinClamp:";
-        private static readonly Selector sel_lodMaxClamp = "lodMaxClamp";
-        private static readonly Selector sel_setLodMaxClamp = "setLodMaxClamp:";
-        private static readonly Selector sel_lodAverage = "lodAverage";
-        private static readonly Selector sel_setLodAverage = "setLodAverage:";
-        private static readonly Selector sel_maxAnisotropy = "maxAnisotropy";
-        private static readonly Selector sel_setMaAnisotropy = "setMaxAnisotropy:";
-        private static readonly Selector sel_compareFunction = "compareFunction";
-        private static readonly Selector sel_setCompareFunction = "setCompareFunction:";
-        private static readonly Selector sel_borderColor = "borderColor";
-        private static readonly Selector sel_setBorderColor = "setBorderColor:";
+        public MTLSamplerBorderColor BorderColor
+        {
+            get => (MTLSamplerBorderColor)uint_objc_msgSend(NativePtr, sel_border_color);
+            set => objc_msgSend(NativePtr, sel_set_border_color, (uint)value);
+        }
+
+        private static readonly Selector sel_r_address_mode = "rAddressMode";
+        private static readonly Selector sel_set_r_address_mode = "setRAddressMode:";
+        private static readonly Selector sel_s_address_mode = "sAddressMode";
+        private static readonly Selector sel_set_s_address_mode = "setSAddressMode:";
+        private static readonly Selector sel_t_address_mode = "tAddressMode";
+        private static readonly Selector sel_set_t_address_mode = "setTAddressMode:";
+        private static readonly Selector sel_min_filter = "minFilter";
+        private static readonly Selector sel_set_min_filter = "setMinFilter:";
+        private static readonly Selector sel_mag_filter = "magFilter";
+        private static readonly Selector sel_set_mag_filter = "setMagFilter:";
+        private static readonly Selector sel_mip_filter = "mipFilter";
+        private static readonly Selector sel_set_mip_filter = "setMipFilter:";
+        private static readonly Selector sel_lod_min_clamp = "lodMinClamp";
+        private static readonly Selector sel_set_lod_min_clamp = "setLodMinClamp:";
+        private static readonly Selector sel_lod_max_clamp = "lodMaxClamp";
+        private static readonly Selector sel_set_lod_max_clamp = "setLodMaxClamp:";
+        private static readonly Selector sel_lod_average = "lodAverage";
+        private static readonly Selector sel_set_lod_average = "setLodAverage:";
+        private static readonly Selector sel_max_anisotropy = "maxAnisotropy";
+        private static readonly Selector sel_set_ma_anisotropy = "setMaxAnisotropy:";
+        private static readonly Selector sel_compare_function = "compareFunction";
+        private static readonly Selector sel_set_compare_function = "setCompareFunction:";
+        private static readonly Selector sel_border_color = "borderColor";
+        private static readonly Selector sel_set_border_color = "setBorderColor:";
     }
 }

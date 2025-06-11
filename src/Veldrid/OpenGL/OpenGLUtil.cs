@@ -1,3 +1,6 @@
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
 using System;
 using System.Diagnostics;
 using System.Text;
@@ -14,7 +17,7 @@ namespace Veldrid.OpenGL
         [DebuggerNonUserCode]
         internal static void CheckLastError()
         {
-            uint error = glGetError();
+            uint error = GLGetError();
 
             if (error != 0)
             {
@@ -33,7 +36,7 @@ namespace Veldrid.OpenGL
                 if (maxLabelLength == null)
                 {
                     int localMaxLabelLength = -1;
-                    glGetIntegerv(GetPName.MaxLabelLength, &localMaxLabelLength);
+                    GLGetIntegerv(GetPName.MaxLabelLength, &localMaxLabelLength);
                     CheckLastError();
                     maxLabelLength = localMaxLabelLength;
                 }
@@ -52,7 +55,7 @@ namespace Veldrid.OpenGL
                 {
                     int written = Encoding.UTF8.GetBytes(namePtr, name.Length, utf8BytePtr, byteCount);
                     utf8BytePtr[written] = 0;
-                    glObjectLabel(identifier, target, (uint)byteCount, utf8BytePtr);
+                    GLObjectLabel(identifier, target, (uint)byteCount, utf8BytePtr);
                     CheckLastError();
                 }
             }

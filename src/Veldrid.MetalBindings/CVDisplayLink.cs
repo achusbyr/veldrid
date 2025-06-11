@@ -8,13 +8,20 @@ namespace Veldrid.MetalBindings
 {
     public struct CVDisplayLink
     {
-        private const string CVFramework = "/System/Library/Frameworks/CoreVideo.framework/CoreVideo";
-        private const string CGFramework = "/System/Library/Frameworks/CoreGraphics.framework/CoreGraphics";
+        private const string cv_framework = "/System/Library/Frameworks/CoreVideo.framework/CoreVideo";
+        private const string cg_framework = "/System/Library/Frameworks/CoreGraphics.framework/CoreGraphics";
 
         public readonly IntPtr NativePtr;
-        public static implicit operator IntPtr(CVDisplayLink c) => c.NativePtr;
 
-        public CVDisplayLink(IntPtr ptr) => NativePtr = ptr;
+        public static implicit operator IntPtr(CVDisplayLink c)
+        {
+            return c.NativePtr;
+        }
+
+        public CVDisplayLink(IntPtr ptr)
+        {
+            NativePtr = ptr;
+        }
 
         public static CVDisplayLink CreateWithActiveCGDisplays()
         {
@@ -38,6 +45,7 @@ namespace Veldrid.MetalBindings
             uint displayCount = 0;
             CGRect rect = new CGRect(new CGPoint(x, y), new CGSize(w, h));
             int err = CGGetDisplaysWithRect(rect, 1, displays, ref displayCount);
+
             if (err != 0)
             {
                 return;
@@ -49,7 +57,7 @@ namespace Veldrid.MetalBindings
             }
         }
 
-        [DllImport(CGFramework)]
+        [DllImport(cg_framework)]
         private static extern int CGGetDisplaysWithRect(CGRect rect, int maxDisplays, uint[] displays, ref uint displayCount);
 
         public double GetActualOutputVideoRefreshPeriod()
@@ -67,25 +75,25 @@ namespace Veldrid.MetalBindings
             CVDisplayLinkRelease(this);
         }
 
-        [DllImport(CVFramework)]
+        [DllImport(cv_framework)]
         private static extern int CVDisplayLinkCreateWithActiveCGDisplays(out CVDisplayLink displayLink);
 
-        [DllImport(CVFramework)]
+        [DllImport(cv_framework)]
         private static extern double CVDisplayLinkGetActualOutputVideoRefreshPeriod(CVDisplayLink displayLink);
 
-        [DllImport(CVFramework)]
+        [DllImport(cv_framework)]
         private static extern int CVDisplayLinkSetOutputCallback(CVDisplayLink displayLink, CVDisplayLinkOutputCallbackDelegate callback, IntPtr userData);
 
-        [DllImport(CVFramework)]
+        [DllImport(cv_framework)]
         private static extern int CVDisplayLinkSetCurrentCGDisplay(CVDisplayLink displayLink, uint displayId);
 
-        [DllImport(CVFramework)]
+        [DllImport(cv_framework)]
         private static extern int CVDisplayLinkStart(CVDisplayLink displayLink);
 
-        [DllImport(CVFramework)]
+        [DllImport(cv_framework)]
         private static extern int CVDisplayLinkStop(CVDisplayLink displayLink);
 
-        [DllImport(CVFramework)]
+        [DllImport(cv_framework)]
         private static extern int CVDisplayLinkRelease(CVDisplayLink displayLink);
     }
 

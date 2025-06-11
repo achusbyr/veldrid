@@ -1,3 +1,6 @@
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
 using Veldrid.MetalBindings;
 
 namespace Veldrid.MTL
@@ -17,8 +20,8 @@ namespace Veldrid.MTL
             set
             {
                 var nameNss = NSString.New(value);
-                DeviceBuffer.addDebugMarker(nameNss, new NSRange(0, SizeInBytes));
-                ObjectiveCRuntime.release(nameNss.NativePtr);
+                DeviceBuffer.AddDebugMarker(nameNss, new NSRange(0, SizeInBytes));
+                ObjectiveCRuntime.Release(nameNss.NativePtr);
                 name = value;
             }
         }
@@ -39,14 +42,14 @@ namespace Veldrid.MTL
             bool sharedMemory = Usage == BufferUsage.Staging || (Usage & BufferUsage.Dynamic) == BufferUsage.Dynamic;
             var bufferOptions = sharedMemory ? MTLResourceOptions.StorageModeShared : MTLResourceOptions.StorageModePrivate;
 
-            DeviceBuffer = gd.Device.newBufferWithLengthOptions(
+            DeviceBuffer = gd.Device.NewBufferWithLengthOptions(
                 ActualCapacity,
                 bufferOptions);
 
             unsafe
             {
                 if (sharedMemory)
-                    Pointer = DeviceBuffer.contents();
+                    Pointer = DeviceBuffer.Contents();
             }
         }
 
@@ -57,7 +60,7 @@ namespace Veldrid.MTL
             if (!disposed)
             {
                 disposed = true;
-                ObjectiveCRuntime.release(DeviceBuffer.NativePtr);
+                ObjectiveCRuntime.Release(DeviceBuffer.NativePtr);
             }
         }
 

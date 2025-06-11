@@ -1,4 +1,7 @@
-﻿using Veldrid.OpenGLBindings;
+﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
+using Veldrid.OpenGLBindings;
 using static Veldrid.OpenGLBindings.OpenGLNative;
 using static Veldrid.OpenGL.OpenGLUtil;
 
@@ -90,14 +93,14 @@ namespace Veldrid.OpenGL
 
             public void CreateGLResources(SamplerDescription description, bool mipmapped, GraphicsBackend backend)
             {
-                glGenSamplers(1, out sampler);
+                GLGenSamplers(1, out sampler);
                 CheckLastError();
 
-                glSamplerParameteri(sampler, SamplerParameterName.TextureWrapS, (int)OpenGLFormats.VdToGLTextureWrapMode(description.AddressModeU));
+                GLSamplerParameteri(sampler, SamplerParameterName.TextureWrapS, (int)OpenGLFormats.VdToGLTextureWrapMode(description.AddressModeU));
                 CheckLastError();
-                glSamplerParameteri(sampler, SamplerParameterName.TextureWrapT, (int)OpenGLFormats.VdToGLTextureWrapMode(description.AddressModeV));
+                GLSamplerParameteri(sampler, SamplerParameterName.TextureWrapT, (int)OpenGLFormats.VdToGLTextureWrapMode(description.AddressModeV));
                 CheckLastError();
-                glSamplerParameteri(sampler, SamplerParameterName.TextureWrapR, (int)OpenGLFormats.VdToGLTextureWrapMode(description.AddressModeW));
+                GLSamplerParameteri(sampler, SamplerParameterName.TextureWrapR, (int)OpenGLFormats.VdToGLTextureWrapMode(description.AddressModeW));
                 CheckLastError();
 
                 if (description.AddressModeU == SamplerAddressMode.Border
@@ -105,51 +108,51 @@ namespace Veldrid.OpenGL
                     || description.AddressModeW == SamplerAddressMode.Border)
                 {
                     var borderColor = toRgbaFloat(description.BorderColor);
-                    glSamplerParameterfv(sampler, SamplerParameterName.TextureBorderColor, (float*)&borderColor);
+                    GLSamplerParameterfv(sampler, SamplerParameterName.TextureBorderColor, (float*)&borderColor);
                     CheckLastError();
                 }
 
-                glSamplerParameterf(sampler, SamplerParameterName.TextureMinLod, description.MinimumLod);
+                GLSamplerParameterf(sampler, SamplerParameterName.TextureMinLod, description.MinimumLod);
                 CheckLastError();
-                glSamplerParameterf(sampler, SamplerParameterName.TextureMaxLod, description.MaximumLod);
+                GLSamplerParameterf(sampler, SamplerParameterName.TextureMaxLod, description.MaximumLod);
                 CheckLastError();
 
                 if (backend == GraphicsBackend.OpenGL && description.LodBias != 0)
                 {
-                    glSamplerParameterf(sampler, SamplerParameterName.TextureLodBias, description.LodBias);
+                    GLSamplerParameterf(sampler, SamplerParameterName.TextureLodBias, description.LodBias);
                     CheckLastError();
                 }
 
                 if (description.Filter == SamplerFilter.Anisotropic)
                 {
-                    glSamplerParameterf(sampler, SamplerParameterName.TextureMaxAnisotropyExt, description.MaximumAnisotropy);
+                    GLSamplerParameterf(sampler, SamplerParameterName.TextureMaxAnisotropyExt, description.MaximumAnisotropy);
                     CheckLastError();
-                    glSamplerParameteri(sampler, SamplerParameterName.TextureMinFilter, mipmapped ? (int)TextureMinFilter.LinearMipmapLinear : (int)TextureMinFilter.Linear);
+                    GLSamplerParameteri(sampler, SamplerParameterName.TextureMinFilter, mipmapped ? (int)TextureMinFilter.LinearMipmapLinear : (int)TextureMinFilter.Linear);
                     CheckLastError();
-                    glSamplerParameteri(sampler, SamplerParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+                    GLSamplerParameteri(sampler, SamplerParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
                     CheckLastError();
                 }
                 else
                 {
                     OpenGLFormats.VdToGLTextureMinMagFilter(description.Filter, mipmapped, out var min, out var mag);
-                    glSamplerParameteri(sampler, SamplerParameterName.TextureMinFilter, (int)min);
+                    GLSamplerParameteri(sampler, SamplerParameterName.TextureMinFilter, (int)min);
                     CheckLastError();
-                    glSamplerParameteri(sampler, SamplerParameterName.TextureMagFilter, (int)mag);
+                    GLSamplerParameteri(sampler, SamplerParameterName.TextureMagFilter, (int)mag);
                     CheckLastError();
                 }
 
                 if (description.ComparisonKind != null)
                 {
-                    glSamplerParameteri(sampler, SamplerParameterName.TextureCompareMode, (int)TextureCompareMode.CompareRefToTexture);
+                    GLSamplerParameteri(sampler, SamplerParameterName.TextureCompareMode, (int)TextureCompareMode.CompareRefToTexture);
                     CheckLastError();
-                    glSamplerParameteri(sampler, SamplerParameterName.TextureCompareFunc, (int)OpenGLFormats.VdToGLDepthFunction(description.ComparisonKind.Value));
+                    GLSamplerParameteri(sampler, SamplerParameterName.TextureCompareFunc, (int)OpenGLFormats.VdToGLDepthFunction(description.ComparisonKind.Value));
                     CheckLastError();
                 }
             }
 
             public void DestroyGLResources()
             {
-                glDeleteSamplers(1, ref sampler);
+                GLDeleteSamplers(1, ref sampler);
                 CheckLastError();
             }
 

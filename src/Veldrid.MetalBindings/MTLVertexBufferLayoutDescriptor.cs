@@ -1,3 +1,6 @@
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
 using System;
 using static Veldrid.MetalBindings.ObjectiveCRuntime;
 
@@ -7,31 +10,34 @@ namespace Veldrid.MetalBindings
     {
         public readonly IntPtr NativePtr;
 
-        public MTLVertexBufferLayoutDescriptor(IntPtr ptr) => NativePtr = ptr;
-
-        public MTLVertexStepFunction stepFunction
+        public MTLVertexBufferLayoutDescriptor(IntPtr ptr)
         {
-            get => (MTLVertexStepFunction)uint_objc_msgSend(NativePtr, sel_stepFunction);
-            set => objc_msgSend(NativePtr, sel_setStepFunction, (uint)value);
+            NativePtr = ptr;
         }
 
-        public UIntPtr stride
+        public MTLVertexStepFunction StepFunction
+        {
+            get => (MTLVertexStepFunction)uint_objc_msgSend(NativePtr, sel_step_function);
+            set => objc_msgSend(NativePtr, sel_set_step_function, (uint)value);
+        }
+
+        public UIntPtr Stride
         {
             get => UIntPtr_objc_msgSend(NativePtr, sel_stride);
-            set => objc_msgSend(NativePtr, sel_setStride, value);
+            set => objc_msgSend(NativePtr, sel_set_stride, value);
         }
 
-        public UIntPtr stepRate
+        public UIntPtr StepRate
         {
-            get => UIntPtr_objc_msgSend(NativePtr, sel_stepRate);
-            set => objc_msgSend(NativePtr, sel_setStepRate, value);
+            get => UIntPtr_objc_msgSend(NativePtr, sel_step_rate);
+            set => objc_msgSend(NativePtr, sel_set_step_rate, value);
         }
 
-        private static readonly Selector sel_stepFunction = "stepFunction";
-        private static readonly Selector sel_setStepFunction = "setStepFunction:";
+        private static readonly Selector sel_step_function = "stepFunction";
+        private static readonly Selector sel_set_step_function = "setStepFunction:";
         private static readonly Selector sel_stride = "stride";
-        private static readonly Selector sel_setStride = "setStride:";
-        private static readonly Selector sel_stepRate = "stepRate";
-        private static readonly Selector sel_setStepRate = "setStepRate:";
+        private static readonly Selector sel_set_stride = "setStride:";
+        private static readonly Selector sel_step_rate = "stepRate";
+        private static readonly Selector sel_set_step_rate = "setStepRate:";
     }
 }

@@ -1,4 +1,7 @@
-﻿using System.Text;
+﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
+using System.Text;
 using Veldrid.OpenGLBindings;
 using static Veldrid.OpenGLBindings.OpenGLNative;
 using static Veldrid.OpenGL.OpenGLUtil;
@@ -81,7 +84,7 @@ namespace Veldrid.OpenGL
 
                 if (Created)
                 {
-                    glDeleteShader(Shader);
+                    GLDeleteShader(Shader);
                     CheckLastError();
                 }
                 else
@@ -91,32 +94,32 @@ namespace Veldrid.OpenGL
 
         private void createGLResources()
         {
-            Shader = glCreateShader(shaderType);
+            Shader = GLCreateShader(shaderType);
             CheckLastError();
 
             byte* textPtr = (byte*)stagingBlock.Data;
             int length = (int)stagingBlock.SizeInBytes;
             byte** textsPtr = &textPtr;
 
-            glShaderSource(Shader, 1, textsPtr, &length);
+            GLShaderSource(Shader, 1, textsPtr, &length);
             CheckLastError();
 
-            glCompileShader(Shader);
+            GLCompileShader(Shader);
             CheckLastError();
 
             int compileStatus;
-            glGetShaderiv(Shader, ShaderParameter.CompileStatus, &compileStatus);
+            GLGetShaderiv(Shader, ShaderParameter.CompileStatus, &compileStatus);
             CheckLastError();
 
             if (compileStatus != 1)
             {
                 int infoLogLength;
-                glGetShaderiv(Shader, ShaderParameter.InfoLogLength, &infoLogLength);
+                GLGetShaderiv(Shader, ShaderParameter.InfoLogLength, &infoLogLength);
                 CheckLastError();
 
                 byte* infoLog = stackalloc byte[infoLogLength];
                 uint returnedInfoLength;
-                glGetShaderInfoLog(Shader, (uint)infoLogLength, &returnedInfoLength, infoLog);
+                GLGetShaderInfoLog(Shader, (uint)infoLogLength, &returnedInfoLength, infoLog);
                 CheckLastError();
 
                 string message = Encoding.UTF8.GetString(infoLog, (int)returnedInfoLength);

@@ -1,3 +1,6 @@
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
 using System;
 using System.Runtime.InteropServices;
 using Veldrid.MetalBindings;
@@ -39,7 +42,7 @@ namespace Veldrid.OpenGL.EAGL
 
         public void Release()
         {
-            release(NativePtr);
+            ObjectiveCRuntime.Release(NativePtr);
         }
 
         private static readonly Selector sel_initWithAPI = "initWithAPI:";

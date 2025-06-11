@@ -1,20 +1,22 @@
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
 using System;
 
 namespace Veldrid.MetalBindings
 {
     public unsafe struct BlockLiteral
     {
-        public IntPtr isa;
-        public int flags;
-        public int reserved;
-        public IntPtr invoke;
-        public BlockDescriptor* descriptor;
+        public IntPtr Isa;
+        public int Flags;
+        public int Reserved;
+        public IntPtr Invoke;
+        public BlockDescriptor* Descriptor;
     }
 
     public struct BlockDescriptor
     {
-        public ulong reserved;
-        public ulong Block_size;
+        public ulong Reserved;
+        public ulong BlockSize;
     }
 }
-

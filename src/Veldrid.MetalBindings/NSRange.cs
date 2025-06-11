@@ -1,22 +1,25 @@
+// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
 using System;
 
 namespace Veldrid.MetalBindings
 {
     public struct NSRange
     {
-        public UIntPtr location;
-        public UIntPtr length;
+        public UIntPtr Location;
+        public UIntPtr Length;
 
         public NSRange(UIntPtr location, UIntPtr length)
         {
-            this.location = location;
-            this.length = length;
+            Location = location;
+            Length = length;
         }
 
         public NSRange(uint location, uint length)
         {
-            this.location = location;
-            this.length = length;
+            Location = location;
+            Length = length;
         }
     }
 }

@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
+// See the LICENCE file in the repository root for full licence text.
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
@@ -41,7 +44,7 @@ namespace Veldrid.D3D11
         private readonly D3D11Sampler[] vertexBoundSamplers = new D3D11Sampler[max_cached_samplers];
         private readonly D3D11Sampler[] fragmentBoundSamplers = new D3D11Sampler[max_cached_samplers];
 
-        private readonly Dictionary<Texture, List<BoundTextureInfo>> boundSRVs = new Dictionary<Texture, List<BoundTextureInfo>>();
+        private readonly Dictionary<Texture, List<BoundTextureInfo>> boundSrVs = new Dictionary<Texture, List<BoundTextureInfo>>();
         private readonly Dictionary<Texture, List<BoundTextureInfo>> boundUaVs = new Dictionary<Texture, List<BoundTextureInfo>>();
         private readonly List<List<BoundTextureInfo>> boundTextureInfoPool = new List<List<BoundTextureInfo>>(20);
 
@@ -395,14 +398,14 @@ namespace Veldrid.D3D11
             computePipeline = null;
             clearSets(computeResourceSets);
 
-            foreach (var kvp in boundSRVs)
+            foreach (var kvp in boundSrVs)
             {
                 var list = kvp.Value;
                 list.Clear();
                 poolBoundTextureList(list);
             }
 
-            boundSRVs.Clear();
+            boundSrVs.Clear();
 
             foreach (var kvp in boundUaVs)
             {
@@ -512,7 +515,7 @@ namespace Veldrid.D3D11
 
         private void unbindSrvTexture(Texture target)
         {
-            if (boundSRVs.TryGetValue(target, out var btis))
+            if (boundSrVs.TryGetValue(target, out var btis))
             {
                 foreach (var bti in btis)
                 {
@@ -524,7 +527,7 @@ namespace Veldrid.D3D11
                         invalidatedGraphicsResourceSets[bti.ResourceSet] = true;
                 }
 
-                bool result = boundSRVs.Remove(target);
+                bool result = boundSrVs.Remove(target);
                 Debug.Assert(result);
 
                 btis.Clear();
@@ -690,10 +693,10 @@ namespace Veldrid.D3D11
 
             if (srv != null)
             {
-                if (!boundSRVs.TryGetValue(texView.Target, out var list))
+                if (!boundSrVs.TryGetValue(texView.Target, out var list))
                 {
                     list = getNewOrCachedBoundTextureInfoList();
-                    boundSRVs.Add(texView.Target, list);
+                    boundSrVs.Add(texView.Target, list);
                 }
 
                 list.Add(new BoundTextureInfo { Slot = slot, Stages = stages, ResourceSet = resourceSet });
