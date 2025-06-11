@@ -65,6 +65,8 @@ namespace Veldrid.Vk
         public VkCreateMetalSurfaceExtT CreateMetalSurfaceExt { get; private set; }
 
         public override ResourceFactory ResourceFactory { get; }
+
+        //private const uint VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR = 0x00000001;
         private static readonly FixedUtf8String s_name = "Veldrid-VkGraphicsDevice";
         private static readonly Lazy<bool> s_is_supported = new Lazy<bool>(checkIsSupported, true);
         private readonly object graphicsCommandPoolLock = new object();
@@ -768,6 +770,12 @@ namespace Veldrid.Vk
             var instanceLayers = new StackList<IntPtr, Size64Bytes>();
 
             if (availableInstanceExtensions.Contains(CommonStrings.VkKhrPortabilitySubset)) surfaceExtensions.Add(CommonStrings.VkKhrPortabilitySubset);
+
+            /*if (availableInstanceExtensions.Contains(CommonStrings.VK_KHR_portability_enumeration))
+               {
+                   instanceExtensions.Add(CommonStrings.VK_KHR_portability_enumeration);
+                   instanceCI.flags |= VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR;
+               }*/
 
             if (availableInstanceExtensions.Contains(CommonStrings.VkKhrSurfaceExtensionName)) surfaceExtensions.Add(CommonStrings.VkKhrSurfaceExtensionName);
 

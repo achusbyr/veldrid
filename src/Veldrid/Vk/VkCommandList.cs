@@ -659,10 +659,13 @@ namespace Veldrid.Vk
 
             vkCmdCopyBuffer(CommandBuffer, srcVkBuffer.DeviceBuffer, dstVkBuffer.DeviceBuffer, 1, ref region);
 
+            //bool needToProtectUniform = destination.Usage.HasFlag(BufferUsage.UniformBuffer);
+
             VkMemoryBarrier barrier;
             barrier.sType = VkStructureType.MemoryBarrier;
             barrier.srcAccessMask = VkAccessFlags.TransferWrite;
             barrier.dstAccessMask = VkAccessFlags.VertexAttributeRead;
+            //barrier.dstAccessMask = needToProtectUniform ? VkAccessFlags.UniformRead : VkAccessFlags.VertexAttributeRead;
             barrier.pNext = null;
             vkCmdPipelineBarrier(
                 CommandBuffer,
@@ -671,6 +674,18 @@ namespace Veldrid.Vk
                 1, ref barrier,
                 0, null,
                 0, null);
+            /*vkCmdPipelineBarrier(
+                _cb,
+                VkPipelineStageFlags.Transfer, VkPipelineStageFlags.VertexInput,
+                VkPipelineStageFlags.Transfer, needToProtectUniform ?
+                    VkPipelineStageFlags.VertexShader | VkPipelineStageFlags.ComputeShader |
+                    VkPipelineStageFlags.FragmentShader | VkPipelineStageFlags.GeometryShader |
+                    VkPipelineStageFlags.TessellationControlShader | VkPipelineStageFlags.TessellationEvaluationShader
+                    : VkPipelineStageFlags.VertexInput,
+                VkDependencyFlags.None,
+                1, ref barrier,
+                0, null,
+                0, null);*/
         }
 
         protected override void CopyTextureCore(
