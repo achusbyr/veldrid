@@ -6,14 +6,9 @@ using static Veldrid.MetalBindings.ObjectiveCRuntime;
 
 namespace Veldrid.MetalBindings
 {
-    public struct NSArray
+    public struct NSArray(IntPtr ptr)
     {
-        public readonly IntPtr NativePtr;
-
-        public NSArray(IntPtr ptr)
-        {
-            NativePtr = ptr;
-        }
+        public readonly IntPtr NativePtr = ptr;
 
         public UIntPtr Count => UIntPtr_objc_msgSend(NativePtr, sel_count);
         private static readonly Selector sel_count = "count";

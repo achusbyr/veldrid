@@ -5,20 +5,13 @@ using System;
 
 namespace Veldrid.MetalBindings
 {
-    public struct MTLScissorRect : IEquatable<MTLScissorRect>
+    public struct MTLScissorRect(uint x, uint y, uint width, uint height)
+        : IEquatable<MTLScissorRect>
     {
-        public UIntPtr X;
-        public UIntPtr Y;
-        public UIntPtr Width;
-        public UIntPtr Height;
-
-        public MTLScissorRect(uint x, uint y, uint width, uint height)
-        {
-            X = x;
-            Y = y;
-            Width = width;
-            Height = height;
-        }
+        public UIntPtr X = x;
+        public UIntPtr Y = y;
+        public UIntPtr Width = width;
+        public UIntPtr Height = height;
 
         public bool Equals(MTLScissorRect other)
         {

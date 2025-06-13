@@ -5,10 +5,9 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Veldrid.OpenGL;
 using Veldrid.OpenGLBindings;
 
-namespace Veldrid
+namespace Veldrid.OpenGL
 {
     /// <summary>
     ///     Exposes OpenGL-specific functionality,

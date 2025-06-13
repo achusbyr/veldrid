@@ -125,93 +125,48 @@ namespace Veldrid
         }
     }
 
-    internal class Win32SwapchainSource : SwapchainSource
+    internal class Win32SwapchainSource(IntPtr hwnd, IntPtr hinstance) : SwapchainSource
     {
-        public IntPtr Hwnd { get; }
-        public IntPtr Hinstance { get; }
-
-        public Win32SwapchainSource(IntPtr hwnd, IntPtr hinstance)
-        {
-            Hwnd = hwnd;
-            Hinstance = hinstance;
-        }
+        public IntPtr Hwnd { get; } = hwnd;
+        public IntPtr Hinstance { get; } = hinstance;
     }
 
-    internal class UwpSwapchainSource : SwapchainSource
+    internal class UwpSwapchainSource(object swapChainPanelNative, float logicalDpi) : SwapchainSource
     {
-        public object SwapChainPanelNative { get; }
-        public float LogicalDpi { get; }
-
-        public UwpSwapchainSource(object swapChainPanelNative, float logicalDpi)
-        {
-            SwapChainPanelNative = swapChainPanelNative;
-            LogicalDpi = logicalDpi;
-        }
+        public object SwapChainPanelNative { get; } = swapChainPanelNative;
+        public float LogicalDpi { get; } = logicalDpi;
     }
 
-    internal class XlibSwapchainSource : SwapchainSource
+    internal class XlibSwapchainSource(IntPtr display, IntPtr window) : SwapchainSource
     {
-        public IntPtr Display { get; }
-        public IntPtr Window { get; }
-
-        public XlibSwapchainSource(IntPtr display, IntPtr window)
-        {
-            Display = display;
-            Window = window;
-        }
+        public IntPtr Display { get; } = display;
+        public IntPtr Window { get; } = window;
     }
 
-    internal class WaylandSwapchainSource : SwapchainSource
+    internal class WaylandSwapchainSource(IntPtr display, IntPtr surface) : SwapchainSource
     {
-        public IntPtr Display { get; }
-        public IntPtr Surface { get; }
-
-        public WaylandSwapchainSource(IntPtr display, IntPtr surface)
-        {
-            Display = display;
-            Surface = surface;
-        }
+        public IntPtr Display { get; } = display;
+        public IntPtr Surface { get; } = surface;
     }
 
-    internal class NSWindowSwapchainSource : SwapchainSource
+    internal class NSWindowSwapchainSource(IntPtr nsWindow) : SwapchainSource
     {
-        public IntPtr NSWindow { get; }
-
-        public NSWindowSwapchainSource(IntPtr nsWindow)
-        {
-            NSWindow = nsWindow;
-        }
+        public IntPtr NSWindow { get; } = nsWindow;
     }
 
-    internal class UIViewSwapchainSource : SwapchainSource
+    internal class UIViewSwapchainSource(IntPtr uiView) : SwapchainSource
     {
-        public IntPtr UIView { get; }
-
-        public UIViewSwapchainSource(IntPtr uiView)
-        {
-            UIView = uiView;
-        }
+        public IntPtr UIView { get; } = uiView;
     }
 
-    internal class AndroidSurfaceSwapchainSource : SwapchainSource
+    internal class AndroidSurfaceSwapchainSource(IntPtr surfaceHandle, IntPtr jniEnv) : SwapchainSource
     {
-        public IntPtr Surface { get; }
-        public IntPtr JniEnv { get; }
-
-        public AndroidSurfaceSwapchainSource(IntPtr surfaceHandle, IntPtr jniEnv)
-        {
-            Surface = surfaceHandle;
-            JniEnv = jniEnv;
-        }
+        public IntPtr Surface { get; } = surfaceHandle;
+        public IntPtr JniEnv { get; } = jniEnv;
     }
 
-    internal class NSViewSwapchainSource : SwapchainSource
+    internal class NSViewSwapchainSource(IntPtr nsView) : SwapchainSource
     {
-        public IntPtr NSView { get; }
-
-        public NSViewSwapchainSource(IntPtr nsView)
-        {
-            NSView = nsView;
-        }
+        public IntPtr NSView { get; } = nsView;
     }
 }

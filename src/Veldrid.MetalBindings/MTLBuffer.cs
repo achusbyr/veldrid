@@ -7,14 +7,9 @@ using System.Runtime.InteropServices;
 namespace Veldrid.MetalBindings
 {
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe struct MTLBuffer
+    public unsafe struct MTLBuffer(IntPtr ptr)
     {
-        public readonly IntPtr NativePtr;
-
-        public MTLBuffer(IntPtr ptr)
-        {
-            NativePtr = ptr;
-        }
+        public readonly IntPtr NativePtr = ptr;
 
         public bool IsNull => NativePtr == IntPtr.Zero;
 

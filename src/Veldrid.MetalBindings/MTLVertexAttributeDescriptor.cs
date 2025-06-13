@@ -6,14 +6,9 @@ using static Veldrid.MetalBindings.ObjectiveCRuntime;
 
 namespace Veldrid.MetalBindings
 {
-    public struct MTLVertexAttributeDescriptor
+    public struct MTLVertexAttributeDescriptor(IntPtr ptr)
     {
-        public readonly IntPtr NativePtr;
-
-        public MTLVertexAttributeDescriptor(IntPtr ptr)
-        {
-            NativePtr = ptr;
-        }
+        public readonly IntPtr NativePtr = ptr;
 
         public MTLVertexFormat Format
         {

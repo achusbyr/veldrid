@@ -5,21 +5,14 @@ using System;
 
 namespace Veldrid.MetalBindings
 {
-    public struct NSRange
+    public struct NSRange(UIntPtr location, UIntPtr length)
     {
-        public UIntPtr Location;
-        public UIntPtr Length;
-
-        public NSRange(UIntPtr location, UIntPtr length)
-        {
-            Location = location;
-            Length = length;
-        }
+        public UIntPtr Location = location;
+        public UIntPtr Length = length;
 
         public NSRange(uint location, uint length)
+            : this(location, (UIntPtr)length)
         {
-            Location = location;
-            Length = length;
         }
     }
 }

@@ -7,14 +7,9 @@ using static Veldrid.MetalBindings.ObjectiveCRuntime;
 
 namespace Veldrid.MetalBindings
 {
-    public struct UIView
+    public struct UIView(IntPtr ptr)
     {
-        public readonly IntPtr NativePtr;
-
-        public UIView(IntPtr ptr)
-        {
-            NativePtr = ptr;
-        }
+        public readonly IntPtr NativePtr = ptr;
 
         public CALayer Layer => objc_msgSend<CALayer>(NativePtr, sel_layer);
 

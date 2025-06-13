@@ -3,16 +3,10 @@
 
 namespace Veldrid.MetalBindings
 {
-    public struct CGPoint
+    public struct CGPoint(double x, double y)
     {
-        public CGFloat X;
-        public CGFloat Y;
-
-        public CGPoint(double x, double y)
-        {
-            X = x;
-            Y = y;
-        }
+        public CGFloat X = x;
+        public CGFloat Y = y;
 
         public override string ToString()
         {

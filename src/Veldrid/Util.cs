@@ -3,6 +3,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -108,7 +109,7 @@ namespace Veldrid
 #if DEBUG
             if (value == null) throw new VeldridException($"Expected object of type {typeof(TDerived).FullName} but received null instead.");
 
-            if (!(value is TDerived derived)) throw new VeldridException($"object {value} must be derived type {typeof(TDerived).FullName} to be used in this context.");
+            if (value is not TDerived derived) throw new VeldridException($"object {value} must be derived type {typeof(TDerived).FullName} to be used in this context.");
 
             return derived;
 
@@ -150,13 +151,7 @@ namespace Veldrid
 
             if (left.Length != right.Length) return false;
 
-            for (int i = 0; i < left.Length; i++)
-            {
-                if (!ReferenceEquals(left[i], right[i]))
-                    return false;
-            }
-
-            return true;
+            return !left.Where((t, i) => !ReferenceEquals(t, right[i])).Any();
         }
 
         internal static bool ArrayEqualsEquatable<T>(T[] left, T[] right) where T : struct, IEquatable<T>
@@ -165,13 +160,7 @@ namespace Veldrid
 
             if (left.Length != right.Length) return false;
 
-            for (int i = 0; i < left.Length; i++)
-            {
-                if (!left[i].Equals(right[i]))
-                    return false;
-            }
-
-            return true;
+            return !left.Where((t, i) => !t.Equals(right[i])).Any();
         }
 
         internal static void ClearArray<T>(T[] array)
@@ -247,14 +236,12 @@ namespace Veldrid
 
         internal static TextureView GetTextureView(GraphicsDevice gd, IBindableResource resource)
         {
-            if (resource is TextureView view)
-                return view;
-
-            if (resource is Texture tex)
-                return tex.GetFullTextureView(gd);
-
-            throw new VeldridException(
-                $"Unexpected resource type. Expected Texture or TextureView but found {resource.GetType().Name}");
+            return resource switch
+            {
+                TextureView view => view,
+                Texture tex => tex.GetFullTextureView(gd),
+                _ => throw new VeldridException($"Unexpected resource type. Expected Texture or TextureView but found {resource.GetType().Name}")
+            };
         }
 
         internal static void PackIntPtr(IntPtr sourcePtr, out uint low, out uint high)

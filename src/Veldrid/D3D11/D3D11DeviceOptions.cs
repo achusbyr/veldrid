@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Veldrid
+namespace Veldrid.D3D11
 {
     /// <summary>
     ///     A structure describing Direct3D11-specific device creation options.

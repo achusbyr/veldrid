@@ -6,14 +6,9 @@ using static Veldrid.MetalBindings.ObjectiveCRuntime;
 
 namespace Veldrid.MetalBindings
 {
-    public struct CAMetalLayer
+    public struct CAMetalLayer(IntPtr ptr)
     {
-        public readonly IntPtr NativePtr;
-
-        public CAMetalLayer(IntPtr ptr)
-        {
-            NativePtr = ptr;
-        }
+        public readonly IntPtr NativePtr = ptr;
 
         public static CAMetalLayer New()
         {

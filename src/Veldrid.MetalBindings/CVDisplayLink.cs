@@ -6,21 +6,16 @@ using System.Runtime.InteropServices;
 
 namespace Veldrid.MetalBindings
 {
-    public struct CVDisplayLink
+    public struct CVDisplayLink(IntPtr ptr)
     {
         private const string cv_framework = "/System/Library/Frameworks/CoreVideo.framework/CoreVideo";
         private const string cg_framework = "/System/Library/Frameworks/CoreGraphics.framework/CoreGraphics";
 
-        public readonly IntPtr NativePtr;
+        public readonly IntPtr NativePtr = ptr;
 
         public static implicit operator IntPtr(CVDisplayLink c)
         {
             return c.NativePtr;
-        }
-
-        public CVDisplayLink(IntPtr ptr)
-        {
-            NativePtr = ptr;
         }
 
         public static CVDisplayLink CreateWithActiveCGDisplays()

@@ -7,18 +7,13 @@ using static Veldrid.MetalBindings.ObjectiveCRuntime;
 
 namespace Veldrid.MetalBindings
 {
-    public struct NSView
+    public struct NSView(IntPtr ptr)
     {
-        public readonly IntPtr NativePtr;
+        public readonly IntPtr NativePtr = ptr;
 
         public static implicit operator IntPtr(NSView nsView)
         {
             return nsView.NativePtr;
-        }
-
-        public NSView(IntPtr ptr)
-        {
-            NativePtr = ptr;
         }
 
         public Bool8 WantsLayer

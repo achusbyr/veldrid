@@ -3,16 +3,10 @@
 
 namespace Veldrid.MetalBindings
 {
-    public struct CGRect
+    public struct CGRect(CGPoint origin, CGSize size)
     {
-        public CGPoint Origin;
-        public CGSize Size;
-
-        public CGRect(CGPoint origin, CGSize size)
-        {
-            Origin = origin;
-            Size = size;
-        }
+        public CGPoint Origin = origin;
+        public CGSize Size = size;
 
         public override string ToString()
         {

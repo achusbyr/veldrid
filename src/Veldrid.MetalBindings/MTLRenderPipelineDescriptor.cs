@@ -8,14 +8,9 @@ using static Veldrid.MetalBindings.ObjectiveCRuntime;
 namespace Veldrid.MetalBindings
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct MTLRenderPipelineDescriptor
+    public struct MTLRenderPipelineDescriptor(IntPtr ptr)
     {
-        public readonly IntPtr NativePtr;
-
-        public MTLRenderPipelineDescriptor(IntPtr ptr)
-        {
-            NativePtr = ptr;
-        }
+        public readonly IntPtr NativePtr = ptr;
 
         public static MTLRenderPipelineDescriptor New()
         {

@@ -6,14 +6,9 @@ using static Veldrid.MetalBindings.ObjectiveCRuntime;
 
 namespace Veldrid.MetalBindings
 {
-    public struct MTLPipelineBufferDescriptor
+    public struct MTLPipelineBufferDescriptor(IntPtr ptr)
     {
-        public readonly IntPtr NativePtr;
-
-        public MTLPipelineBufferDescriptor(IntPtr ptr)
-        {
-            NativePtr = ptr;
-        }
+        public readonly IntPtr NativePtr = ptr;
 
         public MTLMutability Mutability
         {

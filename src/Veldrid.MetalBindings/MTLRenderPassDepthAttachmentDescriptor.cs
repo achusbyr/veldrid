@@ -6,14 +6,9 @@ using static Veldrid.MetalBindings.ObjectiveCRuntime;
 
 namespace Veldrid.MetalBindings
 {
-    public struct MTLRenderPassDepthAttachmentDescriptor
+    public struct MTLRenderPassDepthAttachmentDescriptor(IntPtr ptr)
     {
-        public readonly IntPtr NativePtr;
-
-        public MTLRenderPassDepthAttachmentDescriptor(IntPtr ptr)
-        {
-            NativePtr = ptr;
-        }
+        public readonly IntPtr NativePtr = ptr;
 
         public MTLTexture Texture
         {

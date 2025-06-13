@@ -3,18 +3,13 @@
 
 namespace Veldrid.MetalBindings
 {
-    public struct Bool8
+    public struct Bool8(byte value)
     {
-        public readonly byte Value;
-
-        public Bool8(byte value)
-        {
-            Value = value;
-        }
+        public readonly byte Value = value;
 
         public Bool8(bool value)
+            : this(value ? (byte)1 : (byte)0)
         {
-            Value = value ? (byte)1 : (byte)0;
         }
 
         public static implicit operator bool(Bool8 b)

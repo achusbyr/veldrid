@@ -8,14 +8,9 @@ using static Veldrid.MetalBindings.ObjectiveCRuntime;
 namespace Veldrid.MetalBindings
 {
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe struct MTLTexture
+    public unsafe struct MTLTexture(IntPtr ptr)
     {
-        public readonly IntPtr NativePtr;
-
-        public MTLTexture(IntPtr ptr)
-        {
-            NativePtr = ptr;
-        }
+        public readonly IntPtr NativePtr = ptr;
 
         public bool IsNull => NativePtr == IntPtr.Zero;
 

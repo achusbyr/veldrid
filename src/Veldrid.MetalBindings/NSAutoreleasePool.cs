@@ -5,15 +5,10 @@ using System;
 
 namespace Veldrid.MetalBindings
 {
-    public struct NSAutoreleasePool : IDisposable
+    public struct NSAutoreleasePool(IntPtr ptr) : IDisposable
     {
         private static readonly ObjCClass s_class = new ObjCClass(nameof(NSAutoreleasePool));
-        public readonly IntPtr NativePtr;
-
-        public NSAutoreleasePool(IntPtr ptr)
-        {
-            NativePtr = ptr;
-        }
+        public readonly IntPtr NativePtr = ptr;
 
         public static NSAutoreleasePool Begin()
         {

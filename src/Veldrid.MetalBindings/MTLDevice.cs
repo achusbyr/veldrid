@@ -8,20 +8,15 @@ using static Veldrid.MetalBindings.ObjectiveCRuntime;
 
 namespace Veldrid.MetalBindings
 {
-    public unsafe struct MTLDevice
+    public unsafe struct MTLDevice(IntPtr nativePtr)
     {
         private const string metal_framework = "/System/Library/Frameworks/Metal.framework/Metal";
 
-        public readonly IntPtr NativePtr;
+        public readonly IntPtr NativePtr = nativePtr;
 
         public static implicit operator IntPtr(MTLDevice device)
         {
             return device.NativePtr;
-        }
-
-        public MTLDevice(IntPtr nativePtr)
-        {
-            NativePtr = nativePtr;
         }
 
         public string Name => string_objc_msgSend(NativePtr, sel_name);

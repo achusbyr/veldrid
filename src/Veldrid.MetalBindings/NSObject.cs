@@ -6,14 +6,9 @@ using static Veldrid.MetalBindings.ObjectiveCRuntime;
 
 namespace Veldrid.MetalBindings
 {
-    public struct NSObject
+    public struct NSObject(IntPtr ptr)
     {
-        public readonly IntPtr NativePtr;
-
-        public NSObject(IntPtr ptr)
-        {
-            NativePtr = ptr;
-        }
+        public readonly IntPtr NativePtr = ptr;
 
         public Bool8 IsKindOfClass(IntPtr @class)
         {

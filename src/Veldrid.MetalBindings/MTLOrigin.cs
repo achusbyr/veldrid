@@ -5,17 +5,10 @@ using System;
 
 namespace Veldrid.MetalBindings
 {
-    public struct MTLOrigin
+    public struct MTLOrigin(uint x, uint y, uint z)
     {
-        public UIntPtr X;
-        public UIntPtr Y;
-        public UIntPtr Z;
-
-        public MTLOrigin(uint x, uint y, uint z)
-        {
-            X = x;
-            Y = y;
-            Z = z;
-        }
+        public UIntPtr X = x;
+        public UIntPtr Y = y;
+        public UIntPtr Z = z;
     }
 }

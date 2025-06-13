@@ -6,14 +6,9 @@ using static Veldrid.MetalBindings.ObjectiveCRuntime;
 
 namespace Veldrid.MetalBindings
 {
-    public struct MTLFunction
+    public struct MTLFunction(IntPtr ptr)
     {
-        public readonly IntPtr NativePtr;
-
-        public MTLFunction(IntPtr ptr)
-        {
-            NativePtr = ptr;
-        }
+        public readonly IntPtr NativePtr = ptr;
 
         public NSDictionary FunctionConstantsDictionary => objc_msgSend<NSDictionary>(NativePtr, sel_function_constants_dictionary);
 

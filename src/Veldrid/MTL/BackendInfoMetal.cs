@@ -5,9 +5,8 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using Veldrid.MetalBindings;
-using Veldrid.MTL;
 
-namespace Veldrid
+namespace Veldrid.MTL
 {
     /// <summary>
     ///     Exposes Metal-specific functionality,

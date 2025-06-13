@@ -6,18 +6,13 @@ using static Veldrid.MetalBindings.ObjectiveCRuntime;
 
 namespace Veldrid.MetalBindings
 {
-    public struct CALayer
+    public struct CALayer(IntPtr ptr)
     {
-        public readonly IntPtr NativePtr;
+        public readonly IntPtr NativePtr = ptr;
 
         public static implicit operator IntPtr(CALayer c)
         {
             return c.NativePtr;
-        }
-
-        public CALayer(IntPtr ptr)
-        {
-            NativePtr = ptr;
         }
 
         public void AddSublayer(IntPtr layer)

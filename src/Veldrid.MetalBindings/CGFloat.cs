@@ -5,16 +5,9 @@ namespace Veldrid.MetalBindings
 {
     // TODO: Technically this should be "pointer-sized",
     // but there are no non-64-bit platforms that anyone cares about.
-    public struct CGFloat
+    public struct CGFloat(double value)
     {
-        private readonly double _value;
-
-        public CGFloat(double value)
-        {
-            _value = value;
-        }
-
-        public double Value => _value;
+        public double Value => value;
 
         public static implicit operator CGFloat(double value)
         {
@@ -28,7 +21,7 @@ namespace Veldrid.MetalBindings
 
         public override string ToString()
         {
-            return _value.ToString();
+            return value.ToString();
         }
     }
 }

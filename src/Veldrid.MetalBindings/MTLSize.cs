@@ -7,17 +7,10 @@ using System.Runtime.InteropServices;
 namespace Veldrid.MetalBindings
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct MTLSize
+    public struct MTLSize(uint width, uint height, uint depth)
     {
-        public UIntPtr Width;
-        public UIntPtr Height;
-        public UIntPtr Depth;
-
-        public MTLSize(uint width, uint height, uint depth)
-        {
-            Width = width;
-            Height = height;
-            Depth = depth;
-        }
+        public UIntPtr Width = width;
+        public UIntPtr Height = height;
+        public UIntPtr Depth = depth;
     }
 }

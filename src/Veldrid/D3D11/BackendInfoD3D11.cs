@@ -3,10 +3,9 @@
 
 #if !EXCLUDE_D3D11_BACKEND
 using System;
-using Veldrid.D3D11;
 using Vortice.Direct3D;
 
-namespace Veldrid
+namespace Veldrid.D3D11
 {
     /// <summary>
     ///     Exposes Direct3D 11-specific functionality,
