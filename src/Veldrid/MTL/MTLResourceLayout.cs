@@ -29,7 +29,7 @@ namespace Veldrid.MTL
             Description = description;
 #endif
 
-            var elements = description.Elements;
+            ResourceLayoutElementDescription[] elements = description.Elements;
 #if !VALIDATE_USAGE
             ResourceKinds = new ResourceKind[elements.Length];
             for (int i = 0; i < elements.Length; i++)

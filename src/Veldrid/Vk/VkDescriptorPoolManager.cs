@@ -11,7 +11,7 @@ namespace Veldrid.Vk
     internal class VkDescriptorPoolManager
     {
         private readonly VkGraphicsDevice gd;
-        private readonly List<PoolInfo> pools = new List<PoolInfo>();
+        private readonly List<PoolInfo> pools = [];
         private readonly object @lock = new object();
 
         public VkDescriptorPoolManager(VkGraphicsDevice gd)
@@ -77,7 +77,7 @@ namespace Veldrid.Vk
             const uint total_sets = 1000;
             const uint descriptor_count = 100;
             const uint pool_size_count = 7;
-            var sizes = stackalloc VkDescriptorPoolSize[(int)pool_size_count];
+            VkDescriptorPoolSize* sizes = stackalloc VkDescriptorPoolSize[(int)pool_size_count];
             sizes[0].type = VkDescriptorType.UniformBuffer;
             sizes[0].descriptorCount = descriptor_count;
             sizes[1].type = VkDescriptorType.SampledImage;

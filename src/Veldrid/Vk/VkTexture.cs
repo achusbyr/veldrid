@@ -243,7 +243,7 @@ namespace Veldrid.Vk
             SampleCount = sampleCount;
             VkSampleCount = VkFormats.VdToVkSampleCount(sampleCount);
             optimalImage = existingImage;
-            imageLayouts = new[] { VkImageLayout.Undefined };
+            imageLayouts = [VkImageLayout.Undefined];
             IsSwapchainTexture = true;
 
             clearIfRenderTarget();

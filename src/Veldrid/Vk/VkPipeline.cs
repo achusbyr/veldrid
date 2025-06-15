@@ -53,7 +53,7 @@ namespace Veldrid.Vk
             // Blend State
             var blendStateCi = VkPipelineColorBlendStateCreateInfo.New();
             int attachmentsCount = description.BlendState.AttachmentStates.Length;
-            var attachmentsPtr
+            VkPipelineColorBlendAttachmentState* attachmentsPtr
                 = stackalloc VkPipelineColorBlendAttachmentState[attachmentsCount];
 
             for (int i = 0; i < attachmentsCount; i++)
@@ -98,7 +98,7 @@ namespace Veldrid.Vk
 
             // Dynamic State
             var dynamicStateCi = VkPipelineDynamicStateCreateInfo.New();
-            var dynamicStates = stackalloc VkDynamicState[2];
+            VkDynamicState* dynamicStates = stackalloc VkDynamicState[2];
             dynamicStates[0] = VkDynamicState.Viewport;
             dynamicStates[1] = VkDynamicState.Scissor;
             dynamicStateCi.dynamicStateCount = 2;
@@ -149,12 +149,12 @@ namespace Veldrid.Vk
             // Vertex Input State
             var vertexInputCi = VkPipelineVertexInputStateCreateInfo.New();
 
-            var inputDescriptions = description.ShaderSet.VertexLayouts;
+            VertexLayoutDescription[] inputDescriptions = description.ShaderSet.VertexLayouts;
             uint bindingCount = (uint)inputDescriptions.Length;
             uint attributeCount = 0;
             for (int i = 0; i < inputDescriptions.Length; i++) attributeCount += (uint)inputDescriptions[i].Elements.Length;
-            var bindingDescs = stackalloc VkVertexInputBindingDescription[(int)bindingCount];
-            var attributeDescs = stackalloc VkVertexInputAttributeDescription[(int)attributeCount];
+            VkVertexInputBindingDescription* bindingDescs = stackalloc VkVertexInputBindingDescription[(int)bindingCount];
+            VkVertexInputAttributeDescription* attributeDescs = stackalloc VkVertexInputAttributeDescription[(int)attributeCount];
 
             int targetIndex = 0;
             int targetLocation = 0;
@@ -200,7 +200,7 @@ namespace Veldrid.Vk
             // Shader Stage
 
             VkSpecializationInfo specializationInfo;
-            var specDescs = description.ShaderSet.Specializations;
+            SpecializationConstant[] specDescs = description.ShaderSet.Specializations;
 
             if (specDescs != null)
             {
@@ -208,7 +208,7 @@ namespace Veldrid.Vk
                 foreach (var spec in specDescs) specDataSize += VkFormats.GetSpecializationConstantSize(spec.Type);
                 byte* fullSpecData = stackalloc byte[(int)specDataSize];
                 int specializationCount = specDescs.Length;
-                var mapEntries = stackalloc VkSpecializationMapEntry[specializationCount];
+                VkSpecializationMapEntry* mapEntries = stackalloc VkSpecializationMapEntry[specializationCount];
                 uint specOffset = 0;
 
                 for (int i = 0; i < specializationCount; i++)
@@ -229,7 +229,7 @@ namespace Veldrid.Vk
                 specializationInfo.pMapEntries = mapEntries;
             }
 
-            var shaders = description.ShaderSet.Shaders;
+            Shader[] shaders = description.ShaderSet.Shaders;
             var stages = new StackList<VkPipelineShaderStageCreateInfo>();
 
             foreach (var shader in shaders)
@@ -255,10 +255,10 @@ namespace Veldrid.Vk
             pipelineCi.pViewportState = &viewportStateCi;
 
             // Pipeline Layout
-            var resourceLayouts = description.ResourceLayouts;
+            ResourceLayout[] resourceLayouts = description.ResourceLayouts;
             var pipelineLayoutCi = VkPipelineLayoutCreateInfo.New();
             pipelineLayoutCi.setLayoutCount = (uint)resourceLayouts.Length;
-            var dsls = stackalloc VkDescriptorSetLayout[resourceLayouts.Length];
+            VkDescriptorSetLayout* dsls = stackalloc VkDescriptorSetLayout[resourceLayouts.Length];
             for (int i = 0; i < resourceLayouts.Length; i++) dsls[i] = Util.AssertSubtype<ResourceLayout, VkResourceLayout>(resourceLayouts[i]).DescriptorSetLayout;
             pipelineLayoutCi.pSetLayouts = dsls;
 
@@ -365,10 +365,10 @@ namespace Veldrid.Vk
             var pipelineCi = VkComputePipelineCreateInfo.New();
 
             // Pipeline Layout
-            var resourceLayouts = description.ResourceLayouts;
+            ResourceLayout[] resourceLayouts = description.ResourceLayouts;
             var pipelineLayoutCi = VkPipelineLayoutCreateInfo.New();
             pipelineLayoutCi.setLayoutCount = (uint)resourceLayouts.Length;
-            var dsls = stackalloc VkDescriptorSetLayout[resourceLayouts.Length];
+            VkDescriptorSetLayout* dsls = stackalloc VkDescriptorSetLayout[resourceLayouts.Length];
             for (int i = 0; i < resourceLayouts.Length; i++) dsls[i] = Util.AssertSubtype<ResourceLayout, VkResourceLayout>(resourceLayouts[i]).DescriptorSetLayout;
             pipelineLayoutCi.pSetLayouts = dsls;
 
@@ -378,7 +378,7 @@ namespace Veldrid.Vk
             // Shader Stage
 
             VkSpecializationInfo specializationInfo;
-            var specDescs = description.Specializations;
+            SpecializationConstant[] specDescs = description.Specializations;
 
             if (specDescs != null)
             {
@@ -386,7 +386,7 @@ namespace Veldrid.Vk
                 foreach (var spec in specDescs) specDataSize += VkFormats.GetSpecializationConstantSize(spec.Type);
                 byte* fullSpecData = stackalloc byte[(int)specDataSize];
                 int specializationCount = specDescs.Length;
-                var mapEntries = stackalloc VkSpecializationMapEntry[specializationCount];
+                VkSpecializationMapEntry* mapEntries = stackalloc VkSpecializationMapEntry[specializationCount];
                 uint specOffset = 0;
 
                 for (int i = 0; i < specializationCount; i++)

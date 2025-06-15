@@ -1,6 +1,7 @@
 // Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
 // See the LICENCE file in the repository root for full licence text.
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -10,7 +11,7 @@ namespace Veldrid.MTL
 {
     internal class CommandBufferUsageList<T>
     {
-        private readonly List<(MTLCommandBuffer buffer, T value)> items = new List<(MTLCommandBuffer buffer, T item)>();
+        private readonly List<(MTLCommandBuffer buffer, T value)> items = [];
 
         public void Add(MTLCommandBuffer cb, T value)
         {
@@ -29,7 +30,7 @@ namespace Veldrid.MTL
 
         public bool Contains(MTLCommandBuffer cb)
         {
-            foreach (var (buffer, _) in items)
+            foreach ((MTLCommandBuffer buffer, var _) in items)
             {
                 if (buffer.Equals(cb))
                     return true;
@@ -151,7 +152,7 @@ namespace Veldrid.MTL
                     return;
 
                 int toKeepItemCount = list.Count - count;
-                var listSpan = CollectionsMarshal.AsSpan(list);
+                Span<(MTLCommandBuffer buffer, T value)> listSpan = CollectionsMarshal.AsSpan(list);
 
                 listSpan.Slice(count, toKeepItemCount).CopyTo(listSpan);
                 list.RemoveRange(toKeepItemCount, list.Count - toKeepItemCount);

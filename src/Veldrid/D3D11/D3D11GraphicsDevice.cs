@@ -76,10 +76,10 @@ namespace Veldrid.D3D11
             = new Dictionary<MappedResourceCacheKey, MappedResourceInfo>();
 
         private readonly object stagingResourcesLock = new object();
-        private readonly List<D3D11Buffer> availableStagingBuffers = new List<D3D11Buffer>();
+        private readonly List<D3D11Buffer> availableStagingBuffers = [];
 
         private readonly object resetEventsLock = new object();
-        private readonly List<ManualResetEvent[]> resetEvents = new List<ManualResetEvent[]>();
+        private readonly List<ManualResetEvent[]> resetEvents = [];
 
         public D3D11GraphicsDevice(GraphicsDeviceOptions options, D3D11DeviceOptions d3D11DeviceOptions, SwapchainDescription? swapchainDesc)
             : this(mergeOptions(d3D11DeviceOptions, options), swapchainDesc)
@@ -102,12 +102,11 @@ namespace Veldrid.D3D11
                     VorticeD3D11.D3D11CreateDevice(options.AdapterPtr,
                         DriverType.Hardware,
                         flags,
-                        new[]
-                        {
+                        [
                             FeatureLevel.Level_11_1,
                             FeatureLevel.Level_11_0,
                             FeatureLevel.Level_10_0
-                        },
+                        ],
                         out device).CheckError();
                 }
                 else
@@ -115,12 +114,11 @@ namespace Veldrid.D3D11
                     VorticeD3D11.D3D11CreateDevice(IntPtr.Zero,
                         DriverType.Hardware,
                         flags,
-                        new[]
-                        {
+                        [
                             FeatureLevel.Level_11_1,
                             FeatureLevel.Level_11_0,
                             FeatureLevel.Level_10_0
-                        },
+                        ],
                         out device).CheckError();
                 }
             }
@@ -129,7 +127,7 @@ namespace Veldrid.D3D11
                 VorticeD3D11.D3D11CreateDevice(IntPtr.Zero,
                     DriverType.Hardware,
                     flags,
-                    Array.Empty<FeatureLevel>(),
+                    [],
                     out device).CheckError();
             }
 
@@ -141,8 +139,8 @@ namespace Veldrid.D3D11
 
                 var desc = dxgiAdapter.Description;
                 DeviceName = desc.Description;
-                VendorName = "id:" + ((uint)desc.VendorId).ToString("x8");
-                DeviceId = desc.DeviceId;
+                VendorName = "id:" + desc.VendorId.ToString("x8");
+                DeviceId = (int)desc.DeviceId;
             }
 
             switch (device.FeatureLevel)
@@ -243,7 +241,7 @@ namespace Veldrid.D3D11
             else
                 msTimeout = (int)Math.Min(nanosecondTimeout / 1_000_000, int.MaxValue);
 
-            var events = getResetEventArray(fences.Length);
+            ManualResetEvent[] events = getResetEventArray(fences.Length);
             for (int i = 0; i < fences.Length; i++)
                 events[i] = Util.AssertSubtype<Fence, D3D11Fence>(fences[i]).ResetEvent;
 
@@ -324,21 +322,21 @@ namespace Veldrid.D3D11
                             Util.GetMipLevelAndArrayLayer(texture, subresource, out uint mipLevel, out uint arrayLayer);
                             immediateContext.Map(
                                 texture.DeviceTexture,
-                                (int)mipLevel,
-                                (int)arrayLayer,
+                                mipLevel,
+                                arrayLayer,
                                 D3D11Formats.VdToD3D11MapMode(false, mode),
                                 MapFlags.None,
-                                out int _,
+                                out uint _,
                                 out MappedSubresource msr);
 
                             info.MappedResource = new MappedResource(
                                 resource,
                                 mode,
                                 msr.DataPointer,
-                                texture.Height * (uint)msr.RowPitch,
+                                texture.Height * msr.RowPitch,
                                 subresource,
-                                (uint)msr.RowPitch,
-                                (uint)msr.DepthPitch);
+                                msr.RowPitch,
+                                msr.DepthPitch);
                             info.RefCount = 1;
                             info.Mode = mode;
                             mappedResources.Add(key, info);
@@ -370,7 +368,7 @@ namespace Veldrid.D3D11
                         else
                         {
                             var texture = Util.AssertSubtype<IMappableResource, D3D11Texture>(resource);
-                            immediateContext.Unmap(texture.DeviceTexture, (int)subresource);
+                            immediateContext.Unmap(texture.DeviceTexture, subresource);
                         }
 
                         bool result = mappedResources.Remove(key);
@@ -434,20 +432,17 @@ namespace Veldrid.D3D11
 
         private bool checkFormatMultisample(Format format, int sampleCount)
         {
-            return device.CheckMultisampleQualityLevels(format, sampleCount) != 0;
+            return device.CheckMultisampleQualityLevels(format, (uint)sampleCount) != 0;
         }
 
         private D3D11Buffer getFreeStagingBuffer(uint sizeInBytes)
         {
             lock (stagingResourcesLock)
             {
-                foreach (var buffer in availableStagingBuffers)
+                foreach (D3D11Buffer buffer in availableStagingBuffers.Where(buffer => buffer.SizeInBytes >= sizeInBytes))
                 {
-                    if (buffer.SizeInBytes >= sizeInBytes)
-                    {
-                        availableStagingBuffers.Remove(buffer);
-                        return buffer;
-                    }
+                    availableStagingBuffers.Remove(buffer);
+                    return buffer;
                 }
             }
 
@@ -463,7 +458,7 @@ namespace Veldrid.D3D11
             {
                 for (int i = resetEvents.Count - 1; i > 0; i--)
                 {
-                    var array = resetEvents[i];
+                    ManualResetEvent[] array = resetEvents[i];
 
                     if (array.Length == length)
                     {
@@ -503,7 +498,7 @@ namespace Veldrid.D3D11
             lock (immediateContextLock)
             {
                 var d3d11Sc = Util.AssertSubtype<Swapchain, D3D11Swapchain>(swapchain);
-                d3d11Sc.DxgiSwapChain.Present(d3d11Sc.SyncInterval, d3d11Sc.PresentFlags);
+                d3d11Sc.DxgiSwapChain.Present((uint)d3d11Sc.SyncInterval, d3d11Sc.PresentFlags);
             }
         }
 
@@ -604,7 +599,7 @@ namespace Veldrid.D3D11
                 lock (immediateContextLock)
                 {
                     immediateContext.CopySubresourceRegion(
-                        d3dBuffer.Buffer, 0, (int)bufferOffsetInBytes, 0, 0,
+                        d3dBuffer.Buffer, 0, bufferOffsetInBytes, 0, 0,
                         staging.Buffer, 0,
                         sourceRegion);
                 }
@@ -667,11 +662,11 @@ namespace Veldrid.D3D11
                 {
                     immediateContext.UpdateSubresource(
                         d3dTex.DeviceTexture,
-                        subresource,
+                        (uint)subresource,
                         resourceRegion,
                         source,
-                        (int)srcRowPitch,
-                        (int)srcDepthPitch);
+                        srcRowPitch,
+                        srcDepthPitch);
                 }
             }
         }

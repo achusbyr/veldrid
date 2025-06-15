@@ -13,9 +13,9 @@ namespace Veldrid.OpenGL.NoAllocEntryList
     {
         public OpenGLCommandList Parent { get; }
         private readonly StagingMemoryPool memoryPool;
-        private readonly List<EntryStorageBlock> blocks = new List<EntryStorageBlock>();
-        private readonly List<object> resourceList = new List<object>();
-        private readonly List<StagingBlock> stagingBlocks = new List<StagingBlock>();
+        private readonly List<EntryStorageBlock> blocks = [];
+        private readonly List<object> resourceList = [];
+        private readonly List<StagingBlock> stagingBlocks = [];
 
         // Entry IDs
         private const byte begin_entry_id = 1;
@@ -134,7 +134,7 @@ namespace Veldrid.OpenGL.NoAllocEntryList
         {
             terminatorWritePtr = null;
 
-            if (!currentBlock.Alloc(size, out var ptr))
+            if (!currentBlock.Alloc(size, out void* ptr))
             {
                 int currentBlockIndex = blocks.IndexOf(currentBlock);
                 bool anyWorked = false;
@@ -175,7 +175,7 @@ namespace Veldrid.OpenGL.NoAllocEntryList
         {
             Debug.Assert(sizeOfT == Unsafe.SizeOf<T>());
             uint storageSize = sizeOfT + 1; // Include ID
-            var storagePtr = GetStorageChunk(storageSize, out byte* terminatorWritePtr);
+            void* storagePtr = GetStorageChunk(storageSize, out byte* terminatorWritePtr);
             Unsafe.Write(storagePtr, id);
             Unsafe.Write((byte*)storagePtr + 1, entry);
             if (terminatorWritePtr != null) *terminatorWritePtr = 0;

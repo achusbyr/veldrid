@@ -35,13 +35,13 @@ namespace Veldrid.D3D11
 
         public void Dispose()
         {
-            foreach (var kvp in blendStates) kvp.Value.Dispose();
+            foreach (KeyValuePair<BlendStateDescription, ID3D11BlendState> kvp in blendStates) kvp.Value.Dispose();
 
-            foreach (var kvp in depthStencilStates) kvp.Value.Dispose();
+            foreach (KeyValuePair<DepthStencilStateDescription, ID3D11DepthStencilState> kvp in depthStencilStates) kvp.Value.Dispose();
 
-            foreach (var kvp in rasterizerStates) kvp.Value.Dispose();
+            foreach (KeyValuePair<D3D11RasterizerStateCacheKey, ID3D11RasterizerState> kvp in rasterizerStates) kvp.Value.Dispose();
 
-            foreach (var kvp in inputLayouts) kvp.Value.Dispose();
+            foreach (KeyValuePair<InputLayoutCacheKey, ID3D11InputLayout> kvp in inputLayouts) kvp.Value.Dispose();
         }
 
         #endregion
@@ -84,7 +84,7 @@ namespace Veldrid.D3D11
 
         private ID3D11BlendState createNewBlendState(ref BlendStateDescription description)
         {
-            var attachmentStates = description.AttachmentStates;
+            BlendAttachmentDescription[] attachmentStates = description.AttachmentStates;
             var d3dBlendStateDesc = new BlendDescription();
 
             for (int i = 0; i < attachmentStates.Length; i++)
@@ -206,7 +206,7 @@ namespace Veldrid.D3D11
 
             for (int slot = 0; slot < vertexLayouts.Length; slot++)
             {
-                var elementDescs = vertexLayouts[slot].Elements;
+                VertexElementDescription[] elementDescs = vertexLayouts[slot].Elements;
                 uint stepRate = vertexLayouts[slot].InstanceStepRate;
                 int currentOffset = 0;
 
@@ -215,12 +215,12 @@ namespace Veldrid.D3D11
                     var desc = elementDescs[i];
                     elements[element] = new InputElementDescription(
                         getSemanticString(desc.Semantic),
-                        SemanticIndices.GetAndIncrement(ref si, desc.Semantic),
+                        (uint)SemanticIndices.GetAndIncrement(ref si, desc.Semantic),
                         D3D11Formats.ToDxgiFormat(desc.Format),
-                        desc.Offset != 0 ? (int)desc.Offset : currentOffset,
-                        slot,
+                        (uint)(desc.Offset != 0 ? (int)desc.Offset : currentOffset),
+                        (uint)slot,
                         stepRate == 0 ? InputClassification.PerVertexData : InputClassification.PerInstanceData,
-                        (int)stepRate);
+                        stepRate);
 
                     currentOffset += (int)FormatSizeHelpers.GetSizeInBytes(desc.Format);
                     element += 1;

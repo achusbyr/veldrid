@@ -11,8 +11,8 @@ namespace Veldrid
         internal static void ValidateResourceSet(GraphicsDevice gd, ref ResourceSetDescription description)
         {
 #if VALIDATE_USAGE
-            var elements = description.Layout.Description.Elements;
-            var resources = description.BoundResources;
+            ResourceLayoutElementDescription[] elements = description.Layout.Description.Elements;
+            IBindableResource[] resources = description.BoundResources;
 
             if (elements.Length != resources.Length)
             {

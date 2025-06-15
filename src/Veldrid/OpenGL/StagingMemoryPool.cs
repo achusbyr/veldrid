@@ -20,7 +20,7 @@ namespace Veldrid.OpenGL
 
         public StagingMemoryPool()
         {
-            storage = new List<StagingBlock>();
+            storage = [];
             availableBlocks = new SortedList<uint, uint>(new CapacityComparer());
         }
 
@@ -80,8 +80,8 @@ namespace Veldrid.OpenGL
         {
             lock (@lock)
             {
-                var available = availableBlocks;
-                var indices = available.Values;
+                SortedList<uint, uint> available = availableBlocks;
+                IList<uint> indices = available.Values;
 
                 for (int i = 0; i < available.Count; i++)
                 {

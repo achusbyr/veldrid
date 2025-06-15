@@ -133,7 +133,7 @@ namespace Veldrid.Vk
 
         private unsafe ReadOnlyCollection<ExtensionProperties> enumerateDeviceExtensions()
         {
-            var vkProps = gd.GetDeviceExtensionProperties();
+            VkExtensionProperties[] vkProps = gd.GetDeviceExtensionProperties();
             var veldridProps = new ExtensionProperties[vkProps.Length];
 
             for (int i = 0; i < vkProps.Length; i++)

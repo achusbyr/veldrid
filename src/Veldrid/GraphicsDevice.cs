@@ -151,7 +151,7 @@ namespace Veldrid
         public Sampler LinearSampler { get; private set; }
 
         private readonly object deferredDisposalLock = new object();
-        private readonly List<IDisposable> disposables = new List<IDisposable>();
+        private readonly List<IDisposable> disposables = [];
         private Sampler aniso4XSampler;
 
         internal GraphicsDevice()

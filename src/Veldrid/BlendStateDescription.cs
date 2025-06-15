@@ -65,7 +65,7 @@ namespace Veldrid
         /// </summary>
         public static readonly BlendStateDescription SINGLE_OVERRIDE_BLEND = new BlendStateDescription
         {
-            AttachmentStates = new[] { BlendAttachmentDescription.OVERRIDE_BLEND }
+            AttachmentStates = [BlendAttachmentDescription.OVERRIDE_BLEND]
         };
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace Veldrid
         /// </summary>
         public static readonly BlendStateDescription SINGLE_ALPHA_BLEND = new BlendStateDescription
         {
-            AttachmentStates = new[] { BlendAttachmentDescription.ALPHA_BLEND }
+            AttachmentStates = [BlendAttachmentDescription.ALPHA_BLEND]
         };
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace Veldrid
         /// </summary>
         public static readonly BlendStateDescription SINGLE_ADDITIVE_BLEND = new BlendStateDescription
         {
-            AttachmentStates = new[] { BlendAttachmentDescription.ADDITIVE_BLEND }
+            AttachmentStates = [BlendAttachmentDescription.ADDITIVE_BLEND]
         };
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace Veldrid
         /// </summary>
         public static readonly BlendStateDescription SINGLE_DISABLED = new BlendStateDescription
         {
-            AttachmentStates = new[] { BlendAttachmentDescription.DISABLED }
+            AttachmentStates = [BlendAttachmentDescription.DISABLED]
         };
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace Veldrid
         /// </summary>
         public static readonly BlendStateDescription EMPTY = new BlendStateDescription
         {
-            AttachmentStates = Array.Empty<BlendAttachmentDescription>()
+            AttachmentStates = []
         };
 
         /// <summary>

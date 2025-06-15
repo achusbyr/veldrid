@@ -38,7 +38,7 @@ namespace Veldrid.Vk
         private readonly VkRenderPass renderPassNoClearLoad;
         private readonly VkRenderPass renderPassNoClear;
         private readonly VkRenderPass renderPassClear;
-        private readonly List<VkImageView> attachmentViews = new List<VkImageView>();
+        private readonly List<VkImageView> attachmentViews = [];
         private bool destroyed;
         private string name;
 
@@ -181,7 +181,7 @@ namespace Veldrid.Vk
             uint fbAttachmentsCount = (uint)description.ColorTargets.Length;
             if (description.DepthTarget != null) fbAttachmentsCount += 1;
 
-            var fbAttachments = stackalloc VkImageView[(int)fbAttachmentsCount];
+            VkImageView* fbAttachments = stackalloc VkImageView[(int)fbAttachmentsCount];
 
             for (int i = 0; i < colorAttachmentCount; i++)
             {
@@ -195,7 +195,7 @@ namespace Veldrid.Vk
                     description.ColorTargets[i].MipLevel,
                     1,
                     description.ColorTargets[i].ArrayLayer);
-                var dest = fbAttachments + i;
+                VkImageView* dest = fbAttachments + i;
                 var result = vkCreateImageView(this.gd.Device, ref imageViewCi, null, dest);
                 CheckResult(result);
                 attachmentViews.Add(*dest);
@@ -217,7 +217,7 @@ namespace Veldrid.Vk
                     description.DepthTarget.Value.MipLevel,
                     1,
                     description.DepthTarget.Value.ArrayLayer);
-                var dest = fbAttachments + (fbAttachmentsCount - 1);
+                VkImageView* dest = fbAttachments + (fbAttachmentsCount - 1);
                 var result = vkCreateImageView(this.gd.Device, ref depthViewCi, null, dest);
                 CheckResult(result);
                 attachmentViews.Add(*dest);

@@ -100,9 +100,9 @@ namespace Veldrid.D3D11
             {
                 var desc1D = new Texture1DDescription
                 {
-                    Width = roundedWidth,
-                    MipLevels = (int)description.MipLevels,
-                    ArraySize = arraySize,
+                    Width = (uint)roundedWidth,
+                    MipLevels = description.MipLevels,
+                    ArraySize = (uint)arraySize,
                     Format = TypelessDxgiFormat,
                     BindFlags = bindFlags,
                     CPUAccessFlags = cpuFlags,
@@ -116,15 +116,15 @@ namespace Veldrid.D3D11
             {
                 var deviceDescription = new Texture2DDescription
                 {
-                    Width = roundedWidth,
-                    Height = roundedHeight,
-                    MipLevels = (int)description.MipLevels,
-                    ArraySize = arraySize,
+                    Width = (uint)roundedWidth,
+                    Height = (uint)roundedHeight,
+                    MipLevels = description.MipLevels,
+                    ArraySize = (uint)arraySize,
                     Format = TypelessDxgiFormat,
                     BindFlags = bindFlags,
                     CPUAccessFlags = cpuFlags,
                     Usage = resourceUsage,
-                    SampleDescription = new SampleDescription((int)FormatHelpers.GetSampleCountUInt32(SampleCount), 0),
+                    SampleDescription = new SampleDescription(FormatHelpers.GetSampleCountUInt32(SampleCount), 0),
                     MiscFlags = optionFlags
                 };
 
@@ -135,10 +135,10 @@ namespace Veldrid.D3D11
                 Debug.Assert(Type == TextureType.Texture3D);
                 var desc3D = new Texture3DDescription
                 {
-                    Width = roundedWidth,
-                    Height = roundedHeight,
-                    Depth = (int)description.Depth,
-                    MipLevels = (int)description.MipLevels,
+                    Width = (uint)roundedWidth,
+                    Height = (uint)roundedHeight,
+                    Depth = description.Depth,
+                    MipLevels = description.MipLevels,
                     Format = TypelessDxgiFormat,
                     BindFlags = bindFlags,
                     CPUAccessFlags = cpuFlags,
@@ -156,13 +156,13 @@ namespace Veldrid.D3D11
         public D3D11Texture(ID3D11Texture2D existingTexture, TextureType type, PixelFormat format)
         {
             DeviceTexture = existingTexture;
-            Width = (uint)existingTexture.Description.Width;
-            Height = (uint)existingTexture.Description.Height;
+            Width = existingTexture.Description.Width;
+            Height = existingTexture.Description.Height;
             Depth = 1;
-            MipLevels = (uint)existingTexture.Description.MipLevels;
-            ArrayLayers = (uint)existingTexture.Description.ArraySize;
+            MipLevels = existingTexture.Description.MipLevels;
+            ArrayLayers = existingTexture.Description.ArraySize;
             Format = format;
-            SampleCount = FormatHelpers.GetSampleCount((uint)existingTexture.Description.SampleDescription.Count);
+            SampleCount = FormatHelpers.GetSampleCount(existingTexture.Description.SampleDescription.Count);
             Type = type;
             Usage = D3D11Formats.GetVdUsage(
                 existingTexture.Description.BindFlags,

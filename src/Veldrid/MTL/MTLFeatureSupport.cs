@@ -15,7 +15,7 @@ namespace Veldrid.MTL
         public MTLFeatureSet MaxFeatureSet { get; }
 
         public int Count => supportedFeatureSets.Count;
-        private readonly HashSet<MTLFeatureSet> supportedFeatureSets = new HashSet<MTLFeatureSet>();
+        private readonly HashSet<MTLFeatureSet> supportedFeatureSets = [];
 
         public MtlFeatureSupport(MTLDevice device)
         {

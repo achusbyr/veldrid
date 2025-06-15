@@ -39,9 +39,9 @@ namespace Veldrid.Vk
 
         public void Dispose()
         {
-            foreach (var kvp in allocatorsByMemoryType) kvp.Value.Dispose();
+            foreach (KeyValuePair<uint, ChunkAllocatorSet> kvp in allocatorsByMemoryType) kvp.Value.Dispose();
 
-            foreach (var kvp in allocatorsByMemoryTypeUnmapped) kvp.Value.Dispose();
+            foreach (KeyValuePair<uint, ChunkAllocatorSet> kvp in allocatorsByMemoryTypeUnmapped) kvp.Value.Dispose();
         }
 
         #endregion
@@ -197,7 +197,7 @@ namespace Veldrid.Vk
             private readonly VkDevice device;
             private readonly uint memoryTypeIndex;
             private readonly bool persistentMapped;
-            private readonly List<ChunkAllocator> allocators = new List<ChunkAllocator>();
+            private readonly List<ChunkAllocator> allocators = [];
 
             public ChunkAllocatorSet(VkDevice device, uint memoryTypeIndex, bool persistentMapped)
             {
@@ -245,7 +245,7 @@ namespace Veldrid.Vk
             private const ulong unmapped_chunk_size = 1024 * 1024 * 256;
             private readonly VkDevice device;
             private readonly uint memoryTypeIndex;
-            private readonly List<VkMemoryBlock> freeBlocks = new List<VkMemoryBlock>();
+            private readonly List<VkMemoryBlock> freeBlocks = [];
             private readonly VkDeviceMemory memory;
             private readonly void* mappedPtr;
 
@@ -392,7 +392,7 @@ namespace Veldrid.Vk
             }
 
 #if DEBUG
-            private readonly List<VkMemoryBlock> allocatedBlocks = new List<VkMemoryBlock>();
+            private readonly List<VkMemoryBlock> allocatedBlocks = [];
 
             private void checkAllocatedBlock(VkMemoryBlock block)
             {

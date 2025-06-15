@@ -51,7 +51,7 @@ namespace Veldrid.Vk
         private readonly PixelFormat? depthFormat;
 
         private VkFramebuffer[] scFramebuffers;
-        private VkImage[] scImages = { };
+        private VkImage[] scImages = [];
         private VkFormat scImageFormat;
         private VkExtent2D scExtent;
         private FramebufferAttachment[][] scColorTextures;
@@ -201,7 +201,7 @@ namespace Veldrid.Vk
                 var desc = new FramebufferDescription(depthAttachment?.Target, colorTex);
                 var fb = new VkFramebuffer(gd, ref desc, true);
                 scFramebuffers[i] = fb;
-                scColorTextures[i] = new[] { new FramebufferAttachment(colorTex, 0) };
+                scColorTextures[i] = [new FramebufferAttachment(colorTex, 0)];
             }
         }
     }

@@ -17,7 +17,7 @@ namespace Veldrid.MTL
         public override string Name { get; set; }
         private readonly MtlGraphicsDevice gd;
 
-        private readonly List<MtlBuffer> availableStagingBuffers = new List<MtlBuffer>();
+        private readonly List<MtlBuffer> availableStagingBuffers = [];
         private readonly CommandBufferUsageList<MtlBuffer> submittedStagingBuffers = new CommandBufferUsageList<MtlBuffer>();
         private readonly object submittedCommandsLock = new object();
         private readonly CommandBufferUsageList<MtlFence> completionFences = new CommandBufferUsageList<MtlFence>();
@@ -44,7 +44,7 @@ namespace Veldrid.MTL
         private MTLRenderCommandEncoder rce;
         private MTLBlitCommandEncoder bce;
         private MTLComputeCommandEncoder cce;
-        private RgbaFloat?[] clearColors = Array.Empty<RgbaFloat?>();
+        private RgbaFloat?[] clearColors = [];
         private (float depth, byte stencil)? clearDepth;
         private MtlBuffer indexBuffer;
         private uint ibOffset;
@@ -53,10 +53,10 @@ namespace Veldrid.MTL
         private MtlPipeline graphicsPipeline;
         private MtlPipeline lastComputePipeline;
         private MtlPipeline computePipeline;
-        private MTLViewport[] viewports = Array.Empty<MTLViewport>();
+        private MTLViewport[] viewports = [];
         private bool viewportsChanged;
-        private MTLScissorRect[] activeScissorRects = Array.Empty<MTLScissorRect>();
-        private MTLScissorRect[] scissorRects = Array.Empty<MTLScissorRect>();
+        private MTLScissorRect[] activeScissorRects = [];
+        private MTLScissorRect[] scissorRects = [];
         private uint graphicsResourceSetCount;
         private BoundResourceSetInfo[] graphicsResourceSets;
         private bool[] graphicsResourceSetsActive;
@@ -948,7 +948,7 @@ namespace Veldrid.MTL
 
         private uint getBufferBase(uint set, bool graphics)
         {
-            var layouts = graphics ? graphicsPipeline.ResourceLayouts : computePipeline.ResourceLayouts;
+            MtlResourceLayout[] layouts = graphics ? graphicsPipeline.ResourceLayouts : computePipeline.ResourceLayouts;
             uint ret = 0;
 
             for (int i = 0; i < set; i++)
@@ -962,7 +962,7 @@ namespace Veldrid.MTL
 
         private uint getTextureBase(uint set, bool graphics)
         {
-            var layouts = graphics ? graphicsPipeline.ResourceLayouts : computePipeline.ResourceLayouts;
+            MtlResourceLayout[] layouts = graphics ? graphicsPipeline.ResourceLayouts : computePipeline.ResourceLayouts;
             uint ret = 0;
 
             for (int i = 0; i < set; i++)
@@ -976,7 +976,7 @@ namespace Veldrid.MTL
 
         private uint getSamplerBase(uint set, bool graphics)
         {
-            var layouts = graphics ? graphicsPipeline.ResourceLayouts : computePipeline.ResourceLayouts;
+            MtlResourceLayout[] layouts = graphics ? graphicsPipeline.ResourceLayouts : computePipeline.ResourceLayouts;
             uint ret = 0;
 
             for (int i = 0; i < set; i++)

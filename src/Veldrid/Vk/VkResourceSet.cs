@@ -10,12 +10,12 @@ namespace Veldrid.Vk
     internal unsafe class VkResourceSet : ResourceSet
     {
         public VkDescriptorSet DescriptorSet => descriptorAllocationToken.Set;
-        public List<VkTexture> SampledTextures { get; } = new List<VkTexture>();
+        public List<VkTexture> SampledTextures { get; } = [];
 
-        public List<VkTexture> StorageTextures { get; } = new List<VkTexture>();
+        public List<VkTexture> StorageTextures { get; } = [];
 
         public ResourceRefCount RefCount { get; }
-        public List<ResourceRefCount> RefCounts { get; } = new List<ResourceRefCount>();
+        public List<ResourceRefCount> RefCounts { get; } = [];
 
         public override bool IsDisposed => destroyed;
 
@@ -47,11 +47,11 @@ namespace Veldrid.Vk
             descriptorCounts = vkLayout.DescriptorResourceCounts;
             descriptorAllocationToken = this.gd.DescriptorPoolManager.Allocate(descriptorCounts, dsl);
 
-            var boundResources = description.BoundResources;
+            IBindableResource[] boundResources = description.BoundResources;
             uint descriptorWriteCount = (uint)boundResources.Length;
-            var descriptorWrites = stackalloc VkWriteDescriptorSet[(int)descriptorWriteCount];
-            var bufferInfos = stackalloc VkDescriptorBufferInfo[(int)descriptorWriteCount];
-            var imageInfos = stackalloc VkDescriptorImageInfo[(int)descriptorWriteCount];
+            VkWriteDescriptorSet* descriptorWrites = stackalloc VkWriteDescriptorSet[(int)descriptorWriteCount];
+            VkDescriptorBufferInfo* bufferInfos = stackalloc VkDescriptorBufferInfo[(int)descriptorWriteCount];
+            VkDescriptorImageInfo* imageInfos = stackalloc VkDescriptorImageInfo[(int)descriptorWriteCount];
 
             for (int i = 0; i < descriptorWriteCount; i++)
             {

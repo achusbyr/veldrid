@@ -55,7 +55,7 @@ namespace Veldrid.MTL
         private readonly CommandBufferUsageList<MtlCommandList> submittedCLs = new CommandBufferUsageList<MtlCommandList>();
 
         private readonly object resetEventsLock = new object();
-        private readonly List<ManualResetEvent[]> resetEvents = new List<ManualResetEvent[]>();
+        private readonly List<ManualResetEvent[]> resetEvents = [];
 
         private const string unaligned_buffer_copy_pipeline_mac_os_name = "MTL_UnalignedBufferCopy_macOS";
         private const string unaligned_buffer_copy_pipelinei_os_name = "MTL_UnalignedBufferCopy_iOS";
@@ -227,7 +227,7 @@ namespace Veldrid.MTL
             else
                 msTimeout = (int)Math.Min(nanosecondTimeout / 1_000_000, int.MaxValue);
 
-            var events = getResetEventArray(fences.Length);
+            ManualResetEvent[] events = getResetEventArray(fences.Length);
             for (int i = 0; i < fences.Length; i++)
                 events[i] = Util.AssertSubtype<Fence, MtlFence>(fences[i]).ResetEvent;
 
@@ -419,7 +419,7 @@ namespace Veldrid.MTL
         private MappedResource mapTexture(MtlTexture texture, MapMode mode, uint subresource)
         {
             Debug.Assert(!texture.StagingBuffer.IsNull);
-            var data = texture.StagingBufferPointer;
+            void* data = texture.StagingBufferPointer;
             Util.GetMipLevelAndArrayLayer(texture, subresource, out uint mipLevel, out uint arrayLayer);
             Util.GetMipDimensions(texture, mipLevel, out uint _, out uint _, out uint _);
             uint subresourceSize = texture.GetSubresourceSize(mipLevel, arrayLayer);
@@ -435,7 +435,7 @@ namespace Veldrid.MTL
             {
                 for (int i = resetEvents.Count - 1; i > 0; i--)
                 {
-                    var array = resetEvents[i];
+                    ManualResetEvent[] array = resetEvents[i];
 
                     if (array.Length == length)
                     {
@@ -569,7 +569,7 @@ namespace Veldrid.MTL
         private protected override void UpdateBufferCore(DeviceBuffer buffer, uint bufferOffsetInBytes, IntPtr source, uint sizeInBytes)
         {
             var mtlBuffer = Util.AssertSubtype<DeviceBuffer, MtlBuffer>(buffer);
-            var destPtr = mtlBuffer.Pointer;
+            void* destPtr = mtlBuffer.Pointer;
             byte* destOffsetPtr = (byte*)destPtr + bufferOffsetInBytes;
 
             if (destPtr == null)

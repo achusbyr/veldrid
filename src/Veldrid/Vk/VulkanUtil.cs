@@ -41,7 +41,7 @@ namespace Veldrid.Vk
             uint propCount = 0;
             var result = vkEnumerateInstanceLayerProperties(ref propCount, null);
             CheckResult(result);
-            if (propCount == 0) return Array.Empty<string>();
+            if (propCount == 0) return [];
 
             var props = new VkLayerProperties[propCount];
             vkEnumerateInstanceLayerProperties(ref propCount, ref props[0]);
@@ -270,13 +270,13 @@ namespace Veldrid.Vk
 
         private static string[] enumerateInstanceExtensions()
         {
-            if (!IsVulkanLoaded()) return Array.Empty<string>();
+            if (!IsVulkanLoaded()) return [];
 
             uint propCount = 0;
             var result = vkEnumerateInstanceExtensionProperties((byte*)null, ref propCount, null);
-            if (result != VkResult.Success) return Array.Empty<string>();
+            if (result != VkResult.Success) return [];
 
-            if (propCount == 0) return Array.Empty<string>();
+            if (propCount == 0) return [];
 
             var props = new VkExtensionProperties[propCount];
             vkEnumerateInstanceExtensionProperties((byte*)null, ref propCount, ref props[0]);

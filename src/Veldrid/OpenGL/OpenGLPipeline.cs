@@ -1,7 +1,6 @@
 ﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
 // See the LICENCE file in the repository root for full licence text.
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
@@ -81,7 +80,7 @@ namespace Veldrid.OpenGL
             this.gd = gd;
             IsComputePipeline = true;
             ComputeShader = description.ComputeShader;
-            VertexStrides = Array.Empty<int>();
+            VertexStrides = [];
 #if !VALIDATE_USAGE
             ResourceLayouts = Util.ShallowClone(description.ResourceLayouts);
 #endif
@@ -211,7 +210,7 @@ namespace Veldrid.OpenGL
             {
                 var setLayout = layouts[setSlot];
                 var glSetLayout = Util.AssertSubtype<ResourceLayout, OpenGLResourceLayout>(setLayout);
-                var resources = glSetLayout.Elements;
+                ResourceLayoutElementDescription[] resources = glSetLayout.Elements;
 
                 var uniformBindings = new Dictionary<uint, OpenGLUniformBinding>();
                 var textureBindings = new Dictionary<uint, OpenGLTextureBindingSlotInfo>();

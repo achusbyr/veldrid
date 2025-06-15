@@ -19,8 +19,8 @@ namespace Veldrid.OpenGL
         internal OpenGLGraphicsDevice Device { get; }
 
         private readonly object @lock = new object();
-        private readonly List<IOpenGLCommandEntryList> availableLists = new List<IOpenGLCommandEntryList>();
-        private readonly List<IOpenGLCommandEntryList> submittedLists = new List<IOpenGLCommandEntryList>();
+        private readonly List<IOpenGLCommandEntryList> availableLists = [];
+        private readonly List<IOpenGLCommandEntryList> submittedLists = [];
         private bool disposed;
 
         public OpenGLCommandList(OpenGLGraphicsDevice gd, ref CommandListDescription description)

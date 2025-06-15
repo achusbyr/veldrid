@@ -73,7 +73,7 @@ namespace Veldrid.OpenGL
         private readonly Dictionary<OpenGLCommandList, int> submittedCommandListCounts
             = new Dictionary<OpenGLCommandList, int>();
 
-        private readonly HashSet<OpenGLCommandList> commandListsToDispose = new HashSet<OpenGLCommandList>();
+        private readonly HashSet<OpenGLCommandList> commandListsToDispose = [];
 
         private readonly object mappedResourceLock = new object();
 
@@ -81,7 +81,7 @@ namespace Veldrid.OpenGL
             = new Dictionary<MappedResourceCacheKey, MappedResourceInfoWithStaging>();
 
         private readonly object resetEventsLock = new object();
-        private readonly List<ManualResetEvent[]> resetEvents = new List<ManualResetEvent[]>();
+        private readonly List<ManualResetEvent[]> resetEvents = [];
 
         private static readonly uint update_texture_args_size = (uint)Unsafe.SizeOf<UpdateTextureArgs>();
         private ResourceFactory resourceFactory;
@@ -165,7 +165,7 @@ namespace Veldrid.OpenGL
             else
                 msTimeout = (int)Math.Min(nanosecondTimeout / 1_000_000, int.MaxValue);
 
-            var events = getResetEventArray(fences.Length);
+            ManualResetEvent[] events = getResetEventArray(fences.Length);
             for (int i = 0; i < fences.Length; i++) events[i] = Util.AssertSubtype<Fence, OpenGLFence>(fences[i]).ResetEvent;
             bool result;
 
@@ -761,7 +761,7 @@ namespace Veldrid.OpenGL
             if (eglInitialize(display, &major, &minor) == 0) throw new VeldridException($"Failed to initialize EGL: {eglGetError()}");
 
             int[] attribs =
-            {
+            [
                 EGL_RED_SIZE, 8,
                 EGL_GREEN_SIZE, 8,
                 EGL_BLUE_SIZE, 8,
@@ -773,7 +773,7 @@ namespace Veldrid.OpenGL
                 EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
                 EGL_RENDERABLE_TYPE, EGL_OPENGL_ES3_BIT,
                 EGL_NONE
-            };
+            ];
 
             IntPtr* configs = stackalloc IntPtr[50];
 
@@ -884,7 +884,7 @@ namespace Veldrid.OpenGL
             {
                 for (int i = resetEvents.Count - 1; i > 0; i--)
                 {
-                    var array = resetEvents[i];
+                    ManualResetEvent[] array = resetEvents[i];
 
                     if (array.Length == length)
                     {
@@ -1041,7 +1041,7 @@ namespace Veldrid.OpenGL
             private readonly AutoResetEvent executionEvent = new AutoResetEvent(false);
             private readonly Action<IntPtr> makeCurrent;
             private readonly IntPtr context;
-            private readonly List<Exception> exceptions = new List<Exception>();
+            private readonly List<Exception> exceptions = [];
             private readonly object exceptionsLock = new object();
             private bool terminated;
 

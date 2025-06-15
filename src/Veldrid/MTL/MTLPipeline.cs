@@ -80,7 +80,7 @@ namespace Veldrid.MTL
             }
 
             // Vertex layouts
-            var vdVertexLayouts = description.ShaderSet.VertexLayouts;
+            VertexLayoutDescription[] vdVertexLayouts = description.ShaderSet.VertexLayouts;
             var vertexDescriptor = mtlDesc.VertexDescriptor;
 
             for (uint i = 0; i < vdVertexLayouts.Length; i++)
@@ -311,7 +311,7 @@ namespace Veldrid.MTL
 
         private void addSpecializedFunction(MTLFunction function)
         {
-            specializedFunctions ??= new List<MTLFunction>();
+            specializedFunctions ??= [];
             specializedFunctions.Add(function);
         }
     }

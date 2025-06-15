@@ -41,7 +41,7 @@ namespace Veldrid.D3D11
                 unsafe
                 {
                     byte* pname = stackalloc byte[1024];
-                    int size = 1024 - 1;
+                    uint size = 1024 - 1;
                     DxgiSwapChain.GetPrivateData(CommonGuid.DebugObjectName, ref size, new IntPtr(pname));
                     pname[size] = 0;
                     return Marshal.PtrToStringAnsi(new IntPtr(pname));
@@ -54,7 +54,7 @@ namespace Veldrid.D3D11
                 else
                 {
                     IntPtr namePtr = Marshal.StringToHGlobalAnsi(value);
-                    DxgiSwapChain.SetPrivateData(CommonGuid.DebugObjectName, value.Length, namePtr);
+                    DxgiSwapChain.SetPrivateData(CommonGuid.DebugObjectName, (uint)value.Length, namePtr);
                     Marshal.FreeHGlobal(namePtr);
                 }
             }
@@ -103,7 +103,7 @@ namespace Veldrid.D3D11
         private SwapChainFlags flags;
         private bool disposed;
         private FrameLatencyWaitHandle frameLatencyWaitHandle;
-        private readonly HashSet<D3D11CommandList> referencedCLs = new HashSet<D3D11CommandList>();
+        private readonly HashSet<D3D11CommandList> referencedCLs = [];
 
         private bool allowTearing;
 
@@ -180,7 +180,7 @@ namespace Veldrid.D3D11
 
             uint actualWidth = (uint)(width * pixelScale);
             uint actualHeight = (uint)(height * pixelScale);
-            if (resizeBuffers) DxgiSwapChain.ResizeBuffers(2, (int)actualWidth, (int)actualHeight, colorFormat, flags).CheckError();
+            if (resizeBuffers) DxgiSwapChain.ResizeBuffers(2, actualWidth, actualHeight, colorFormat, flags).CheckError();
 
             // Get the backbuffer from the swapchain
             backBufferTexture = DxgiSwapChain.GetBuffer<ID3D11Texture2D>(0);
@@ -261,7 +261,7 @@ namespace Veldrid.D3D11
                     BufferCount = 2,
                     Windowed = true,
                     BufferDescription = new ModeDescription(
-                        (int)width, (int)height, colorFormat),
+                        width, height, colorFormat),
                     OutputWindow = win32Source.Hwnd,
                     SampleDescription = new SampleDescription(1, 0),
                     SwapEffect = swapEffect,
@@ -269,11 +269,10 @@ namespace Veldrid.D3D11
                     Flags = flags
                 };
 
-                using (var dxgiFactory = gd.Adapter.GetParent<IDXGIFactory>())
-                {
-                    DxgiSwapChain = dxgiFactory.CreateSwapChain(gd.Device, dxgiScDesc);
-                    dxgiFactory.MakeWindowAssociation(win32Source.Hwnd, WindowAssociationFlags.IgnoreAltEnter);
-                }
+                using var dxgiFactory = gd.Adapter.GetParent<IDXGIFactory>();
+
+                DxgiSwapChain = dxgiFactory.CreateSwapChain(gd.Device, dxgiScDesc);
+                dxgiFactory.MakeWindowAssociation(win32Source.Hwnd, WindowAssociationFlags.IgnoreAltEnter);
             }
             else if (description.Source is UwpSwapchainSource uwpSource)
             {
@@ -285,8 +284,8 @@ namespace Veldrid.D3D11
                     AlphaMode = AlphaMode.Ignore,
                     BufferCount = 2,
                     Format = colorFormat,
-                    Height = (int)(height * pixelScale),
-                    Width = (int)(width * pixelScale),
+                    Height = (uint)(height * pixelScale),
+                    Width = (uint)(width * pixelScale),
                     SampleDescription = new SampleDescription(1, 0),
                     SwapEffect = SwapEffect.FlipSequential,
                     BufferUsage = Usage.RenderTargetOutput,
@@ -315,13 +314,12 @@ namespace Veldrid.D3D11
 
             if ((flags & SwapChainFlags.FrameLatencyWaitableObject) > 0)
             {
-                using (var swapChain2 = DxgiSwapChain.QueryInterfaceOrNull<IDXGISwapChain2>())
+                using var swapChain2 = DxgiSwapChain.QueryInterfaceOrNull<IDXGISwapChain2>();
+
+                if (swapChain2 != null)
                 {
-                    if (swapChain2 != null)
-                    {
-                        swapChain2.MaximumFrameLatency = 1;
-                        frameLatencyWaitHandle = new FrameLatencyWaitHandle(swapChain2.FrameLatencyWaitableObject);
-                    }
+                    swapChain2.MaximumFrameLatency = 1;
+                    frameLatencyWaitHandle = new FrameLatencyWaitHandle(swapChain2.FrameLatencyWaitableObject);
                 }
             }
 

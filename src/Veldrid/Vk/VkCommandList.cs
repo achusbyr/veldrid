@@ -32,24 +32,24 @@ namespace Veldrid.Vk
         }
 
         private readonly VkGraphicsDevice gd;
-        private readonly List<VkTexture> preDrawSampledImages = new List<VkTexture>();
+        private readonly List<VkTexture> preDrawSampledImages = [];
 
         private readonly object commandBufferListLock = new object();
         private readonly Queue<VkCommandBuffer> availableCommandBuffers = new Queue<VkCommandBuffer>();
-        private readonly List<VkCommandBuffer> submittedCommandBuffers = new List<VkCommandBuffer>();
+        private readonly List<VkCommandBuffer> submittedCommandBuffers = [];
         private readonly object stagingLock = new object();
         private readonly Dictionary<VkCommandBuffer, StagingResourceInfo> submittedStagingInfos = new Dictionary<VkCommandBuffer, StagingResourceInfo>();
-        private readonly List<StagingResourceInfo> availableStagingInfos = new List<StagingResourceInfo>();
-        private readonly List<VkBuffer> availableStagingBuffers = new List<VkBuffer>();
+        private readonly List<StagingResourceInfo> availableStagingInfos = [];
+        private readonly List<VkBuffer> availableStagingBuffers = [];
         private readonly VkCommandPool pool;
         private bool destroyed;
 
         private bool commandBufferBegun;
         private bool commandBufferEnded;
-        private VkRect2D[] scissorRects = Array.Empty<VkRect2D>();
+        private VkRect2D[] scissorRects = [];
 
-        private VkClearValue[] clearValues = Array.Empty<VkClearValue>();
-        private bool[] validColorClearValues = Array.Empty<bool>();
+        private VkClearValue[] clearValues = [];
+        private bool[] validColorClearValues = [];
         private VkClearValue? depthClearValue;
 
         // Graphics State
@@ -57,14 +57,14 @@ namespace Veldrid.Vk
         private bool currentFramebufferEverActive;
         private VkRenderPass activeRenderPass;
         private VkPipeline currentGraphicsPipeline;
-        private BoundResourceSetInfo[] currentGraphicsResourceSets = Array.Empty<BoundResourceSetInfo>();
+        private BoundResourceSetInfo[] currentGraphicsResourceSets = [];
         private bool[] graphicsResourceSetsChanged;
 
         private bool newFramebuffer; // Render pass cycle state
 
         // Compute State
         private VkPipeline currentComputePipeline;
-        private BoundResourceSetInfo[] currentComputeResourceSets = Array.Empty<BoundResourceSetInfo>();
+        private BoundResourceSetInfo[] currentComputeResourceSets = [];
         private bool[] computeResourceSetsChanged;
         private string name;
 
@@ -414,7 +414,7 @@ namespace Veldrid.Vk
                 uint rowPitch = FormatHelpers.GetRowPitch(bufferRowLength, dstVkTexture.Format);
                 uint depthPitch = FormatHelpers.GetDepthPitch(rowPitch, bufferImageHeight, dstVkTexture.Format);
 
-                var layers = stackalloc VkBufferImageCopy[(int)layerCount];
+                VkBufferImageCopy* layers = stackalloc VkBufferImageCopy[(int)layerCount];
 
                 for (uint layer = 0; layer < layerCount; layer++)
                 {
@@ -759,7 +759,7 @@ namespace Veldrid.Vk
         {
             var pipeline = bindPoint == VkPipelineBindPoint.Graphics ? currentGraphicsPipeline : currentComputePipeline;
 
-            var descriptorSets = stackalloc VkDescriptorSet[(int)resourceSetCount];
+            VkDescriptorSet* descriptorSets = stackalloc VkDescriptorSet[(int)resourceSetCount];
             uint* dynamicOffsets = stackalloc uint[(int)pipeline.DynamicOffsetsCount];
             uint currentBatchCount = 0;
             uint currentBatchFirstSet = 0;
@@ -1318,8 +1318,8 @@ namespace Veldrid.Vk
 
         private class StagingResourceInfo
         {
-            public List<VkBuffer> BuffersUsed { get; } = new List<VkBuffer>();
-            public HashSet<ResourceRefCount> Resources { get; } = new HashSet<ResourceRefCount>();
+            public List<VkBuffer> BuffersUsed { get; } = [];
+            public HashSet<ResourceRefCount> Resources { get; } = [];
 
             public void Clear()
             {

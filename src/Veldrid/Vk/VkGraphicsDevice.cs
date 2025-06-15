@@ -81,8 +81,8 @@ namespace Veldrid.Vk
         private const uint max_staging_buffer_size = 512;
 
         private readonly object stagingResourcesLock = new object();
-        private readonly List<VkTexture> availableStagingTextures = new List<VkTexture>();
-        private readonly List<VkBuffer> availableStagingBuffers = new List<VkBuffer>();
+        private readonly List<VkTexture> availableStagingTextures = [];
+        private readonly List<VkBuffer> availableStagingBuffers = [];
 
         private readonly Dictionary<VkCommandBuffer, VkTexture> submittedStagingTextures
             = new Dictionary<VkCommandBuffer, VkTexture>();
@@ -95,10 +95,10 @@ namespace Veldrid.Vk
 
         private readonly object submittedFencesLock = new object();
         private readonly ConcurrentQueue<Vulkan.VkFence> availableSubmissionFences = new ConcurrentQueue<Vulkan.VkFence>();
-        private readonly List<FenceSubmissionInfo> submittedFences = new List<FenceSubmissionInfo>();
+        private readonly List<FenceSubmissionInfo> submittedFences = [];
         private readonly VkSwapchain mainSwapchain;
 
-        private readonly List<FixedUtf8String> surfaceExtensions = new List<FixedUtf8String>();
+        private readonly List<FixedUtf8String> surfaceExtensions = [];
 
         private VkInstance instance;
         private string deviceName;
@@ -268,7 +268,7 @@ namespace Veldrid.Vk
         public override bool WaitForFences(Fence[] fences, bool waitAll, ulong nanosecondTimeout)
         {
             int fenceCount = fences.Length;
-            var fencesPtr = stackalloc Vulkan.VkFence[fenceCount];
+            Vulkan.VkFence* fencesPtr = stackalloc Vulkan.VkFence[fenceCount];
             for (int i = 0; i < fenceCount; i++) fencesPtr[i] = Util.AssertSubtype<Fence, VkFence>(fences[i]).DeviceFence;
 
             var result = vkWaitForFences(device, (uint)fenceCount, fencesPtr, waitAll, nanosecondTimeout);
@@ -812,7 +812,7 @@ namespace Veldrid.Vk
             bool hasDeviceProperties2 = availableInstanceExtensions.Contains(CommonStrings.VkKhrGetPhysicalDeviceProperties2);
             if (hasDeviceProperties2) instanceExtensions.Add(CommonStrings.VkKhrGetPhysicalDeviceProperties2);
 
-            string[] requestedInstanceExtensions = options.InstanceExtensions ?? Array.Empty<string>();
+            string[] requestedInstanceExtensions = options.InstanceExtensions ?? [];
             var tempStrings = new List<FixedUtf8String>();
 
             foreach (string requiredExt in requestedInstanceExtensions)
@@ -922,7 +922,7 @@ namespace Veldrid.Vk
             getQueueFamilyIndices(surface);
 
             var familyIndices = new HashSet<uint> { GraphicsQueueIndex, PresentQueueIndex };
-            var queueCreateInfos = stackalloc VkDeviceQueueCreateInfo[familyIndices.Count];
+            VkDeviceQueueCreateInfo* queueCreateInfos = stackalloc VkDeviceQueueCreateInfo[familyIndices.Count];
             uint queueCreateInfosCount = (uint)familyIndices.Count;
 
             int i = 0;
@@ -940,9 +940,9 @@ namespace Veldrid.Vk
 
             var deviceFeatures = physicalDeviceFeatures;
 
-            var props = GetDeviceExtensionProperties();
+            VkExtensionProperties[] props = GetDeviceExtensionProperties();
 
-            var requiredInstanceExtensions = new HashSet<string>(options.DeviceExtensions ?? Array.Empty<string>());
+            var requiredInstanceExtensions = new HashSet<string>(options.DeviceExtensions ?? []);
 
             bool hasMemReqs2 = false;
             bool hasDedicatedAllocation = false;

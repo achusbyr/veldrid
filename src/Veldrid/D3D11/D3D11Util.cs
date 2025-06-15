@@ -32,16 +32,16 @@ namespace Veldrid.D3D11
                 if (tex.ArrayLayers == 1)
                 {
                     srvDesc.ViewDimension = ShaderResourceViewDimension.TextureCube;
-                    srvDesc.TextureCube.MostDetailedMip = (int)baseMipLevel;
-                    srvDesc.TextureCube.MipLevels = (int)levelCount;
+                    srvDesc.TextureCube.MostDetailedMip = baseMipLevel;
+                    srvDesc.TextureCube.MipLevels = levelCount;
                 }
                 else
                 {
                     srvDesc.ViewDimension = ShaderResourceViewDimension.TextureCubeArray;
-                    srvDesc.TextureCubeArray.MostDetailedMip = (int)baseMipLevel;
-                    srvDesc.TextureCubeArray.MipLevels = (int)levelCount;
-                    srvDesc.TextureCubeArray.First2DArrayFace = (int)baseArrayLayer;
-                    srvDesc.TextureCubeArray.NumCubes = (int)tex.ArrayLayers;
+                    srvDesc.TextureCubeArray.MostDetailedMip = baseMipLevel;
+                    srvDesc.TextureCubeArray.MipLevels = levelCount;
+                    srvDesc.TextureCubeArray.First2DArrayFace = baseArrayLayer;
+                    srvDesc.TextureCubeArray.NumCubes = tex.ArrayLayers;
                 }
             }
             else if (tex.Depth == 1)
@@ -51,14 +51,14 @@ namespace Veldrid.D3D11
                     if (tex.Type == TextureType.Texture1D)
                     {
                         srvDesc.ViewDimension = ShaderResourceViewDimension.Texture1D;
-                        srvDesc.Texture1D.MostDetailedMip = (int)baseMipLevel;
-                        srvDesc.Texture1D.MipLevels = (int)levelCount;
+                        srvDesc.Texture1D.MostDetailedMip = baseMipLevel;
+                        srvDesc.Texture1D.MipLevels = levelCount;
                     }
                     else
                     {
                         srvDesc.ViewDimension = tex.SampleCount == TextureSampleCount.Count1 ? ShaderResourceViewDimension.Texture2D : ShaderResourceViewDimension.Texture2DMultisampled;
-                        srvDesc.Texture2D.MostDetailedMip = (int)baseMipLevel;
-                        srvDesc.Texture2D.MipLevels = (int)levelCount;
+                        srvDesc.Texture2D.MostDetailedMip = baseMipLevel;
+                        srvDesc.Texture2D.MipLevels = levelCount;
                     }
                 }
                 else
@@ -66,26 +66,26 @@ namespace Veldrid.D3D11
                     if (tex.Type == TextureType.Texture1D)
                     {
                         srvDesc.ViewDimension = ShaderResourceViewDimension.Texture1DArray;
-                        srvDesc.Texture1DArray.MostDetailedMip = (int)baseMipLevel;
-                        srvDesc.Texture1DArray.MipLevels = (int)levelCount;
-                        srvDesc.Texture1DArray.FirstArraySlice = (int)baseArrayLayer;
-                        srvDesc.Texture1DArray.ArraySize = (int)layerCount;
+                        srvDesc.Texture1DArray.MostDetailedMip = baseMipLevel;
+                        srvDesc.Texture1DArray.MipLevels = levelCount;
+                        srvDesc.Texture1DArray.FirstArraySlice = baseArrayLayer;
+                        srvDesc.Texture1DArray.ArraySize = layerCount;
                     }
                     else
                     {
                         srvDesc.ViewDimension = ShaderResourceViewDimension.Texture2DArray;
-                        srvDesc.Texture2DArray.MostDetailedMip = (int)baseMipLevel;
-                        srvDesc.Texture2DArray.MipLevels = (int)levelCount;
-                        srvDesc.Texture2DArray.FirstArraySlice = (int)baseArrayLayer;
-                        srvDesc.Texture2DArray.ArraySize = (int)layerCount;
+                        srvDesc.Texture2DArray.MostDetailedMip = baseMipLevel;
+                        srvDesc.Texture2DArray.MipLevels = levelCount;
+                        srvDesc.Texture2DArray.FirstArraySlice = baseArrayLayer;
+                        srvDesc.Texture2DArray.ArraySize = layerCount;
                     }
                 }
             }
             else
             {
                 srvDesc.ViewDimension = ShaderResourceViewDimension.Texture3D;
-                srvDesc.Texture3D.MostDetailedMip = (int)baseMipLevel;
-                srvDesc.Texture3D.MipLevels = (int)levelCount;
+                srvDesc.Texture3D.MostDetailedMip = baseMipLevel;
+                srvDesc.Texture3D.MipLevels = levelCount;
             }
 
             return srvDesc;

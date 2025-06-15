@@ -23,19 +23,19 @@ namespace Veldrid.OpenGL
         private Framebuffer fb;
         private bool isSwapchainFb;
         private OpenGLPipeline graphicsPipeline;
-        private BoundResourceSetInfo[] graphicsResourceSets = Array.Empty<BoundResourceSetInfo>();
-        private bool[] newGraphicsResourceSets = Array.Empty<bool>();
-        private OpenGLBuffer[] vertexBuffers = Array.Empty<OpenGLBuffer>();
-        private uint[] vbOffsets = Array.Empty<uint>();
-        private uint[] vertexAttribDivisors = Array.Empty<uint>();
+        private BoundResourceSetInfo[] graphicsResourceSets = [];
+        private bool[] newGraphicsResourceSets = [];
+        private OpenGLBuffer[] vertexBuffers = [];
+        private uint[] vbOffsets = [];
+        private uint[] vertexAttribDivisors = [];
         private uint vertexAttributesBound;
         private DrawElementsType drawElementsType;
         private uint ibOffset;
         private PrimitiveType primitiveType;
 
         private OpenGLPipeline computePipeline;
-        private BoundResourceSetInfo[] computeResourceSets = Array.Empty<BoundResourceSetInfo>();
-        private bool[] newComputeResourceSets = Array.Empty<bool>();
+        private BoundResourceSetInfo[] computeResourceSets = [];
+        private bool[] newComputeResourceSets = [];
 
         private bool graphicsPipelineActive;
         private bool vertexLayoutFlushed;
@@ -82,7 +82,7 @@ namespace Veldrid.OpenGL
             if (!isSwapchainFb)
             {
                 int colorCount = fb.ColorTargets.Count;
-                var bufs = stackalloc DrawBuffersEnum[colorCount];
+                DrawBuffersEnum* bufs = stackalloc DrawBuffersEnum[colorCount];
                 for (int i = 0; i < colorCount; i++) bufs[i] = DrawBuffersEnum.ColorAttachment0 + i;
                 GLDrawBuffers((uint)colorCount, bufs);
                 CheckLastError();
@@ -1073,7 +1073,7 @@ namespace Veldrid.OpenGL
             {
                 var brsi = graphics ? graphicsResourceSets[slot] : computeResourceSets[slot];
                 var glSet = Util.AssertSubtype<ResourceSet, OpenGLResourceSet>(brsi.Set);
-                var layoutElements = glSet.Layout.Elements;
+                ResourceLayoutElementDescription[] layoutElements = glSet.Layout.Elements;
                 bool isNew = graphics ? newGraphicsResourceSets[slot] : newComputeResourceSets[slot];
 
                 activateResourceSet(slot, graphics, brsi, layoutElements, isNew);
@@ -1085,7 +1085,7 @@ namespace Veldrid.OpenGL
         private void flushVertexLayouts()
         {
             uint totalSlotsBound = 0;
-            var layouts = graphicsPipeline.VertexLayouts;
+            VertexLayoutDescription[] layouts = graphicsPipeline.VertexLayouts;
 
             for (int i = 0; i < layouts.Length; i++)
             {

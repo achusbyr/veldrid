@@ -19,8 +19,16 @@
     <ItemGroup>
         <PackageReference Include="NativeLibraryLoader" Version="$(NativeLibraryLoaderVersion)"/>
         <PackageReference Include="ppy.Vk" Version="1.0.26" Condition="'$(ExcludeVulkan)' != 'true'"/>
-        <PackageReference Include="Vortice.D3DCompiler" Version="$(VorticeWindowsVersion)"/>
-        <PackageReference Include="Vortice.Direct3D11" Version="$(VorticeWindowsVersion)"/>
+        <PackageReference Include="Vortice.D3DCompiler" Version="3.7.4-beta"/>
+        <PackageReference Include="Vortice.Direct3D11" Version="3.7.4-beta"/>
+        <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+        <PackageReference Update="Nerdbank.GitVersioning" Version="3.8.38-alpha">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
     </ItemGroup>
 
     <ItemGroup>

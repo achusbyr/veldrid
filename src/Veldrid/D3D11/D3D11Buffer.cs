@@ -26,9 +26,9 @@ namespace Veldrid.D3D11
             {
                 name = value;
                 Buffer.DebugName = value;
-                foreach (var kvp in srvs) kvp.Value.DebugName = value + "_SRV";
+                foreach (KeyValuePair<OffsetSizePair, ID3D11ShaderResourceView> kvp in srvs) kvp.Value.DebugName = value + "_SRV";
 
-                foreach (var kvp in uavs) kvp.Value.DebugName = value + "_UAV";
+                foreach (KeyValuePair<OffsetSizePair, ID3D11UnorderedAccessView> kvp in uavs) kvp.Value.DebugName = value + "_UAV";
             }
         }
 
@@ -54,7 +54,7 @@ namespace Veldrid.D3D11
             this.rawBuffer = rawBuffer;
 
             var bd = new Vortice.Direct3D11.BufferDescription(
-                (int)sizeInBytes,
+                sizeInBytes,
                 D3D11Formats.VdToD3D11BindFlags(usage));
 
             if ((usage & BufferUsage.StructuredBufferReadOnly) == BufferUsage.StructuredBufferReadOnly
@@ -65,7 +65,7 @@ namespace Veldrid.D3D11
                 else
                 {
                     bd.MiscFlags = ResourceOptionFlags.BufferStructured;
-                    bd.StructureByteStride = (int)structureByteStride;
+                    bd.StructureByteStride = structureByteStride;
                 }
             }
 
@@ -89,9 +89,9 @@ namespace Veldrid.D3D11
 
         public override void Dispose()
         {
-            foreach (var kvp in srvs) kvp.Value.Dispose();
+            foreach (KeyValuePair<OffsetSizePair, ID3D11ShaderResourceView> kvp in srvs) kvp.Value.Dispose();
 
-            foreach (var kvp in uavs) kvp.Value.Dispose();
+            foreach (KeyValuePair<OffsetSizePair, ID3D11UnorderedAccessView> kvp in uavs) kvp.Value.Dispose();
             Buffer.Dispose();
         }
 
@@ -135,8 +135,8 @@ namespace Veldrid.D3D11
             {
                 var srvDesc = new ShaderResourceViewDescription(Buffer,
                     Format.R32_Typeless,
-                    (int)offset / 4,
-                    (int)size / 4,
+                    offset / 4,
+                    size / 4,
                     BufferExtendedShaderResourceViewFlags.Raw);
 
                 return device.CreateShaderResourceView(Buffer, srvDesc);
@@ -147,8 +147,8 @@ namespace Veldrid.D3D11
                 {
                     ViewDimension = ShaderResourceViewDimension.Buffer
                 };
-                srvDesc.Buffer.NumElements = (int)(size / structureByteStride);
-                srvDesc.Buffer.ElementOffset = (int)(offset / structureByteStride);
+                srvDesc.Buffer.NumElements = size / structureByteStride;
+                srvDesc.Buffer.ElementOffset = offset / structureByteStride;
                 return device.CreateShaderResourceView(Buffer, srvDesc);
             }
         }
@@ -159,8 +159,8 @@ namespace Veldrid.D3D11
             {
                 var uavDesc = new UnorderedAccessViewDescription(Buffer,
                     Format.R32_Typeless,
-                    (int)offset / 4,
-                    (int)size / 4,
+                    offset / 4,
+                    size / 4,
                     BufferUnorderedAccessViewFlags.Raw);
 
                 return device.CreateUnorderedAccessView(Buffer, uavDesc);
@@ -169,24 +169,18 @@ namespace Veldrid.D3D11
             {
                 var uavDesc = new UnorderedAccessViewDescription(Buffer,
                     Format.Unknown,
-                    (int)(offset / structureByteStride),
-                    (int)(size / structureByteStride)
+                    offset / structureByteStride,
+                    size / structureByteStride
                 );
 
                 return device.CreateUnorderedAccessView(Buffer, uavDesc);
             }
         }
 
-        private struct OffsetSizePair : IEquatable<OffsetSizePair>
+        private struct OffsetSizePair(uint offset, uint size) : IEquatable<OffsetSizePair>
         {
-            public readonly uint Offset;
-            public readonly uint Size;
-
-            public OffsetSizePair(uint offset, uint size)
-            {
-                Offset = offset;
-                Size = size;
-            }
+            public readonly uint Offset = offset;
+            public readonly uint Size = size;
 
             public bool Equals(OffsetSizePair other)
             {

@@ -32,9 +32,9 @@ namespace Veldrid.OpenGL
             bool disableSrgbConversion)
         {
             // This is wrong, but it's not really used.
-            var depthDesc = depthFormat != null
+            OutputAttachmentDescription? depthDesc = depthFormat != null
                 ? new OutputAttachmentDescription(depthFormat.Value)
-                : (OutputAttachmentDescription?)null;
+                : null;
             OutputDescription = new OutputDescription(
                 depthDesc,
                 new OutputAttachmentDescription(colorFormat));
@@ -45,7 +45,7 @@ namespace Veldrid.OpenGL
                 colorFormat,
                 TextureUsage.RenderTarget,
                 TextureSampleCount.Count1);
-            colorTargets = new[] { new FramebufferAttachment(colorTexture, 0) };
+            colorTargets = [new FramebufferAttachment(colorTexture, 0)];
 
             if (depthFormat != null)
             {

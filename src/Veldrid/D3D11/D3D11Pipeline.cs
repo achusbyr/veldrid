@@ -1,7 +1,6 @@
 ﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
 // See the LICENCE file in the repository root for full licence text.
 
-using System;
 using System.Diagnostics;
 using Vortice.Direct3D11;
 using Vortice.Mathematics;
@@ -38,7 +37,7 @@ namespace Veldrid.D3D11
             : base(ref description)
         {
             byte[] vsBytecode = null;
-            var stages = description.ShaderSet.Shaders;
+            Shader[] stages = description.ShaderSet.Shaders;
 
             for (int i = 0; i < description.ShaderSet.Shaders.Length; i++)
             {
@@ -79,7 +78,7 @@ namespace Veldrid.D3D11
             RasterizerState = rasterizerState;
             PrimitiveTopology = D3D11Formats.VdToD3D11PrimitiveTopology(description.PrimitiveTopology);
 
-            var genericLayouts = description.ResourceLayouts;
+            ResourceLayout[] genericLayouts = description.ResourceLayouts;
             ResourceLayouts = new D3D11ResourceLayout[genericLayouts.Length];
             for (int i = 0; i < ResourceLayouts.Length; i++) ResourceLayouts[i] = Util.AssertSubtype<ResourceLayout, D3D11ResourceLayout>(genericLayouts[i]);
 
@@ -93,7 +92,7 @@ namespace Veldrid.D3D11
                 for (int i = 0; i < numVertexBuffers; i++) VertexStrides[i] = (int)description.ShaderSet.VertexLayouts[i].Stride;
             }
             else
-                VertexStrides = Array.Empty<int>();
+                VertexStrides = [];
         }
 
         public D3D11Pipeline(D3D11ResourceCache cache, ref ComputePipelineDescription description)
@@ -101,7 +100,7 @@ namespace Veldrid.D3D11
         {
             IsComputePipeline = true;
             ComputeShader = (ID3D11ComputeShader)((D3D11Shader)description.ComputeShader).DeviceShader;
-            var genericLayouts = description.ResourceLayouts;
+            ResourceLayout[] genericLayouts = description.ResourceLayouts;
             ResourceLayouts = new D3D11ResourceLayout[genericLayouts.Length];
             for (int i = 0; i < ResourceLayouts.Length; i++) ResourceLayouts[i] = Util.AssertSubtype<ResourceLayout, D3D11ResourceLayout>(genericLayouts[i]);
         }

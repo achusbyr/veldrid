@@ -107,7 +107,7 @@ namespace Veldrid.OpenGL
                     }
                 }
 
-                var bufs = stackalloc DrawBuffersEnum[(int)colorCount];
+                DrawBuffersEnum* bufs = stackalloc DrawBuffersEnum[(int)colorCount];
                 for (int i = 0; i < colorCount; i++) bufs[i] = DrawBuffersEnum.ColorAttachment0 + i;
                 GLDrawBuffers(colorCount, bufs);
                 CheckLastError();

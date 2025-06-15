@@ -47,7 +47,7 @@ namespace Veldrid.MTL
 
             var colorAttachment = new OutputAttachmentDescription(colorFormat);
 
-            colorTargets = new[] { new FramebufferAttachment(colorTexture, 0) };
+            colorTargets = [new FramebufferAttachment(colorTexture, 0)];
 
             OutputDescription = new OutputDescription(depthAttachment, colorAttachment);
         }

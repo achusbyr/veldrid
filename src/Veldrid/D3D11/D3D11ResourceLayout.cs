@@ -20,7 +20,7 @@ namespace Veldrid.D3D11
         public D3D11ResourceLayout(ref ResourceLayoutDescription description)
             : base(ref description)
         {
-            var elements = description.Elements;
+            ResourceLayoutElementDescription[] elements = description.Elements;
             bindingInfosByVdIndex = new ResourceBindingInfo[elements.Length];
 
             int cbIndex = 0;

@@ -37,9 +37,9 @@ namespace Veldrid.Vk
         {
             this.gd = gd;
             var dslCi = VkDescriptorSetLayoutCreateInfo.New();
-            var elements = description.Elements;
+            ResourceLayoutElementDescription[] elements = description.Elements;
             DescriptorTypes = new VkDescriptorType[elements.Length];
-            var bindings = stackalloc VkDescriptorSetLayoutBinding[elements.Length];
+            VkDescriptorSetLayoutBinding* bindings = stackalloc VkDescriptorSetLayoutBinding[elements.Length];
 
             uint uniformBufferCount = 0;
             uint uniformBufferDynamicCount = 0;
